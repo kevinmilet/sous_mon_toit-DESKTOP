@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
+import Search from "../Search/Search";
+import Avatar from "../Avatar/Avatar";
 
 const MainContainer = styled.div`
     width: 100%;
-    height: 250px;
+    height: 200px;
     margin: 0;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -13,10 +15,20 @@ const MainContainer = styled.div`
     box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.65);
 `
 
+const RowContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
 const Topbar = () => {
     return (
         <div>
-            <MainContainer/>
+            <MainContainer>
+                <RowContainer className="row">
+                    <Search/>
+                    <Avatar/>
+                </RowContainer>
+            </MainContainer>
         </div>
     );
 };
