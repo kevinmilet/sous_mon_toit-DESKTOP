@@ -1,25 +1,63 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import { Context } from "./utils/context/Context";
+import ApiRoutes from "./utils/const/ApiRoutes";
 
-function App() {
+import SignInView from './screens/SignIn/SignInView';
+import EstatesListView from './screens/Estates/EstatesListView';
+import DetailEstateView from './screens/Estates/DetailEstateView';
+
+const App = () => {
+  const [apiUrl, setApiUrl] = useState(ApiRoutes.API_URL);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (localStorage["token"]) {
+      setToken(storedToken);
+      console.log("il y a un token")
+    } else {
+      console.log("pas de token")
+    }
+    setLoading(false);
+
+  }, [token]);
+
+  if (loading) {
+    return <></>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Context.Provider value={{ apiUrl, setApiUrl }}>
+      <div style={{ backgroundColor: "salmon" }}>
+        <Router>
+          {token === null ? (
+            <React.Fragment>
+              <Route exact path="/">
+                <SignInView />
+              </Route>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Route exact path="/">
+                <p>Mon token est valide ! Je suis connecté !!</p>
+                {/* redirection vers page principal  */}
+                {/* <Redirect to="/homepage"/> */}
+              </Route>
+            </React.Fragment>
+          )}
+          <Route exact path="/liste-des-biens">
+            <EstatesListView/>
+          </Route>
+          <Route exact path="/detail-biens/:id">
+            <DetailEstateView />
+          </Route>  
+        </Router>
+      </div>
+    </Context.Provider >
   );
-}
+};
 
 export default App;
