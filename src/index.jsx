@@ -6,6 +6,7 @@ import CustomersListView from './screens/Customers/CustomersListView';
 
 ReactDOM.render(
   <React.StrictMode>
+    <App/>
     <CustomersListView />
   </React.StrictMode>,
   document.getElementById('root')
