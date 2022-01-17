@@ -6,6 +6,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm run dev`
+
+Runs the app in the development mode with Electron JS.
+Open http://localhost:3000 to view it in your browser and Electron JS App
+
 ### `npm start`
 
 Runs the app in the development mode.\
