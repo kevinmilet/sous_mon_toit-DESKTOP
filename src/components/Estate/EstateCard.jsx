@@ -10,16 +10,6 @@ import Loader from "../Tools/Loader/Loader";
 import defaultCover from '../../assets/img/estate_default.jpg';
 import {Link} from "react-router-dom"
 
-const Card = styled.div`
-    // width: 18em;
-    // height: 375px;
-`
-
-const CardBody = styled.p`
-    font-size: 13px;
-    color: ${colors.primary};
-`
-
 const EstateRef = styled.span`
     color: ${colors.secondary};
     font-weight: 700;
@@ -49,43 +39,36 @@ const EstateCard = ({estateData}) => {
             })
         }, [API_URL, estateData.id])
         // })
+    console.log(estateData)
 
 
     return (
         loading ? <Loader/> :
 
             estateData.map((item) => {
-                return (<div className='col-sm-12 col-md-4 col-lg-4 justify-content-center' key={item.id}>
-                    <Link className='text-decoration-none ' to={`/detail-biens/${item.id}`}>
-                        <Card className="my-3 col-sm-8 col-md-auto m-auto card shadow-sm text-center">
-                            <img src={estateCover} alt="" className="card-img-top img-fluid" height="200px"/>
-                            <CardBody>
-                                <div className="card-body">
-                                    <div className={"d-flex justify-content-between"}>
-                                        <EstateRef>{item.reference}</EstateRef>
-                                        <FavoriteButton>
-                                            <label className="add-fav">
-                                                <input type="checkbox"/>
-                                                <i className="fas fa-heart">
-                                                    <i className="fas fa-plus-circle"/>
-                                                </i>
-                                            </label>
-                                        </FavoriteButton>
-                                    </div>
-                                    <div className="mt-2">
-                                        <p className="text-lg-start">
-                                            {item.title} {item.living_surface} m<sup>2</sup>
-                                        </p>
-                                        <p className="text-lg-start">
-                                            {item.zipcode} {item.city}
-                                        </p>
-                                        <p className="text-lg-end fw-bold">
-                                            {item.price} €
-                                        </p>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
+                return (
+                <div className='col-12 border-bottom border-5 p-4' key={item.id}>
+                    <Link className='text-decoration-none' to={`/detail-biens/${item.id}`}>
+                        <div className="row">
+                            <div className='col-3'>
+                                <img src={estateCover} alt={item.title} className="img-fluid"/>
+                            </div>
+                            <div className="col-3">
+                                <EstateRef>{item.reference}</EstateRef>
+                                <p className="text-lg-start">
+                                    {item.title} {item.living_surface} m<sup>2</sup>
+                                </p>
+                                <p className="text-lg-start">
+                                    {item.zipcode} {item.city}
+                                </p>
+                                <p className="text-lg-end fw-bold">
+                                    {item.price} €
+                                </p>
+                            </div>
+                            <div className="col-6">
+                                <p>{item.description}</p>
+                            </div>
+                        </div>
                     </Link>
                 </div>)
             })

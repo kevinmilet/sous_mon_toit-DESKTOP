@@ -66,7 +66,7 @@ const Sidebar = () => {
                     <a href="/">
                         <Button className="btn btn-secondary" ><img src={agendaIcon} width="35" height="35" alt=""/>&nbsp;Agenda&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                     </a>
-                    <Button className="btn btn-secondary"><img src={estateIcon} width="35" height="35" alt=""/>&nbsp;Biens&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    <Button className="btn btn-secondary"><a href="/liste-des-biens"><img src={estateIcon} width="35" height="35" alt=""/>&nbsp;Biens&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></a></Button>
                     <a href="/customers_list">
                         <Button className="btn btn-secondary"><img src={customerIcon} width="35" height="35" alt=""/>&nbsp;Client&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                     </a>

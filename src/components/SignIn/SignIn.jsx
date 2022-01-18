@@ -58,9 +58,9 @@ const SignIn = () => {
     return (
         <div className="container col-12 col-sm-10 col-md-8 col-lg-4 mx-auto mt-5">
             <ConnexionForm onSubmit={formik.handleSubmit} className="p-4 rounded">
-                <ConnexiontH1 className="text-center">Connectez-vous</ConnexiontH1>
+                <ConnexiontH1 className="text-center">Connexion</ConnexiontH1>
                 <div className="mb-3">
-                    <ConnexionLabel htmlFor="login" className="form-label">Login</ConnexionLabel>
+                    <ConnexionLabel htmlFor="login" className="form-label">Utilisateur</ConnexionLabel>
                     <StyledInput
                         id="login"
                         name="login"
