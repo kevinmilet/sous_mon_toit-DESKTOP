@@ -1,6 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Context} from "./utils/context/Context";
+import EstatesListView from "./screens/Estates/EstatesListView";
+import DetailEstateView from "./screens/Estates/DetailEstateView";
+import CustomersListView from "./screens/Customers/CustomersListView";
+import CustomersDetailView from "./screens/Customers/CustomerDetailView";
+import axios from 'axios';
 import ApiRoutes from "./utils/const/ApiRoutes";
 
 import SignInView from './screens/SignIn/SignInView';
@@ -15,7 +20,22 @@ const App = () => {
     const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    axios.defaults.headers.common = {
+
+        Authorization: `Bearer ${localStorage["token"]}`,
+    };
+
     useEffect(() => {
+        axios.interceptors.response.use(function (response) {
+            return response
+        }, function (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    localStorage.clear()
+                    return window.location = '/' // redirect to login page
+                }
+            }
+        })
         const storedToken = localStorage.getItem('token');
         if (localStorage["token"]) {
             setToken(storedToken);
@@ -62,12 +82,18 @@ const App = () => {
                                             </Route>
                                         </React.Fragment>
                                     )}
-                                    {/*<Route exact path="/liste-des-biens">*/}
-                                    {/*    <EstatesListView/>*/}
-                                    {/*</Route>*/}
-                                    {/*<Route exact path="/detail-biens/:id">*/}
-                                    {/*    <DetailEstateView/>*/}
-                                    {/*</Route>*/}
+                                    <Route exact path="/liste-des-biens">
+                                        <EstatesListView/>
+                                    </Route>
+                                    <Route exact path="/detail-biens/:id">
+                                        <DetailEstateView/>
+                                    </Route>
+                                    <Route exact path="/customers_list">
+                                        <CustomersListView/>
+                                    </Route>
+                                    <Route exact path="/customer_detail/:id">
+                                        <CustomersDetailView/>
+                                    </Route>
                                 </Router>
                             </div>
                         </div>

@@ -9,7 +9,7 @@ const API_URL = {
     estates_rnd: 'estates/rnd',
     staff: 'staff',
     create_customer: 'customer/create',
-    customer: 'customer',
+    customer: 'customer/s/',
     update_customer: 'customer/update',
     delete_customer: 'customer/delete',
     customer_search: 'customer_search/c',
