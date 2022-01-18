@@ -9,12 +9,11 @@ const MainContainer = styled.div`
     height: 200px;
     margin: 0;
     z-index: 0;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
     background-color: ${colors.secondaryBtn};
-    -webkit-box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.65); 
-    box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.65);
-    position: fixed;
+    -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16); 
+    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
 `
 
 const RowContainer = styled.div`
