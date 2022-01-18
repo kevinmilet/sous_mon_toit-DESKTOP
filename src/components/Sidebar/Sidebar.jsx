@@ -10,32 +10,33 @@ import contractIcon from '../../assets/icons/contract.png';
 import rightArrow from '../../assets/icons/right-arrow.png';
 
 const MainContainer = styled.div`
-    // width: 350px;
+    width: 250px;
     height: 100vh;
     background-color: ${colors.backgroundPrimary};
-    -webkit-box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.65); 
-    box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.65);
+    -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16); 
+    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
 `
 
 const Logo = styled.img`
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 `
 
 const ButtonsContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 250px;
+    width: 200px;
 `
 
 const Button = styled.button`
     border: 2px solid ${colors.primaryBtn};
+    // border: none;
     background-color: ${colors.backgroundPrimary};
     border-radius: 50px;
     color: ${colors.primary};
-    font-size: 22px;
-    width: 250px;
-    height: 60px;
+    font-size: 18px;
+    width: 200px;
+    height: 50px;
     margin: 10px;
     &:hover {
         border: 2px solid ${colors.secondaryBtn};
@@ -52,11 +53,11 @@ const Sidebar = () => {
             <MainContainer>
                 <Logo src={logo} className="logo" alt="Logo Sous mon toit"/>
                 <ButtonsContainer>
-                    <Button className="btn btn-secondary"><img src={agendaIcon} width="50" height="50" alt=""/>&nbsp;Agenda&nbsp;<img src={rightArrow} width="22" height="22" alt=""/></Button>
-                    <Button className="btn btn-secondary"><img src={estateIcon} width="50" height="50" alt=""/>&nbsp;Biens&nbsp;<img src={rightArrow} width="22" height="22" alt=""/></Button>
-                    <Button className="btn btn-secondary"><img src={customerIcon} width="50" height="50" alt=""/>&nbsp;Client&nbsp;<img src={rightArrow} width="22" height="22" alt=""/></Button>
-                    <Button className="btn btn-secondary"><img src={staffIcon} width="50" height="50" alt=""/>&nbsp;Agents&nbsp;<img src={rightArrow} width="22" height="22" alt=""/></Button>
-                    <Button className="btn btn-secondary"><img src={contractIcon} width="50" height="50" alt=""/>&nbsp;Contrat&nbsp;<img src={rightArrow} width="22" height="22" alt=""/></Button>
+                    <Button className="btn btn-secondary"><img src={agendaIcon} width="35" height="35" alt=""/>&nbsp;Agenda&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    <Button className="btn btn-secondary"><img src={estateIcon} width="35" height="35" alt=""/>&nbsp;Biens&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    <Button className="btn btn-secondary"><img src={customerIcon} width="35" height="35" alt=""/>&nbsp;Client&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    <Button className="btn btn-secondary"><img src={staffIcon} width="35" height="35" alt=""/>&nbsp;Agents&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    <Button className="btn btn-secondary"><img src={contractIcon} width="35" height="35" alt=""/>&nbsp;Contrat&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                 </ButtonsContainer>
             </MainContainer>
         </div>
