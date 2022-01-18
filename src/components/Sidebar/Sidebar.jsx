@@ -54,7 +54,7 @@ const Sidebar = () => {
                 <Logo src={logo} className="logo" alt="Logo Sous mon toit"/>
                 <ButtonsContainer>
                     <Button className="btn btn-secondary"><img src={agendaIcon} width="35" height="35" alt=""/>&nbsp;Agenda&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
-                    <Button className="btn btn-secondary"><img src={estateIcon} width="35" height="35" alt=""/>&nbsp;Biens&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    <Button className="btn btn-secondary"><a href="/liste-des-biens"><img src={estateIcon} width="35" height="35" alt=""/>&nbsp;Biens&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></a></Button>
                     <Button className="btn btn-secondary"><img src={customerIcon} width="35" height="35" alt=""/>&nbsp;Client&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                     <Button className="btn btn-secondary"><img src={staffIcon} width="35" height="35" alt=""/>&nbsp;Agents&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                     <Button className="btn btn-secondary"><img src={contractIcon} width="35" height="35" alt=""/>&nbsp;Contrat&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
