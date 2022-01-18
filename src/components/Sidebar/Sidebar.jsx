@@ -10,7 +10,7 @@ import contractIcon from '../../assets/icons/contract.png';
 import rightArrow from '../../assets/icons/right-arrow.png';
 
 const MainContainer = styled.div`
-    // width: 350px;
+    width: 350px;
     height: 100vh;
     background-color: ${colors.backgroundPrimary};
     -webkit-box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.65); 
