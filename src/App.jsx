@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Context} from "./utils/context/Context";
-import EstatesListView from "./screens/Estates/EstatesListView";
-import DetailEstateView from "./screens/Estates/DetailEstateView";
 import CustomersListView from "./screens/Customers/CustomersListView";
 import CustomersDetailView from "./screens/Customers/CustomerDetailView";
 import axios from 'axios';
@@ -65,7 +63,7 @@ const App = () => {
                             </div>
                             <div className="row-fluid">
                                 {/*Content here.....*/}
-                                <Calendar/>
+
                                 <Router>
                                     {token === null ? (
                                         <React.Fragment>
@@ -76,7 +74,8 @@ const App = () => {
                                     ) : (
                                         <React.Fragment>
                                             <Route exact path="/">
-                                                <p>Mon token est valide ! Je suis connecté !!</p>
+                                                <Calendar/>
+                                                {/*<p>Mon token est valide ! Je suis connecté !!</p>*/}
                                                 {/* /!* redirection vers page principal  *! */}
                                                 {/* /!* <Redirect to="/homepage"/> *! */}
                                             </Route>
