@@ -25,7 +25,7 @@ const App = () => {
         }
         setLoading(false);
 
-    }, [token]);
+    }, []);
 
     if (loading) {
         return <></>;
@@ -41,29 +41,29 @@ const App = () => {
                         </div>
                         <div className="col-md-9 m-0 p-0">
                             <Topbar/>
-                            {/*<Router>*/}
-                            {/*    {token === null ? (*/}
-                            {/*        <React.Fragment>*/}
-                            {/*            <Route exact path="/">*/}
-                            {/*                <SignInView/>*/}
-                            {/*            </Route>*/}
-                            {/*        </React.Fragment>*/}
-                            {/*    ) : (*/}
-                            {/*        <React.Fragment>*/}
-                            {/*            <Route exact path="/">*/}
-                            {/*                <p>Mon token est valide ! Je suis connecté !!</p>*/}
-                            {/*                /!* redirection vers page principal  *!/*/}
-                            {/*                /!* <Redirect to="/homepage"/> *!/*/}
-                            {/*            </Route>*/}
-                            {/*        </React.Fragment>*/}
-                            {/*    )}*/}
-                            {/*    <Route exact path="/liste-des-biens">*/}
-                            {/*        <EstatesListView/>*/}
-                            {/*    </Route>*/}
-                            {/*    <Route exact path="/detail-biens/:id">*/}
-                            {/*        <DetailEstateView/>*/}
-                            {/*    </Route>*/}
-                            {/*</Router>*/}
+                            <Router>
+                               {token === null ? (
+                                    <React.Fragment>
+                                        <Route exact path="/">
+                                            <SignInView/>
+                                        </Route>
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment>
+                                        <Route exact path="/">
+                                            <p>Mon token est valide ! Je suis connecté !!</p>
+                                            {/* /!* redirection vers page principal  *! */}
+                                            {/* /!* <Redirect to="/homepage"/> *! */}
+                                        </Route>
+                                    </React.Fragment>
+                                )}
+                                <Route exact path="/liste-des-biens">
+                                    <EstatesListView/>
+                                </Route>
+                                <Route exact path="/detail-biens/:id">
+                                    <DetailEstateView/>
+                                </Route>
+                            </Router>
                         </div>
                     </div>
                 </div>
