@@ -121,6 +121,10 @@ const Calendar = () => {
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, momentPlugin, listPlugin, interactionPlugin]}
                     initialView="timeGridWeek"
+                    slotMinTime='08:00:00'
+                    slotMaxTime='20:00:00'
+                    hiddenDays={[0]}
+                    allDaySlot={false}
                     headerToolbar={{
                         left: "prev,next today",
                         center: "title",
