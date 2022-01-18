@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import axios from 'axios';
-import ApiRoutes from "./utils/const/ApiRoutes";
 import {Context} from "./utils/context/Context";
 import CustomersListView from "./screens/Customers/CustomersListView";
 import CustomersDetailView from "./screens/Customers/CustomerDetailView";
