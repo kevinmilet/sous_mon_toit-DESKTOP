@@ -6,6 +6,7 @@ const AvatarContainer = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    margin: 20px
 `
 
 const Avatar = () => {

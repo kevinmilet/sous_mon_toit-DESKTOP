@@ -8,6 +8,7 @@ const Container = styled.div`
     display: flex
     justify-content: center;
     align-items: center;
+    margin: 20px
 `
 
 const Input = styled.input`
@@ -15,7 +16,10 @@ const Input = styled.input`
     padding: 15px 40px 15px 20px;
     width: 50px;
     height: 50px;
-    color: ${colors.primary};
+    color: ${colors.backgroundPrimary};
+    &::placeholder {
+        color: ${colors.backgroundPrimary}
+    }
     font-size: 22px;
     border: none;
     border-radius: 50px;
@@ -28,7 +32,7 @@ const Input = styled.input`
 const Icon = styled.i`
     position: relative;
     left: -37px;
-    color: ${colors.primary};
+    color: ${colors.backgroundPrimary};
 `
 
 const Search = () => {

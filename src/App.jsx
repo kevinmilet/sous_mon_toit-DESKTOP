@@ -1,12 +1,14 @@
-import Sidebar from "./components/Sidebar/Sidebar";
-import Topbar from "./components/Topbar/Topbar";
-import SignInView from "./screens/SignIn/SignInView";
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import ApiRoutes from "./utils/const/ApiRoutes";
 import {Context} from "./utils/context/Context";
-import EstatesListView from "./screens/Estates/EstatesListView";
-import DetailEstateView from "./screens/Estates/DetailEstateView";
+import ApiRoutes from "./utils/const/ApiRoutes";
+
+import SignInView from './screens/SignIn/SignInView';
+import EstatesListView from './screens/Estates/EstatesListView';
+import DetailEstateView from './screens/Estates/DetailEstateView';
+import Sidebar from "./components/Sidebar/Sidebar";
+import Topbar from "./components/Topbar/Topbar";
+import Calendar from "./components/Calendar/Calendar";
 
 const App = () => {
     const [apiUrl, setApiUrl] = useState(ApiRoutes.API_URL);
@@ -38,11 +40,12 @@ const App = () => {
                             <Sidebar/>
                         </div>
                         <div className="col-md-10 m-0 d-flex flex-column">
-                            <div className="row">
+                            <div className="row-fluid">
                                 <Topbar/>
                             </div>
-                            <div className="row">
-                                Content here.....
+                            <div className="row-fluid">
+                                {/*Content here.....*/}
+                                <Calendar/>
                                 <Router>
                                     {token === null ? (
                                         <React.Fragment>
@@ -59,12 +62,12 @@ const App = () => {
                                             </Route>
                                         </React.Fragment>
                                     )}
-                                    <Route exact path="/liste-des-biens">
-                                        <EstatesListView/>
-                                    </Route>
-                                    <Route exact path="/detail-biens/:id">
-                                        <DetailEstateView/>
-                                    </Route>
+                                    {/*<Route exact path="/liste-des-biens">*/}
+                                    {/*    <EstatesListView/>*/}
+                                    {/*</Route>*/}
+                                    {/*<Route exact path="/detail-biens/:id">*/}
+                                    {/*    <DetailEstateView/>*/}
+                                    {/*</Route>*/}
                                 </Router>
                             </div>
                         </div>

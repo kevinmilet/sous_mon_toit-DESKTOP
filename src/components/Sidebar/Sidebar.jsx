@@ -20,16 +20,18 @@ const MainContainer = styled.div`
 const Logo = styled.img`
     width: 200px;
     height: 200px;
+    margin: 20px;
 `
 
 const ButtonsContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 200px;
+    margin: auto 20px;
 `
 
 const Button = styled.button`
-    border: 2px solid ${colors.primaryBtn};
+    border: 1px solid ${colors.primaryBtn};
     // border: none;
     background-color: ${colors.backgroundPrimary};
     border-radius: 50px;
@@ -37,13 +39,11 @@ const Button = styled.button`
     font-size: 18px;
     width: 200px;
     height: 50px;
-    margin: 10px;
+    margin: 10px auto;
     &:hover {
         border: 2px solid ${colors.secondaryBtn};
         background-color: ${colors.backgroundPrimary};
         color: ${colors.primary};
-        -webkit-box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.65); 
-        box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.65);
     }
 `
 

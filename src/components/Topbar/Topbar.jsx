@@ -25,8 +25,12 @@ const Topbar = () => {
     return (
             <MainContainer>
                 <RowContainer className="row">
-                    <Search/>
-                    <Avatar/>
+                    <div className="col text-start">
+                        <Search/>
+                    </div>
+                    <div className="col text-end">
+                        <Avatar/>
+                    </div>
                 </RowContainer>
             </MainContainer>
     );
