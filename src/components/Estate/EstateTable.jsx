@@ -157,7 +157,7 @@ const EstateTable = () => {
             setLoading(false)
         })
 
-    }, [API_URL])
+    }, [API_URL, estateData])
 
     // style perso pour datatable
     const customStyles = {

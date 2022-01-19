@@ -12,7 +12,7 @@ const API_URL = {
     staff: 'staff',
     create_customer: 'customer/create',
     customer: 'customer/s',
-    search_customer: 'customer/s/search',
+    search_customer: 'customer/s/search/',
     update_customer: 'customer/update',
     delete_customer: 'customer/delete',
     customer_search: 'customer_search/c',

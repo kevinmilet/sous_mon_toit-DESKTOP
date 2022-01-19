@@ -11,6 +11,11 @@
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
 }
+.fc .fc-toolbar .fc-toolbar-chunk .fc-addEventButton-button {
+    background-color: #FFFFFF;
+    border: 2px solid #4EA1D5;
+    color: #4EA1D5;
+}
 .fc .fc-toolbar .fc-toolbar-chunk .fc-today-button {
     background-color: #E85A70;
     border: none;

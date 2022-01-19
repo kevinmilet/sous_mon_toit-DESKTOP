@@ -39,8 +39,8 @@ const Calendar = ({
                       setAppointmentDatas,
                       setShowAddEventModal,
                       setInfos,
-                      setStaffList,
-                      setApptmtTypes,
+                      // setStaffList,
+                      // setApptmtTypes,
 }) => {
     const API_URL = useContext(Context).apiUrl;
     const today = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -56,29 +56,29 @@ const Calendar = ({
 
     useEffect(() => {
         getAppointments()
-        getStaffList();
-        getApptmtType();
+        // getStaffList();
+        // getApptmtType();
     }, [])
 
-    const getApptmtType= () => {
-        axios.get(API_URL + ApiRoutes.apptmtType).then(res => {
-            setApptmtTypes(res.data)
-        }).catch(error => {
-            console.log(error.message)
-        }).finally(() => {
-            setLoading(false)
-        })
-    }
-
-    const getStaffList = () => {
-        axios.get(API_URL + ApiRoutes.staff).then(res => {
-            setStaffList(res.data)
-        }).catch(error => {
-            console.log(error.message)
-        }).finally(() => {
-            setLoading(false)
-        })
-    }
+    // const getApptmtType= () => {
+    //     axios.get(API_URL + ApiRoutes.apptmtType).then(res => {
+    //         setApptmtTypes(res.data)
+    //     }).catch(error => {
+    //         console.log(error.message)
+    //     }).finally(() => {
+    //         setLoading(false)
+    //     })
+    // }
+    //
+    // const getStaffList = () => {
+    //     axios.get(API_URL + ApiRoutes.staff).then(res => {
+    //         setStaffList(res.data)
+    //     }).catch(error => {
+    //         console.log(error.message)
+    //     }).finally(() => {
+    //         setLoading(false)
+    //     })
+    // }
 
     const getAppointments = () => {
         if (appointments.length === 0) {
