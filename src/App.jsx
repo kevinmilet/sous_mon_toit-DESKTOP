@@ -63,7 +63,6 @@ const App = () => {
                             </div>
                             <div className="row-fluid">
                                 {/*Content here.....*/}
-
                                 <Router>
                                     {token === null ? (
                                         <React.Fragment>

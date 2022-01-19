@@ -177,7 +177,8 @@ const EstatesListView = (props) => {
     if (estateData.length !== 0) {
         return (
             loading ? (<Loader />) : (
-                <>
+                // eslint-disable-next-line react/style-prop-object
+                <div style={{margin: 1 + 'em'}}>
                     <DataTable
                         title="Liste des biens"
                         columns={columns}
@@ -195,7 +196,7 @@ const EstatesListView = (props) => {
                         noDataComponent="Pas de résultats" 
                     >
                     </DataTable>
-                </>
+                </div>
             )
         );
     } else {

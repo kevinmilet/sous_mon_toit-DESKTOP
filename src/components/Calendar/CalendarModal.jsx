@@ -1,25 +1,32 @@
 import React from 'react';
+import {Button, Modal} from "react-bootstrap";
+import moment from 'moment';
+import 'moment/locale/fr';
 
-const CalendarModal = () => {
+const CalendarModal = ({showModal, setShowModal, appointmentDatas}) => {
+    console.log(appointmentDatas)
+
     return (
-        <div className="modal-dialog modal-dialog-centered fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
-                    </div>
-                    <div className="modal-body">
-                        ...
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Modal show={showModal} backdrop="static" keyboard={false} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    Détails du rendez-vous
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {appointmentDatas.customerFirstname} {appointmentDatas.customerLastname}
+                <br/>
+                {moment(appointmentDatas.scheduled_at).format('DD-MM-YYYY à HH:mm')}
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={() =>setShowModal(false)}>
+                    Fermer
+                </Button>
+                <Button variant="primary" onClick={() =>setShowModal(false)}>
+                    Modifier
+                </Button>
+            </Modal.Footer>
+        </Modal>
     );
 };
 

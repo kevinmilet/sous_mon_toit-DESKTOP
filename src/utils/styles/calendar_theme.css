@@ -1,0 +1,50 @@
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-prev-button,
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-next-button {
+    background-color: #E85A70;
+    border: none
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-next-button {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-prev-button {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-today-button {
+    background-color: #E85A70;
+    border: none;
+    border-radius: 25px!important;
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-today-button:disabled {
+    background-color: #E85A70;
+    border: none;
+    border-radius: 25px!important;
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-dayGridMonth-button {
+    background-color: #E85A70;
+    border: none;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-timeGridWeek-button,
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-timeGridDay-button {
+    background-color: #E85A70;
+    border: none;
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-list-button {
+    background-color: #E85A70;
+    border: none;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-button-active {
+     background-color: #454552;
+     border: none;
+}
+.fc .fc-toolbar .fc-toolbar-chunk .fc-button-group .fc-button-active:focus {
+    box-shadow: none;
+}
+.fc .fc-button-primary:focus {
+    box-shadow: none;
+}

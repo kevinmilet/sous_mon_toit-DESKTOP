@@ -6,7 +6,6 @@ import agendaIcon from '../../assets/icons/calendar.png';
 import estateIcon from '../../assets/icons/home_pink.png';
 import customerIcon from '../../assets/icons/value.png';
 import staffIcon from '../../assets/icons/seller.png';
-import contractIcon from '../../assets/icons/contract.png';
 import rightArrow from '../../assets/icons/right-arrow.png';
 
 const MainContainer = styled.div`
@@ -30,7 +29,7 @@ const ButtonsContainer = styled.div`
     margin: auto 20px;
 `
 
-const Button = styled.button`
+const Button = styled.div`
     border: 1px solid ${colors.primaryBtn};
     // border: none;
     background-color: ${colors.backgroundPrimary};
@@ -46,16 +45,6 @@ const Button = styled.button`
         color: ${colors.primary};
     }
 `
-const MenuItemLink = styled.a`
-    color: ${colors.secondary};
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    &:hover {
-        color: ${colors.secondary};
-    }
-`
 
 const Sidebar = () => {
     return (
@@ -66,12 +55,18 @@ const Sidebar = () => {
                     <a href="/">
                         <Button className="btn btn-secondary" ><img src={agendaIcon} width="35" height="35" alt=""/>&nbsp;Agenda&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                     </a>
-                    <Button className="btn btn-secondary"><a href="/liste-des-biens"><img src={estateIcon} width="35" height="35" alt=""/>&nbsp;Biens&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></a></Button>
+                    <a href="/liste-des-biens">
+                        <Button className="btn btn-secondary"><img src={estateIcon} width="35" height="35" alt=""/>&nbsp;Biens&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    </a>
                     <a href="/customers_list">
                         <Button className="btn btn-secondary"><img src={customerIcon} width="35" height="35" alt=""/>&nbsp;Client&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                     </a>
-                    <Button className="btn btn-secondary"><img src={staffIcon} width="35" height="35" alt=""/>&nbsp;Agents&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
-                    <Button className="btn btn-secondary"><img src={contractIcon} width="35" height="35" alt=""/>&nbsp;Contrat&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    <a href="#">
+                        <Button className="btn btn-secondary"><img src={staffIcon} width="35" height="35" alt=""/>&nbsp;Agents&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
+                    </a>
+                    {/*<a href="#">*/}
+                    {/*    <Button className="btn btn-secondary"><img src={contractIcon} width="35" height="35" alt=""/>&nbsp;Contrat&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>*/}
+                    {/*</a>*/}
                 </ButtonsContainer>
             </MainContainer>
         </div>

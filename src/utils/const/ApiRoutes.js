@@ -1,5 +1,6 @@
 const API_URL = {
     API_URL: 'http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/',
+    API_URL_DEV: 'http://localhost:8000/',
     login: 'login/staff',
     logout: 'api/c/logout',
     me: 'api/c/me',
@@ -22,7 +23,8 @@ const API_URL = {
     estates_cover: 'estates_pictures/cover',
     search: 'estates/search',
     calendar: 'schedule/calendar',
-    update_event: 'schedule/update'
+    update_event: 'schedule/update',
+    get_one_event: 'schedule/'
 }
 
 export default API_URL;

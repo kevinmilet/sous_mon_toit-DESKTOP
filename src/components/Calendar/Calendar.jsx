@@ -1,5 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
 
+import '../../utils/styles/calendar_theme.css';
+
+import PropTypes from "prop-types";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -17,22 +20,21 @@ import "@fullcalendar/timegrid/main.css";
 import styled from "styled-components";
 import {Context} from "../../utils/context/Context";
 import ApiRoutes from "../../utils/const/ApiRoutes";
-import Loader from "../Tools/Loader/Loader";
-import CalendarModal from "./CalendarModal";
 import apiRoutes from "../../utils/const/ApiRoutes";
+import Loader from "../Tools/Loader/Loader";
 
 const Container = styled.div`
     font-family: 'Spartan', sans-serif;
     text-align: center;
-    margin: 10px;
+    margin: 20px 10px;
 `
 
-const Calendar = () => {
+const Calendar = ({setShowModal, setEventDatas, setAppointmentDatas}) => {
     const API_URL = useContext(Context).apiUrl;
     const today = moment().format('YYYY-MM-DD HH:mm:ss');
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showModal, setShowModal] = useState(false);
+
 
     axios.defaults.headers.common = {
         Authorization: `Bearer ${localStorage["token"]}`,
@@ -44,13 +46,22 @@ const Calendar = () => {
 
     const getAppointments = () => {
         if (appointments.length === 0) {
-            //axios.get('http://localhost:8000/schedule/calendar').then(res => {
             axios.get(API_URL + ApiRoutes.calendar).then(res => {
                 setAppointments(res.data)
             }).catch(error => {
                 console.log(error.message)
             }).finally(() => {
                 setLoading(false)
+            })
+        }
+    }
+
+    const getSelectedAppointment = (id) => {
+        if (id) {
+            axios.get(API_URL + apiRoutes.get_one_event + id).then(res => {
+                setAppointmentDatas(res.data)
+            }).catch(error => {
+                console.log(error.message)
             })
         }
     }
@@ -64,7 +75,6 @@ const Calendar = () => {
                 alert('Impossible de déplacer un rendez-vous à une date inférieure!');
                 datas.revert();
             } else {
-                // axios.put(`http://localhost:8000/schedule/update/${id}/?scheduled_at=${values}`).then(res => {
                 axios.put(API_URL + apiRoutes.update_event + `/${id}?scheduled_at=${values}`).then(res => {
                    console.log('Evénement déplacé avec succès')
                 }).catch(error => {
@@ -77,7 +87,7 @@ const Calendar = () => {
     }
 
     const events = appointments.map(item => {
-        let color = '';
+        let color;
         switch (item.id_staff) {
             case 1:
                 color = '#e57373';
@@ -120,6 +130,8 @@ const Calendar = () => {
             <Container>
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, momentPlugin, listPlugin, interactionPlugin]}
+                    height={550}
+                    contentHeight={550}
                     initialView="timeGridWeek"
                     slotMinTime='08:00:00'
                     slotMaxTime='20:00:00'
@@ -139,13 +151,30 @@ const Calendar = () => {
                         updateEventOnDrop(datas);
                     }}
                     eventClick={(datas) => {
-                        console.log(datas);
-                        setShowModal(true);
+                        setEventDatas(datas);
+                        getSelectedAppointment(datas.event.id)
+                        if (datas) {
+                            setShowModal(true);
+                        }
                     }}
                 />
             </Container>
         </>)
     );
 };
+
+Calendar.propTypes = {
+    customerFirstname: PropTypes.string,
+    customerLastname: PropTypes.string,
+    appointment_type: PropTypes.string,
+    id_staff: PropTypes.number
+}
+
+Calendar.defaultProps = {
+    customerFirstname: '',
+    customerLastname: '',
+    appointment_type: '',
+    id_staff: undefined
+}
 
 export default Calendar;
