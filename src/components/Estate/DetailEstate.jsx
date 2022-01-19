@@ -11,7 +11,7 @@ import cross from '../../assets/icons/times-circle-regular.svg';
 import { useParams } from 'react-router-dom';
 
 const DivDetail = styled.div`
-    margin-top: -70px;
+    margin-top: -100px;
     background-color: ${colors.backgroundPrimary};
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;

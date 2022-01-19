@@ -6,7 +6,7 @@ import Avatar from "../Avatar/Avatar";
 
 const MainContainer = styled.div`
     width: 100%;
-    height: 150px;
+    height: 200px;
     margin: 0;
     z-index: 0;
     border-bottom-left-radius: 20px;
