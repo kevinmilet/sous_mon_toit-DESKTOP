@@ -6,6 +6,7 @@ import colors from "../../utils/styles/colors";
 import Loader from "../Tools/Loader/Loader";
 import {Context} from "../../utils/context/Context";
 import { useParams } from 'react-router-dom';
+import { ReactDimmer } from 'react-dimmer'
 const NavAccount = styled.div`
   .navbar {
     margin: auto;
@@ -29,9 +30,10 @@ const TitleH3 = styled.h3`
 const CustomerDetail = () => {
     const [customerData, setCustomerData] = useState({});
     const [customerTypeData, setCustomerTypeData] = useState({});
+    const [customerSearchData, setCustomerSearchData] = useState({});
     const [loading, setLoading] = useState(true);
     const {id} = useParams();
-
+    const [isMenuOpen, setMenuOpen] = useState(false)
     
     useEffect(() => {
 
@@ -52,7 +54,20 @@ const CustomerDetail = () => {
                 setLoading(false);
             });
 
-        // axios
+        axios
+            .get(
+                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer_search/s/" + id
+            )
+            .then((res) => {
+                setCustomerSearchData(res.data);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+         // axios
         //     .get(
         //         "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/describe_customer_type/joinCustomer/" + localStorage["userId"]
         //     )
@@ -74,6 +89,7 @@ const CustomerDetail = () => {
     return (
         <div className="card col-11 m-auto">
             <div className="card  m-auto col-11">
+            <ReactDimmer isOpen={isMenuOpen} exitDimmer={setMenuOpen} />
                 <div className="card-body">
                     <TitleH3 className="card-title text-center text-decoration-underline">
                         Informations Client : #{customerData.n_customer}
@@ -120,7 +136,28 @@ const CustomerDetail = () => {
                 </div>
                 <div className="card col-5 mr-3" >
                     <TitleH3 className="card-title text-center text-decoration-underline">Recherche</TitleH3>
-                    <div>Appartement / Maison / 80m2 / 2 chambres</div>
+                    <div> 
+                        <Ul className="col-12 ">
+                        <li className="mt-2">
+                            <b>Type: </b> {customerSearchData.buy_or_rent}
+                        </li>
+                        <li className="mt-2">
+                            <b>Surface min : </b>{customerSearchData.surface_min}
+                        </li>
+                        <li className="mt-2">
+                            <b>Nombre de chambre:</b> {customerSearchData.number_room}
+                        </li>
+                        
+                        <li className="mt-2">
+                            <b>Budget:</b>{customerSearchData.budget_max}
+                        </li>
+                        <li className="mt-2">
+                            <b>Longitude/Latitude/Rayon:</b> {customerSearchData.search_longitude}/{customerSearchData.search_latitude}/{customerSearchData.search_radius} Km
+                        </li>
+                        <li className="mt-2">
+                            <b>Adresse:</b> {customerData.address}
+                        </li>
+                    </Ul>{customerSearchData.buy_or_rent} /Appartement / Maison / 80m2 / 2 chambres</div>
                 </div>
             </div>
         </div>
