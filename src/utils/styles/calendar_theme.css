@@ -52,3 +52,6 @@ a {
     text-decoration: none;
     color: #454552;
 }
+.fc-view-container {
+    width: 500px;
+}

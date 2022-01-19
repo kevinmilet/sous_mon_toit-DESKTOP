@@ -9,7 +9,6 @@ import DataTable from 'react-data-table-component';
 
 // Style du container de la table
 const EstateTableContainer = styled.div`
-
     margin-top: -100px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
