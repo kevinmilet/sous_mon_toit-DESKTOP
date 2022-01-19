@@ -10,6 +10,10 @@ import {
 import moment from "moment";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
+import * as PropTypes from "prop-types";
+import axios from "axios";
+import API_URL from "../../utils/const/ApiRoutes";
+import apiRoutes from "../../utils/const/ApiRoutes";
 
 const Label = styled.label`
     font-weight: 700;
@@ -23,6 +27,14 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, infos, 
     let dateValue = moment(infos.dateStr).format('YYYY-MM-DD') ? moment(infos.dateStr).format('YYYY-MM-DD') : null;
     let dateMin = moment().format('YYYY-MM-DD');
     let timeValue = moment(infos.dateStr).format('HH:mm') ? moment(infos.dateStr).format('HH:mm') : null;
+
+    const getCustomersResults = (text) => {
+        axios.get(API_URL + apiRoutes.search_customer + text).then(res => {
+            console.log(res.data)
+        }).catch(error => {
+            console.log(error.message)
+        })
+    }
 
     return (
         <Modal show={showAddEventModal} size="xl" backdrop="static" keyboard={false} centered>
