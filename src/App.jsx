@@ -11,7 +11,7 @@ import EstatesListView from './screens/Estates/EstatesListView';
 import DetailEstateView from './screens/Estates/DetailEstateView';
 import Sidebar from "./components/Sidebar/Sidebar";
 import Topbar from "./components/Topbar/Topbar";
-import Calendar from "./components/Calendar/Calendar";
+import HomeView from "./screens/Home/HomeView";
 
 const App = () => {
     const [apiUrl, setApiUrl] = useState(ApiRoutes.API_URL);
@@ -74,10 +74,7 @@ const App = () => {
                                     ) : (
                                         <React.Fragment>
                                             <Route exact path="/">
-                                                <Calendar/>
-                                                {/*<p>Mon token est valide ! Je suis connecté !!</p>*/}
-                                                {/* /!* redirection vers page principal  *! */}
-                                                {/* /!* <Redirect to="/homepage"/> *! */}
+                                                <HomeView/>
                                             </Route>
                                         </React.Fragment>
                                     )}
