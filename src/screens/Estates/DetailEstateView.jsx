@@ -1,9 +1,9 @@
 import React from 'react';
-import DetailEstate from "../../components/DetailEstate/DetailEstate";
+import DetailEstate from "../../components/Estate/DetailEstate";
 
 const DetailEstateView = () => {
     return (
-        <div>
+        <div className='col-11 mx-auto'>
             <DetailEstate />
         </div>
     );
