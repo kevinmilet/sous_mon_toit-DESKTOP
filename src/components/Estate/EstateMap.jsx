@@ -3,7 +3,7 @@ import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import L from 'leaflet';
 import marker from "../../assets/icons/marker.png";
 import PropTypes from "prop-types";
-import EstateCard from "./EstateCard";
+import EstateTable from "./EstateTable";
 import styled from 'styled-components';
 
 const myIcon = new L.icon({
@@ -76,7 +76,7 @@ const EstateMap = ({estateData}) => {
     );
 };
 
-EstateCard.propTypes = {
+EstateTable.propTypes = {
     price: PropTypes.number.isRequired,
     zipcode: PropTypes.string.isRequired,
     living_surface: PropTypes.number.isRequired,
@@ -84,7 +84,7 @@ EstateCard.propTypes = {
     estate_longitude: PropTypes.number.isRequired
 }
 
-EstateCard.defaultProps = {
+EstateTable.defaultProps = {
     price: 0,
     zipcode: '',
     living_surface: 0,

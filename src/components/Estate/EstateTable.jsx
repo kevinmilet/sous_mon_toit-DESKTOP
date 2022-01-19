@@ -1,15 +1,37 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import EstateMap from "../../components/Estate/EstateMap";
-import EstateCard from "../../components/Estate/EstateCard";
 import axios from "axios";
-import Loader from "../../components/Tools/Loader/Loader";
+import Loader from "../Tools/Loader/Loader";
 import ApiRoutes from "../../utils/const/ApiRoutes";
 import { Context } from "../../utils/context/Context";
 import colors from "../../utils/styles/colors";
 import DataTable from 'react-data-table-component';
 
+// Style du container de la table
+const EstateTableContainer = styled.div`
 
+    margin-top: -80px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16); 
+    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
+`
+
+// Style du bouton d'ajout de bien
+const AddEstate = styled.a`
+    color: white;
+    background-color:${colors.secondary};
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    position: absolute;
+    z-index:1;
+    top:18%;
+    right:6%;
+`
+
+// Style de l'input de recherche
 const TextField = styled.input`
 	height: 32px;
 	width: 200px;
@@ -18,19 +40,23 @@ const TextField = styled.input`
 	border-bottom-left-radius: 5px;
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
-	border: 1px solid #e5e5e5;
+	// border: 1px solid #e5e5e5;
+    border: 1px solid black;
 	padding: 0 32px 0 16px;
 	&:hover {
 		cursor: pointer;
 	}
 `;
 
-const ClearButton = styled.button`
+// Style du bouton clear de recherche
+const ClearButton = styled.div`
+    border: 1px solid black;
+    border-left: 0px solid black;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
-	height: 34px;
+	height: 32px;
 	width: 32px;
 	text-align: center;
 	display: flex;
@@ -38,6 +64,7 @@ const ClearButton = styled.button`
 	justify-content: center;
 `;
 
+// Composant du bouton de recherche
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
     <>
         <TextField
@@ -54,6 +81,12 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
     </>
 );
 
+// Fonction de formatage visuel du prix
+function nombresAvecEspaces(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+// Composition des colonnes de la datatable
 const columns = [
     {
         name: 'Type de biens',
@@ -92,7 +125,7 @@ const columns = [
     },
     {
         name: 'Prix',
-        selector: row => row.price,
+        selector: row => nombresAvecEspaces(Math.round(row.price)) + "€",
         sortable: true,
     },
     {
@@ -107,66 +140,14 @@ const columns = [
     },
 ];
 
-const EstatesListView = (props) => {
+const EstateTable = () => {
 
+    const [estateCover, setEstateCover] = useState({});
     const API_URL = useContext(Context).apiUrl;
     const [estateData, setEstateData] = useState({});
     const [loading, setLoading] = useState(true);
-    const customStyles = {
-        rows: {
-            style: {
-                '&:hover': {
-                    backgroundColor: colors.secondary,
-                    cursor: 'pointer'
-                },
-            },
-        },
-    };
-    const paginationComponentOptions = {
-        rowsPerPageText: 'Resultat par page',
-        rangeSeparatorText: 'sur',
-        selectAllRowsItem: true,
-        selectAllRowsItemText: 'Tous',
-    };
 
-    const [filterText, setFilterText] = React.useState('');
-    const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
-    // const filteredItems = Object.values(estateData).filter(
-    //     item => item.city && item.city.toLowerCase().includes(filterText.toLowerCase()),
-    // );
-    const filteredItems = Object.values(estateData).filter(
-        item =>
-          JSON.stringify(item)
-            .toLowerCase()
-            .indexOf(filterText.toLowerCase()) !== -1
-      );
-
-
-
-    const subHeaderComponentMemo = React.useMemo(() => {
-        const handleClear = () => {
-            if (filterText) {
-                setResetPaginationToggle(!resetPaginationToggle);
-                setFilterText('');
-            }
-        };
-
-        return (
-            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
-        );
-    }, [filterText, resetPaginationToggle]);
-
-
-
-
-const EstatesListView = () => {
-    return (
-        <div className='col-11 mx-auto'>
-            <EstateTable />
-        </div>
-    );
-
-
+    // Récupération des biens
     useEffect(() => {
         axios.get(API_URL + ApiRoutes.estates).then(res => {
             setEstateData(res.data)
@@ -179,42 +160,102 @@ const EstatesListView = () => {
 
     }, [API_URL])
 
-    const handleClick = (value) => { console.log(value) }
-    if (estateData.length !== 0) {
+    // style perso pour datatable
+    const customStyles = {
+        rows: {
+            style: {
+                '&:hover': {
+                    backgroundColor: colors.secondary,
+                    cursor: 'pointer'
+                },
+            },
+        },
+        header: {
+            style: {
+                fontSize: '30px',
+                padding: '20px',
+                minHeight: '56px',
+                paddingLeft: '16px',
+                paddingRight: '8px',
+                borderTopLeftRadius: '20px',
+                borderTopRightRadius: '20px',
+            },
+        },
+        head: {
+            style: {
+                fontSize: '12px',
+                fontWeight: 800,
+            },
+        },
+        noData: {
+            style: {
+                padding:'30px'
+            },
+        },
+    };
+
+    //Personalisation du menu de pagination
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Resultat par page',
+        rangeSeparatorText: 'sur',
+        selectAllRowsItem: true,
+        selectAllRowsItemText: 'Tous',
+    };
+
+    // Barre de recherche de la datatable
+    const [filterText, setFilterText] = React.useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+    const filteredItems = Object.values(estateData).filter(
+        item =>
+            JSON.stringify(item)
+                .toLowerCase()
+                .indexOf(filterText.toLowerCase()) !== -1
+    );
+    const subHeaderComponentMemo = React.useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
         return (
-            loading ? (<Loader />) : (
-                // eslint-disable-next-line react/style-prop-object
-                <div style={{margin: 1 + 'em'}}>
-                    <DataTable
-                        title="Liste des biens"
-                        columns={columns}
-                        data={filteredItems}
-                        onRowClicked={(row) => handleClick(row.id)}
-                        customStyles={customStyles}
-                        pagination
-                        paginationPerPage={5}
-                        paginationRowsPerPageOptions={[5, 10, 15, 50]}
-                        paginationComponentOptions={paginationComponentOptions}
-                        paginationResetDefaultPage={resetPaginationToggle}
-                        subHeader
-                        subHeaderComponent={subHeaderComponentMemo}
-                        persistTableHead
-                        noDataComponent="Pas de résultats"
-                    >
-                    </DataTable>
-                </div>
-            )
+            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
         );
-    } else {
-        return (
-            <>
-                <div>
-                    <p>Pas de données</p>
-                </div>
-            </>
-        )
+    }, [filterText, resetPaginationToggle]);
+
+    // Fonction au click sur une ligne du tableau
+    const handleClick = (value) => { 
+        console.log(value);
+        window.location.href = '/detail-biens/' + value;
     }
+
+    return (
+        loading 
+        ? (<Loader />) 
+        : (
+            <EstateTableContainer>
+                <AddEstate href="/ajout-bien" className='float-right col-2 btn'>Ajouter un bien</AddEstate>
+                <DataTable
+                    title="Liste des biens"
+                    columns={columns}
+                    data={filteredItems}
+                    onRowClicked={(row) => handleClick(row.id)}
+                    customStyles={customStyles}
+                    pagination
+                    paginationPerPage={8}
+                    paginationRowsPerPageOptions={[8, 10, 15, 50]}
+                    paginationComponentOptions={paginationComponentOptions}
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
+                    persistTableHead
+                    noDataComponent="Pas de résultats"
+                >
+                </DataTable>
+            </EstateTableContainer>
+        )
+    );
 
 };
 
-export default EstatesListView;
+export default EstateTable;

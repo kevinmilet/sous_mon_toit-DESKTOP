@@ -12,6 +12,7 @@ import DetailEstateView from './screens/Estates/DetailEstateView';
 import Sidebar from "./components/Sidebar/Sidebar";
 import Topbar from "./components/Topbar/Topbar";
 import HomeView from "./screens/Home/HomeView";
+import AddEstateView from './screens/Estates/AddEstateView';
 
 const App = () => {
     const [apiUrl, setApiUrl] = useState(ApiRoutes.API_URL);
@@ -82,6 +83,9 @@ const App = () => {
                                     </Route>
                                     <Route exact path="/detail-biens/:id">
                                         <DetailEstateView/>
+                                    </Route>
+                                    <Route exact path="/ajout-bien">
+                                        <AddEstateView/>
                                     </Route>
                                     <Route exact path="/customers_list">
                                         <CustomersListView/>
