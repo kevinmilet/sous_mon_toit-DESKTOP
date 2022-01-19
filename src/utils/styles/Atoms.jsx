@@ -6,6 +6,7 @@ export const StyledBtnPrimary = styled.button`
     height: 50px;
     color: ${colors.backgroundPrimary};
     border-radius: 50px;
+    border: none;
     background: ${colors.primaryBtn};
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     &:hover {
@@ -49,6 +50,16 @@ export const StyledTextarea = styled.textarea`
     resize: none;
     border: 2px solid ${colors.secondaryBtn};
 `
+
+export const StyledSelect = styled.select`
+    border-radius: 50px;
+    border: 2px solid ${colors.secondaryBtn};
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+`
+
 export const ErrorMsg = styled.p`
     color: ${colors.secondary}
     font-style: italic;

@@ -24,7 +24,8 @@ const API_URL = {
     search: 'estates/search',
     calendar: 'schedule/calendar',
     update_event: 'schedule/update',
-    get_one_event: 'schedule/'
+    get_one_event: 'schedule/',
+    apptmtType: 'schedule/appointmentsTypes',
 }
 
 export default API_URL;

@@ -48,3 +48,7 @@
 .fc .fc-button-primary:focus {
     box-shadow: none;
 }
+a {
+    text-decoration: none;
+    color: #454552;
+}

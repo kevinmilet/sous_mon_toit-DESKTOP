@@ -22,6 +22,7 @@ import {Context} from "../../utils/context/Context";
 import ApiRoutes from "../../utils/const/ApiRoutes";
 import apiRoutes from "../../utils/const/ApiRoutes";
 import Loader from "../Tools/Loader/Loader";
+import API_URL from "../../utils/const/ApiRoutes";
 
 const Container = styled.div`
     font-family: 'Spartan', sans-serif;
@@ -29,7 +30,14 @@ const Container = styled.div`
     margin: 20px 10px;
 `
 
-const Calendar = ({setShowModal, setEventDatas, setAppointmentDatas}) => {
+const Calendar = ({
+                      setShowDetailledEventModal,
+                      setAppointmentDatas,
+                      setShowAddEventModal,
+                      setInfos,
+                      setStaffList,
+                      setApptmtTypes,
+}) => {
     const API_URL = useContext(Context).apiUrl;
     const today = moment().format('YYYY-MM-DD HH:mm:ss');
     const [appointments, setAppointments] = useState([]);
@@ -40,9 +48,33 @@ const Calendar = ({setShowModal, setEventDatas, setAppointmentDatas}) => {
         Authorization: `Bearer ${localStorage["token"]}`,
     };
 
+
+
     useEffect(() => {
         getAppointments()
+        getStaffList();
+        getApptmtType();
     }, [])
+
+    const getApptmtType= () => {
+        axios.get(API_URL + ApiRoutes.apptmtType).then(res => {
+            setApptmtTypes(res.data)
+        }).catch(error => {
+            console.log(error.message)
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
+
+    const getStaffList = () => {
+        axios.get(API_URL + ApiRoutes.staff).then(res => {
+            setStaffList(res.data)
+        }).catch(error => {
+            console.log(error.message)
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
 
     const getAppointments = () => {
         if (appointments.length === 0) {
@@ -138,7 +170,7 @@ const Calendar = ({setShowModal, setEventDatas, setAppointmentDatas}) => {
                     hiddenDays={[0]}
                     allDaySlot={false}
                     headerToolbar={{
-                        left: "prev,next today",
+                        left: "prev,next today addEventButton",
                         center: "title",
                         right: "dayGridMonth,timeGridWeek,timeGridDay,list"
                     }}
@@ -151,10 +183,25 @@ const Calendar = ({setShowModal, setEventDatas, setAppointmentDatas}) => {
                         updateEventOnDrop(datas);
                     }}
                     eventClick={(datas) => {
-                        setEventDatas(datas);
                         getSelectedAppointment(datas.event.id)
                         if (datas) {
-                            setShowModal(true);
+                            setShowDetailledEventModal(true);
+                        }
+                    }}
+                    customButtons={{
+                        addEventButton: {
+                            text: <i class="fas fa-plus"/>,
+                            click: () => {
+                                setShowAddEventModal(true);
+                            },
+                        },
+                    }}
+                    dateClick={(infos) => {
+                        if (moment(infos.dateStr).format('YYYY-MM-DD HH:mm:ss') < today) {
+                            alert('Impossible d\'ajouter un rendez-vous à une date ultérieure !')
+                        } else {
+                            setInfos(infos);
+                            setShowAddEventModal(true);
                         }
                     }}
                 />
@@ -167,14 +214,16 @@ Calendar.propTypes = {
     customerFirstname: PropTypes.string,
     customerLastname: PropTypes.string,
     appointment_type: PropTypes.string,
-    id_staff: PropTypes.number
+    id_staff: PropTypes.number,
+    scheduled_at: PropTypes.string
 }
 
 Calendar.defaultProps = {
     customerFirstname: '',
     customerLastname: '',
     appointment_type: '',
-    id_staff: undefined
+    id_staff: undefined,
+    scheduled_at: ''
 }
 
 export default Calendar;
