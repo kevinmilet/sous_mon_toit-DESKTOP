@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import '../../utils/styles/modal.css'
-import {Button, Modal} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import {
     StyledBtnPrimary,
     StyledBtnSecondary,
@@ -15,7 +15,7 @@ import axios from "axios";
 import ApiRoutes from "../../utils/const/ApiRoutes";
 import {Context} from "../../utils/context/Context";
 import Loader from "../Tools/Loader/Loader";
-import {Formik, useFormik} from "formik";
+import {Formik} from "formik";
 import * as Yup from "yup";
 
 const Label = styled.label`
@@ -162,10 +162,10 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                             })
                         }}
                     >
-                        {({handleChange,
-                           handleSubmit,
-                          setFieldValue,
-                          values,
+                        {({ handleChange,
+                            handleSubmit,
+                            setFieldValue,
+                            values,
                             errors
                           }) => (
                             <Modal.Body>
