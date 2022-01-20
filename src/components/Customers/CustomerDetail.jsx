@@ -157,7 +157,7 @@ const CustomerDetail = () => {
                         <li className="mt-2">
                             <b>Adresse:</b> {customerData.address}
                         </li>
-                    </Ul>{customerSearchData.buy_or_rent} /Appartement / Maison / 80m2 / 2 chambres</div>
+                    </Ul></div>
                 </div>
             </div>
         </div>
