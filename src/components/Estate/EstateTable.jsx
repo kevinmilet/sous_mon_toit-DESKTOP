@@ -9,8 +9,7 @@ import DataTable from 'react-data-table-component';
 
 // Style du container de la table
 const EstateTableContainer = styled.div`
-
-    margin-top: -80px;
+    margin-top: -100px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16); 
@@ -158,7 +157,7 @@ const EstateTable = () => {
             setLoading(false)
         })
 
-    }, [API_URL])
+    }, [API_URL, estateData])
 
     // style perso pour datatable
     const customStyles = {

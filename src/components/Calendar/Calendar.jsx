@@ -23,11 +23,15 @@ import ApiRoutes from "../../utils/const/ApiRoutes";
 import apiRoutes from "../../utils/const/ApiRoutes";
 import Loader from "../Tools/Loader/Loader";
 import API_URL from "../../utils/const/ApiRoutes";
+import colors from "../../utils/styles/colors";
 
 const Container = styled.div`
-    font-family: 'Spartan', sans-serif;
-    text-align: center;
-    margin: 20px 10px;
+    margin: -100px 5em 0 5em;
+    padding: 20px;
+    border-radius: 20px;
+    -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16); 
+    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
+    background-color: ${colors.backgroundPrimary}
 `
 
 const Calendar = ({
@@ -35,8 +39,8 @@ const Calendar = ({
                       setAppointmentDatas,
                       setShowAddEventModal,
                       setInfos,
-                      setStaffList,
-                      setApptmtTypes,
+                      // setStaffList,
+                      // setApptmtTypes,
 }) => {
     const API_URL = useContext(Context).apiUrl;
     const today = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -52,29 +56,29 @@ const Calendar = ({
 
     useEffect(() => {
         getAppointments()
-        getStaffList();
-        getApptmtType();
+        // getStaffList();
+        // getApptmtType();
     }, [])
 
-    const getApptmtType= () => {
-        axios.get(API_URL + ApiRoutes.apptmtType).then(res => {
-            setApptmtTypes(res.data)
-        }).catch(error => {
-            console.log(error.message)
-        }).finally(() => {
-            setLoading(false)
-        })
-    }
-
-    const getStaffList = () => {
-        axios.get(API_URL + ApiRoutes.staff).then(res => {
-            setStaffList(res.data)
-        }).catch(error => {
-            console.log(error.message)
-        }).finally(() => {
-            setLoading(false)
-        })
-    }
+    // const getApptmtType= () => {
+    //     axios.get(API_URL + ApiRoutes.apptmtType).then(res => {
+    //         setApptmtTypes(res.data)
+    //     }).catch(error => {
+    //         console.log(error.message)
+    //     }).finally(() => {
+    //         setLoading(false)
+    //     })
+    // }
+    //
+    // const getStaffList = () => {
+    //     axios.get(API_URL + ApiRoutes.staff).then(res => {
+    //         setStaffList(res.data)
+    //     }).catch(error => {
+    //         console.log(error.message)
+    //     }).finally(() => {
+    //         setLoading(false)
+    //     })
+    // }
 
     const getAppointments = () => {
         if (appointments.length === 0) {
@@ -162,8 +166,7 @@ const Calendar = ({
             <Container>
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, momentPlugin, listPlugin, interactionPlugin]}
-                    height={550}
-                    contentHeight={550}
+                    height={650}
                     initialView="timeGridWeek"
                     slotMinTime='08:00:00'
                     slotMaxTime='20:00:00'

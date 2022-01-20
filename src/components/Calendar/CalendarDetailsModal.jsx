@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Modal} from "react-bootstrap";
 import moment from 'moment';
 import 'moment/locale/fr';
+import {StyledBtnPrimary, StyledBtnSecondary} from "../../utils/styles/Atoms";
 
 const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventModal, appointmentDatas}) => {
 
@@ -16,12 +17,12 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
                 {moment(appointmentDatas.scheduled_at).format('DD-MM-YYYY à HH:mm')}
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() =>setShowDetailledEventModal(false)}>
+                <StyledBtnSecondary onClick={() =>setShowDetailledEventModal(false)}>
                     Fermer
-                </Button>
-                <Button variant="primary" onClick={() =>setShowDetailledEventModal(false)}>
+                </StyledBtnSecondary>
+                <StyledBtnPrimary onClick={() =>setShowDetailledEventModal(false)}>
                     Modifier
-                </Button>
+                </StyledBtnPrimary>
             </Modal.Footer>
         </Modal>
     );
