@@ -213,6 +213,11 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                                                     </ul>
                                                 </SearchPanel>) : null
                                             }
+                                            {(customerSearchResult && customerSearchResult?.length === 0) ? (
+                                                <SearchPanel>
+                                                    <p>Pas de résultats...</p>
+                                                </SearchPanel>) : null
+                                            }
                                         </div>
                                         <div className="col m-3">
                                             <Label>Agent</Label>
@@ -268,7 +273,11 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                                                         }
                                                     </ul>
                                                 </SearchPanel>) : null
-                                            }
+                                            }{(estateSearchResult && estateSearchResult?.length === 0) ? (
+                                            <SearchPanel>
+                                                <p>Pas de résultats...</p>
+                                            </SearchPanel>) : null
+                                        }
                                         </div>
                                         <div className="col m-3">
                                             <Label>Type de rendez-vous</Label>
