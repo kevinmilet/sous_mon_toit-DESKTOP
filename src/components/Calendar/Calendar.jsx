@@ -19,18 +19,16 @@ import "@fullcalendar/timegrid/main.css";
 
 import styled from "styled-components";
 import {Context} from "../../utils/context/Context";
-import ApiRoutes from "../../utils/const/ApiRoutes";
-import apiRoutes from "../../utils/const/ApiRoutes";
 import Loader from "../Tools/Loader/Loader";
-import API_URL from "../../utils/const/ApiRoutes";
 import colors from "../../utils/styles/colors";
+import apiRoutes from "../../utils/const/ApiRoutes";
 
 const Container = styled.div`
-    margin: -100px 5em 0 5em;
+    margin-top: -100px;
     padding: 20px;
     border-radius: 20px;
-    -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16); 
-    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
+    -webkit-box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16); 
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);
     background-color: ${colors.backgroundPrimary}
 `
 
@@ -39,50 +37,35 @@ const Calendar = ({
                       setAppointmentDatas,
                       setShowAddEventModal,
                       setInfos,
-                      // setStaffList,
-                      // setApptmtTypes,
+                      setStaffList,
 }) => {
     const API_URL = useContext(Context).apiUrl;
     const today = moment().format('YYYY-MM-DD HH:mm:ss');
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
 
-
     axios.defaults.headers.common = {
         Authorization: `Bearer ${localStorage["token"]}`,
     };
 
-
-
     useEffect(() => {
         getAppointments()
-        // getStaffList();
-        // getApptmtType();
+        getStaffList();
     }, [])
 
-    // const getApptmtType= () => {
-    //     axios.get(API_URL + ApiRoutes.apptmtType).then(res => {
-    //         setApptmtTypes(res.data)
-    //     }).catch(error => {
-    //         console.log(error.message)
-    //     }).finally(() => {
-    //         setLoading(false)
-    //     })
-    // }
-    //
-    // const getStaffList = () => {
-    //     axios.get(API_URL + ApiRoutes.staff).then(res => {
-    //         setStaffList(res.data)
-    //     }).catch(error => {
-    //         console.log(error.message)
-    //     }).finally(() => {
-    //         setLoading(false)
-    //     })
-    // }
+    const getStaffList = () => {
+        axios.get(API_URL + apiRoutes.staff).then(res => {
+            setStaffList(res.data)
+        }).catch(error => {
+            console.log(error.message)
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
 
     const getAppointments = () => {
         if (appointments.length === 0) {
-            axios.get(API_URL + ApiRoutes.calendar).then(res => {
+            axios.get(API_URL + apiRoutes.calendar).then(res => {
                 setAppointments(res.data)
             }).catch(error => {
                 console.log(error.message)

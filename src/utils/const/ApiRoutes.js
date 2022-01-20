@@ -23,11 +23,12 @@ const API_URL = {
     customers_types: 'customer_type',
     estates_pictures: 'estates_pictures',
     estates_cover: 'estates_pictures/cover',
-    search: 'estates/search',
+    search_estates: 'estates/search',
     calendar: 'schedule/calendar',
     update_event: 'schedule/update',
     get_one_event: 'schedule/',
     apptmtType: 'schedule/appointmentsTypes',
+    create_apptmt: 'schedule/createAppt'
 }
 
 export default API_URL;

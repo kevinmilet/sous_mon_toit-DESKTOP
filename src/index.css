@@ -4,3 +4,7 @@ html, body {
   box-sizing: border-box;
   font-family: 'Spartan', 'Roboto', sans-serif;
 }
+ul {
+  list-style-type: none;
+  padding: 5px;
+}

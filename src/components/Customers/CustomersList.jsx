@@ -104,20 +104,20 @@ const columns = [
         {" "}
         <Ul>
           <a href={`/customer_detail/${row.id}`}>
-            <i class="far fa-eye"></i>
+            <i className="far fa-eye"></i>
           </a>
         </Ul>{" "}
         <Ul>
           <i className="fas fa-globe ml-2"></i>
         </Ul>
         <Ul>
-          <i class="far fa-calendar"></i>
+          <i className="far fa-calendar"></i>
         </Ul>
         <Ul>
-          <i class="far fa-hand-pointer"></i>
+          <i className="far fa-hand-pointer"></i>
         </Ul>{" "}
         <Ul>
-          <i class="fas fa-check"></i>
+          <i className="fas fa-check"></i>
         </Ul>
       </ListIcons>
       
