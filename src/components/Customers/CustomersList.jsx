@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
@@ -53,11 +53,12 @@ const ListContainer = styled.div`
   width: 70vw;
   height: 70vh;
   margin: center;
-  margin-top: 2%;
+  margin-top: -100px;
   overflow: hidden;
   z-index: 60;
   border: solid;
   border-radius: 10px;
+  background-color:white;
   border-bottom-right-radius: 10px;
   -webkit-box-shadow: 2px 2px 4px -1px rgba(0, 0, 0, 0.65);
   box-shadow: 2px 2px 4px -1px rgba(0, 0, 0, 0.65);
@@ -125,7 +126,7 @@ const columns = [
   },
 ];
 
-const CustomersList = (values) => {
+const CustomersList = ({setOpenModalAddCustomer}) => {
   const API_URL = useContext(Context).apiUrl;
   const [CustomersData, setCustomersData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -133,6 +134,7 @@ const CustomersList = (values) => {
   const [pending, setPending] = React.useState(true);
   const [rows, setRows] = React.useState([]);
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const handleClick = (value) => { window.location.href = '/customer_detail/'+ value }
   const filteredItems = Object.values(CustomersData).filter(
     (item) =>
       JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !==
@@ -183,7 +185,7 @@ const CustomersList = (values) => {
     }, 2000);
     return () => clearTimeout(timeout);
 }, []);
-const handleClick = (value) => { window.location.href = '/customer_detail/'+ value }
+
   if (loading) {
     return <Loader />;
   }
@@ -191,7 +193,7 @@ const handleClick = (value) => { window.location.href = '/customer_detail/'+ val
   return (
     <ListContainer className="col-md-9">
       <div className="my-2 fixed">
-        <button className="btn btn-primary">+ Ajouter un client </button>
+        <button className="btn btn-primary" onClick={() => {  setOpenModalAddCustomer(true)}}>+ Ajouter un client </button>
       </div>
       <DataTable
         fixedHeader
@@ -207,38 +209,6 @@ const handleClick = (value) => { window.location.href = '/customer_detail/'+ val
         data={filteredItems}
       />
     </ListContainer>
-
-    // <ListContainer className="col-md-9">
-    //     <div className="row">
-    //       <div className="my-5 fixed">
-    //         <button className='btn btn-primary' >+ Ajouter un client </button>
-    //       </div>
-
-    //     <table className="table">
-    //       <Thead >
-    //         <tr>
-    //           <th scope="col">Noms</th>
-    //           <th scope="col">Mail</th>
-    //           <th scope="col">Téléphone</th>
-    //           <th scope="col">N° client</th>
-    //           <th scope="col" ></th>
-    //         </tr>
-    //       </Thead>
-
-    //       <tbody>
-    //         {CustomersData.map(item =>(
-    //         <tr>
-    //           <th scope="row">{item.firstname} {item.lastname}</th>
-    //           <td>{item.mail}</td>
-    //           <td>{item.phone}</td>
-    //           <td>#{item.n_customer}</td>
-    //           <td><ListIcons> <Ul><a href={`/customer_detail/${item.id}`} key={item.id}><i class="far fa-eye"></i></a></Ul>  <Ul><i className="fas fa-globe ml-2" ></i></Ul><Ul><i class="far fa-calendar"></i></Ul><Ul><i class="far fa-hand-pointer"></i></Ul>  <Ul><i class="fas fa-check"></i></Ul></ListIcons></td>
-    //         </tr>
-    //         ))}
-    //       </tbody>
-    //     </table>
-    //     </div>
-    // </ListContainer>
   );
 };
 
