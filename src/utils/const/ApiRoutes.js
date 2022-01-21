@@ -6,6 +6,7 @@ const API_URL = {
     logout: 'api/c/logout',
     me: 'api/c/me',
     refresh: 'api/c/refresh',
+    create_estate:'estates/create',
     estates: 'estates',
     estates_types: 'estates_types',
     estates_rnd: 'estates/rnd',

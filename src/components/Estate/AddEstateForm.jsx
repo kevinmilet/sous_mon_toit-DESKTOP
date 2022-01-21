@@ -72,13 +72,22 @@ const AddEstateForm = () => {
     const API_URL = useContext(Context).apiUrl;
     const [estatesTypes, setEstatesTypes] = useState({});
     const [loading, setLoading] = useState(true);
-    const [searchResult, setSearchResult] = useState(null)
+    const [searchAddressResult, setSearchAddressResult] = useState(null);
+    const [requiredAddress, setRequiredAddress] = useState("");
+    const [searchCustomerResult, setSearchCustomerResult] = useState(null);
+    const [requiredCustomer, setRequiredCustomer] = useState("")
 
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
-    const [zipcode, setZipcode] = useState("");
+    const [zipcode, setZipcode] = useState(null);
     const [estate_longitude, setEstate_longitude] = useState("");
     const [estate_latitude, setEstate_latitude] = useState("");
+    const [id_customer , setIdCustomer] = useState(null)
+
+    const [custFirstname , setCustFirstname] = useState('');
+    const [custLastname , setCustLastname] = useState('');
+    const [custNClient ,  setCustNClient] = useState('');
+    const [custAddressMail, setCustAddressMail] = useState('');
 
 
     useEffect(() => {
@@ -92,74 +101,99 @@ const AddEstateForm = () => {
         })
     }, [API_URL])
 
-    // Selection de l'adresse
-    const changeInput = (e) => {
-
-        setAddress(e.properties.name);
-        setCity(e.properties.city);
-        setZipcode(e.properties.postcode);
-        setEstate_longitude(e.geometry.coordinates[0])
-        setEstate_latitude(e.geometry.coordinates[1])
-    }
-
     // Recherche de l'addresse
     const searchAddressGouv = (value) => {
         // On remplace les espaces par des + pour notre requete
         var conformeValue = value.replace(/ /g, "+");
-        //On enleve les header axios pour envoyer la requete a l'API du gouv ( sino ça passse pas ) 
+        //On enleve les header axios pour envoyer la requete a l'API du gouv ( sinon ça passse pas )
         axios.defaults.headers.common = {};
         axios.get(`https://api-adresse.data.gouv.fr/search?q=${conformeValue}`, {})
             .then(res => {
-                console.log(res.data.features, "= response")
-                console.log(isEmptyArray(res.data.features), "is empty")
                 if (isEmptyArray(res.data.features)) {
-                    setSearchResult([{ properties: { label: "Aucun résultats" } }])
+                    setSearchAddressResult([{ properties: { label: "Aucun résultats" } }])
                 } else {
-                    setSearchResult(res.data.features);
+                    setSearchAddressResult(res.data.features);
                 }
             })
             .catch(error => {
                 console.log(error)
             })
     }
+    // Selection de l'adresse
+    const selectAddressResult = (e) => {
+        setAddress(e.properties.name);
+        setCity(e.properties.city);
+        setZipcode(e.properties.postcode);
+        setEstate_longitude(e.geometry.coordinates[0])
+        setEstate_latitude(e.geometry.coordinates[1])
+        setSearchAddressResult(null);
+        document.getElementById('div_valid_address').style.border="2px solid green";
 
-    const searchCustomer = (value) => {
-
-        console.log(value);
     }
 
+    // Recherche du client
+    const searchCustomer = (value) => {
+
+        axios.defaults.headers.common = {
+            Authorization: `Bearer ${localStorage["token"]}`,
+        };
+        if(value.length >= 2){
+            axios.get(API_URL + ApiRoutes.search_customer + value).then(res => {
+                setSearchCustomerResult(res.data)
+            }).catch(error => {
+                console.log(error.message)
+            })
+        }
+    }
+    // Selection du client
+    const selectCustomerResult = (e) => {
+        setIdCustomer(e.id)
+        setCustFirstname(e.firstname)
+        setCustLastname(e.lastname)
+        setCustNClient(e.n_customer)
+        setCustAddressMail(e.mail);
+        setSearchCustomerResult(null);
+        document.getElementById('div_valid_customer').style.border="2px solid green";
+
+    }
+
+    // Insertion en bdd
     const InsertEstate = (values) => {
 
-        const estateType = values.id_estate_type;
+        const id_estate_type = values.id_estate_type;
         const buy_or_rent = values.buy_or_rent;
         const title = values.title;
-        const addressSend = address;
-        const citySend = city;
-        const zipcodeSend = zipcode;
-        const longitudeSend = estate_longitude;
-        const latitudeSend = estate_latitude;
 
-        console.log(estateType)
-        console.log(buy_or_rent);
-        console.log(title);
-        console.log(addressSend);
-        console.log(citySend);
-        console.log(zipcodeSend);
-        console.log(longitudeSend);
-        console.log(latitudeSend);
+        if( !address || !id_customer ){
 
+            if(!address){
+                setRequiredAddress('Champs requis')
+            }
+            if(!id_customer){
+                setRequiredCustomer('Champs requis')
+            }
+            return;
+        }else{
+            setRequiredAddress('');
+            setRequiredCustomer('');
+        }
 
-
-        axios.post(API_URL + ApiRoutes.create_customer, { title, buy_or_rent, address, city, zipcode })
-            // axios.post("http://localhost:8000/customer/create", { title ,buy_or_rent , address , city , zipcode})
+        axios.defaults.headers.common = {
+            Authorization: `Bearer ${localStorage["token"]}`,
+        };
+        // axios.post(API_URL + ApiRoutes.create_estate, { id_estate_type , id_customer, title, buy_or_rent, address, city, zipcode , estate_longitude ,estate_latitude})
+            axios.post("http://localhost:8000/estates/create", { id_estate_type , id_customer, title, buy_or_rent, address, city, zipcode , estate_longitude ,estate_latitude})
             .then(res => {
-
-                console.log(res);
-
+                if(res.data[0].id){
+                    window.location.href = '/ajout-bien/step-2/' + res.data[0].id;
+                }else{
+                    console.log('Une erreur est survenu ...')
+                }
             }).catch(error => {
                 console.log(error.response);
             })
     }
+
     return (
         <>
             <AddEstateContainer className="container col-12 mx-auto p-3">
@@ -167,7 +201,6 @@ const AddEstateForm = () => {
                 <Formik
                     initialValues={{
                         id_estate_type: 1,
-                        id_customer: 1,
                         title: "",
                         buy_or_rent: "Achat",
                     }}
@@ -239,19 +272,18 @@ const AddEstateForm = () => {
                                         type="text"
                                         placeholder="Rechercher une adresse"
                                         onChange={(e) => {
-                                            console.log(e.target.value, "= input");
                                             handleChange(e);
                                             searchAddressGouv(e.target.value);
                                         }}
                                     />
                                     <div className="row">
                                         <div className="col-6 d-flex justify-content-center align-items-center">
-                                            {searchResult
+                                            {searchAddressResult
                                                 ?
-                                                <div className="p-4">
-                                                    {searchResult.map((search, index) => (
+                                                <div className="p-2">
+                                                    {searchAddressResult.map((search, index) => (
                                                         <SearchResultDiv
-                                                            onClick={() => changeInput(search)}
+                                                            onClick={() => selectAddressResult(search)}
                                                             key={index}
                                                         >
                                                             <p>{search.properties.label}</p>
@@ -261,7 +293,7 @@ const AddEstateForm = () => {
                                                 : <div><p>Résultats de recherche</p></div>
                                             }
                                         </div>
-                                        <div className="col-6" id='div_valid_address'>
+                                        <div className="col-6 p-2" id="div_valid_address">
                                             <div className="row">
                                                 <div className="col-12">
                                                     <MyTextInput
@@ -309,25 +341,85 @@ const AddEstateForm = () => {
                                                     />
                                                 </div>
                                             </div>
+                                            <div className="error" style={{color: "#E85A70", fontStyle: 'italic'}}>{requiredAddress}</div>
                                         </div>
                                     </div>
                                 </div>
                                 {/* INFORMATION DU PROPRIETAIRE  */}
                                 <div className="border p-3">
-                                    <AddEstateH4>Informations sur le vendeur/loueur <span style={{fontSize : "small"}}>( Le propriétaire du bien doit au préalable être enregistré en base )</span></AddEstateH4>
+                                    <AddEstateH4>Informations sur le vendeur/loueur <span style={{ fontSize: "small" }}>( Le propriétaire du bien doit au préalable être enregistré en base )</span></AddEstateH4>
                                     <MyTextInput
                                         label="Vendeur/Loueur"
                                         name="customerSearch"
                                         type="text"
                                         placeholder="Rechercher un client"
                                         onChange={(e) => {
-                                            console.log(e.target.value, "= input");
                                             handleChange(e);
                                             searchCustomer(e.target.value);
                                         }}
                                     />
+                                    <div className="row">
+                                        <div className="col-6 d-flex justify-content-center align-items-center">
+                                            {searchCustomerResult
+                                                ?
+                                                <div className="p-2">
+                                                    {searchCustomerResult.map((search, index) => (
+                                                        <SearchResultDiv
+                                                            onClick={() => selectCustomerResult(search)}
+                                                            key={index}
+                                                        >
+                                                            <p>{search.firstname} {search.lastname} N° Client : {search.n_customer} Adresse mail : {search.mail}</p>
+                                                        </SearchResultDiv>
+                                                    ))}
+                                                </div>
+                                                : null
+                                                // <div><p>Résultats de recherche</p></div>
+                                            }
+                                        </div>
+                                        <div className="col-6 p-2" id="div_valid_customer">
+                                            <div className="row">
+                                                <div className="col-6">
+                                                    <MyTextInput
+                                                        label="Prénom"
+                                                        name='custPrenom'
+                                                        type="text"
+                                                        disabled="disabled"
+                                                        value={custFirstname}
+                                                    />
+                                                </div>
+                                                <div className="col-6">
+                                                    <MyTextInput
+                                                        label="Nom"
+                                                        name="custNom"
+                                                        type="text"
+                                                        disabled="disabled"
+                                                        value={custLastname}
+                                                    />
+                                                </div>
+                                                <div className="col-6">
+                                                    <MyTextInput
+                                                        label="Numéro Client"
+                                                        name="custnclient"
+                                                        type="text"
+                                                        disabled="disabled"
+                                                        value={custNClient}
+                                                    />
+                                                </div>
+                                                <div className="col-6">
+                                                    <MyTextInput
+                                                        label="Adresse mail"
+                                                        name="custAddressMail"
+                                                        type="text"
+                                                        disabled="disabled"
+                                                        value={custAddressMail}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="error" style={{color: "#E85A70", fontStyle: 'italic'}}>{requiredCustomer}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <StyledBtnPrimary type="submit" className="btn">Continuer</StyledBtnPrimary>
+                                <StyledBtnPrimary type="submit" className="btn">Enregistrer et continuer</StyledBtnPrimary>
                             </Form>
                         </ScrollDiv>
                     )}

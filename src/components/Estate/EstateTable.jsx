@@ -141,7 +141,6 @@ const columns = [
 
 const EstateTable = () => {
 
-    const [estateCover, setEstateCover] = useState({});
     const API_URL = useContext(Context).apiUrl;
     const [estateData, setEstateData] = useState({});
     const [loading, setLoading] = useState(true);
@@ -150,7 +149,6 @@ const EstateTable = () => {
     useEffect(() => {
         axios.get(API_URL + ApiRoutes.estates).then(res => {
             setEstateData(res.data)
-            console.log(Object.values(estateData))
         }).catch(error => {
             console.log(error.message)
         }).finally(() => {
@@ -224,7 +222,6 @@ const EstateTable = () => {
 
     // Fonction au click sur une ligne du tableau
     const handleClick = (value) => { 
-        console.log(value);
         window.location.href = '/detail-biens/' + value;
     }
 
