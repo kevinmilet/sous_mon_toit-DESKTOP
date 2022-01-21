@@ -167,10 +167,10 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                             })
                         }}
                     >
-                        {({handleChange,
-                           handleSubmit,
-                          setFieldValue,
-                          values,
+                        {({ handleChange,
+                            handleSubmit,
+                            setFieldValue,
+                            values,
                             errors
                           }) => (
                             <Modal.Body>
