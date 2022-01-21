@@ -9,6 +9,8 @@ import { useParams } from 'react-router-dom';
 import { ReactDimmer } from 'react-dimmer';
 import DataTable from "react-data-table-component";
 import {  FiEdit} from 'react-icons/fi';
+import moment from 'moment';
+import 'moment/locale/fr';
 
 const NavAccount = styled.div`
   .navbar {
@@ -75,8 +77,32 @@ const columns = [
     },
 ];
 
-const CustomerDetail = () => {
+const columnsSchedule = [
+    {
+        name: "Date",
+        width: "20%",
+        selector: (row) =>moment(row.scheduled_at).format('DD-MM-YYYY'),
+    },
+    {
+        name: "Heure",
+        width: "20%",
+        selector: (row) =>moment(row.scheduled_at).format('HH:mm'),
+    },
+    {
+        name: "Lieu",
+        width: "20%",
+        selector: (row) => row.appointment_type,
+    },
+    {
+        name: "Agent",
+        width: "20%",
+        selector: (row) => row.staffFirstname + " " + row.staffLastname  ,
+    },
+];
+// const [openModalEditCustomer, setOpenModalEditCustomer] = useState(false);
+const CustomerDetail = ({setOpenModalEditCustomer}) => {
     const [customerData, setCustomerData] = useState({});
+    const [customerScheduleData, setCustomerScheduleData] = useState({});
     const [customerTypeData, setCustomerTypeData] = useState({});
     const [customerSearchData, setCustomerSearchData] = useState({});
     const [loading, setLoading] = useState(true);
@@ -87,6 +113,7 @@ const CustomerDetail = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
     const handleClick = (value) => { window.location.href = '/customer_detail/' + value };
     const filteredItems = [customerSearchData];
+    const schedule = [customerScheduleData]
 
     const customStyles = {
         rows: {
@@ -161,6 +188,33 @@ const CustomerDetail = () => {
             .finally(() => {
                 setLoading(false);
             });
+            axios
+            .get(
+                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/customer/" + id
+            )
+            .then((res) => {
+                setCustomerScheduleData(res.data);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+            axios
+            .get(
+                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/" + id
+            )
+            .then((res) => {
+                setCustomerScheduleData(res.data);
+                console.log(res.data);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
         // axios
         //     .get(
         //         "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/describe_customer_type/joinCustomer/" + localStorage["userId"]
@@ -191,9 +245,9 @@ const CustomerDetail = () => {
                 <ReactDimmer isOpen={isMenuOpen} exitDimmer={setMenuOpen} />
                 <div className="card-body">
                     <TitleH3 className="card-title text-center text-decoration-underline">
-                        Informations Client : #{customerData.n_customer}
+                        Informations Client : # {customerData.n_customer}
                     </TitleH3>
-                    <FiEdit size={50} style={{ position: 'absolute', right: 0 , marginTop: '-50px'}} onClick={}/>
+                    <FiEdit size={40} style={{ position: 'absolute', right: 0 , marginTop: '-50px'}} onClick={ () => {setOpenModalEditCustomer(true)} }/>
                     <Ul className="col-12 ">
                         <li className="mt-2">
                             <b>Prénom: </b> {customerData.firstname}
@@ -221,17 +275,16 @@ const CustomerDetail = () => {
                 <div className="card col-10" >
                     <TitleH3 className="card-title text-center text-decoration-underline">Rendez-vous</TitleH3>
 
-                    <table className="table ">
-                        <tbody>
-                            <tr>
-                                <th scope="row">15/02/22 </th>
-                                <td>15h30</td>
-                                <td>Agence</td>
-                                <td>Henandez</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
+                    <DataTable
+                        fixedHeader
+                        fixedHeaderScrollHeight="50vh"
+                        onRowClicked={(row) => console.log(row)}
+                        noDataComponent="Pas de résultats"
+                        customStyles={customStyles}
+                        persistTableHead
+                        columns={columnsSchedule}
+                        data={schedule}
+                    />
                 </div>
                 <div className="card col-10 mt-3" >
                     <TitleH3 className="card-title text-center text-decoration-underline">Recherche</TitleH3>
