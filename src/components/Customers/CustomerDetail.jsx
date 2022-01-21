@@ -8,7 +8,7 @@ import { Context } from "../../utils/context/Context";
 import { useParams } from 'react-router-dom';
 import { ReactDimmer } from 'react-dimmer';
 import DataTable from "react-data-table-component";
-
+import {  FiEdit} from 'react-icons/fi';
 
 const NavAccount = styled.div`
   .navbar {
@@ -193,7 +193,7 @@ const CustomerDetail = () => {
                     <TitleH3 className="card-title text-center text-decoration-underline">
                         Informations Client : #{customerData.n_customer}
                     </TitleH3>
-
+                    <FiEdit size={50} style={{ position: 'absolute', right: 0 , marginTop: '-50px'}} onClick={}/>
                     <Ul className="col-12 ">
                         <li className="mt-2">
                             <b>Prénom: </b> {customerData.firstname}
