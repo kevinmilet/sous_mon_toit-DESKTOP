@@ -14,7 +14,6 @@ const MainContainer = styled.div`
     background-color: ${colors.secondaryBtn};
     -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16); 
     box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
-   
 `
 
 const RowContainer = styled.div`
