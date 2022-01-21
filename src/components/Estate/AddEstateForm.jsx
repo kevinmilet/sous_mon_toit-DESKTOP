@@ -97,7 +97,7 @@ const AddEstateForm = () => {
 
         setAddress(e.properties.name);
         setCity(e.properties.city);
-        setZipcode(e.properties.citycode);
+        setZipcode(e.properties.postcode);
         setEstate_longitude(e.geometry.coordinates[0])
         setEstate_latitude(e.geometry.coordinates[1])
     }

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import Search from "../Search/Search";
 import Avatar from "../Avatar/Avatar";
+import {OverlayTrigger, Popover} from "react-bootstrap";
 
 const MainContainer = styled.div`
     width: 100%;
@@ -30,7 +31,7 @@ const Topbar = () => {
                         <Search/>
                     </div>
                     <div className="col text-end">
-                        <Avatar/>
+                            <Avatar/>
                     </div>
                 </RowContainer>
             </MainContainer>

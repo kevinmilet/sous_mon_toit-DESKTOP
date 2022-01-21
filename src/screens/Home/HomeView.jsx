@@ -10,7 +10,6 @@ const HomeView = () => {
     const [infos, setInfos] = useState();
     const [staffList, setStaffList] = useState();
 
-
     return (
         <div className='col-11 mx-auto'>
             <Calendar setShowDetailledEventModal={setShowDetailledEventModal}
@@ -23,6 +22,7 @@ const HomeView = () => {
                 showDetailledEventModal={showDetailledEventModal}
                 setShowDetailledEventModal={setShowDetailledEventModal}
                 appointmentDatas={appointmentDatas}
+                staffList={staffList}
             /> : null}
             {showAddEventModal ? <CalendarAddEventModal
                 showAddEventModal={showAddEventModal}

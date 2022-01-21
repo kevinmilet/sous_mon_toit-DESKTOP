@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import '../../utils/styles/modal.css'
-import {Button, Modal} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import {
     StyledBtnPrimary,
     StyledBtnSecondary,
@@ -15,7 +15,7 @@ import axios from "axios";
 import ApiRoutes from "../../utils/const/ApiRoutes";
 import {Context} from "../../utils/context/Context";
 import Loader from "../Tools/Loader/Loader";
-import {Formik, useFormik} from "formik";
+import {Formik} from "formik";
 import * as Yup from "yup";
 
 const Label = styled.label`
@@ -56,6 +56,11 @@ const LinkItem = styled.a`
     }
 `
 
+const Button = styled.button`
+    border: none;
+    background-color: ${colors.backgroundPrimary}
+`
+
 const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffList, infos}) => {
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
@@ -69,8 +74,8 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
         infos = moment().format('YYYY-MM-DD HH:mm:ss')
     }
 
-    let dateValue = moment(infos.dateStr).format('YYYY-MM-DD');
     let dateMin = moment().format('YYYY-MM-DD');
+    let dateValue = moment(infos.dateStr).format('YYYY-MM-DD');
     let timeValue = moment(infos.dateStr).format('HH:mm');
 
     const getCustomersResults = (textCustomer) => {
@@ -124,7 +129,7 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
         axios.post(API_URL + ApiRoutes.create_apptmt, datas).then(res => {
             alert('Rendez-vous enregistré')
             // à changer
-            window.location.reload(false);
+            window.location.reload();
         }).catch(e => {
             console.log(e.message)
         })
@@ -148,7 +153,7 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                         validationSchema={Yup.object({
                             notes: Yup.string(),
                             id_estate: Yup.number(),
-                            id_customer: Yup.number(),
+                            id_customer: Yup.string().required('Veuillez sélectionner un client/contact ou en créer un'),
                             id_appointment_type: Yup.string().required('Veuillez sélectionner un type de rendez-vous'),
                             id_staff: Yup.string().required('Veuillez sélectionner un agent'),
                         })}
@@ -196,6 +201,7 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                                                     }, 200);
                                                 }}
                                             />
+                                            <div className="error mt-2" style={{color: "#E85A70", fontStyle: 'italic'}}>{errors.id_customer ?? null}</div>
                                             {(customerSearchResult && customerSearchResult?.length !== 0) ? (
                                                 <SearchPanel>
                                                     <ul>
@@ -266,7 +272,7 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                                                                     <LinkItem onClick={() => {onSelectedEstate(item)
                                                                         setFieldValue('id_estate', item.id)
                                                                     }}>
-                                                                        {item.reference} - {item.title} - {item.city} {item.zipcode}
+                                                                        {item.reference} - {item.address} - {item.city} {item.zipcode}
                                                                     </LinkItem>
                                                                 </ListItem>
                                                             ))
@@ -328,15 +334,29 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                                         </div>
                                     </div>
                                 </form>
-                                <div className='text-end m-3'>
-                                    <StyledBtnSecondary className="m-3" variant="secondary"
-                                                        onClick={() => setShowAddEventModal(false)}>
-                                        Annuler
-                                    </StyledBtnSecondary>
-                                    <StyledBtnPrimary type="submit" onClick={handleSubmit}>
-                                        Valider
-                                    </StyledBtnPrimary>
+                                <div className="row">
+                                    <div className="col">
+                                        <div className='text-start m-3'>
+                                            <Button variant="link"
+                                                    style={{color: "#4EA1D5", fontWeight: 700}}
+                                                    >
+                                                Créer un client
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className="col">
+                                        <div className='text-end m-3'>
+                                            <StyledBtnSecondary className="m-3"
+                                                                onClick={() => setShowAddEventModal(false)}>
+                                                Annuler
+                                            </StyledBtnSecondary>
+                                            <StyledBtnPrimary type="submit" onClick={handleSubmit}>
+                                                Valider
+                                            </StyledBtnPrimary>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </Modal.Body>
                         )}
                     </Formik>

@@ -28,7 +28,8 @@ const API_URL = {
     update_event: 'schedule/update',
     get_one_event: 'schedule/',
     apptmtType: 'schedule/appointmentsTypes',
-    create_apptmt: 'schedule/createAppt'
+    create_apptmt: 'schedule/createAppt',
+    delete_apptmt: 'schedule/delete/',
 }
 
 export default API_URL;

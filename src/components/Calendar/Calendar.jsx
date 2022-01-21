@@ -135,7 +135,7 @@ const Calendar = ({
         const event = {};
         event['id'] = item.id;
         event['start'] = item.start;
-        event['title'] = item.customerFirstname + ' ' + item.customerLastname + ' (' + item.appointment_type + ')';
+        event['title'] = (item.customerFirstname ?? 'Client non créé') + ' ' + (item.customerLastname ?? '') + ' (' + item.appointment_type + ')';
         event['backgroundColor'] = item.start > today ?  color : '#cfd8dc';
         event['borderColor'] = item.start > today ?  color : '#cfd8dc';
         event['editable'] = item.start > today;
@@ -168,8 +168,8 @@ const Calendar = ({
                     eventDrop={(datas) => {
                         updateEventOnDrop(datas);
                     }}
-                    eventClick={(datas) => {
-                        getSelectedAppointment(datas.event.id)
+                    eventClick={async (datas) => {
+                        await getSelectedAppointment(datas.event.id)
                         if (datas) {
                             setShowDetailledEventModal(true);
                         }
@@ -199,17 +199,27 @@ const Calendar = ({
 Calendar.propTypes = {
     customerFirstname: PropTypes.string,
     customerLastname: PropTypes.string,
+    staffFirstname: PropTypes.string,
+    staffLastname: PropTypes.string,
     appointment_type: PropTypes.string,
     id_staff: PropTypes.number,
-    scheduled_at: PropTypes.string
+    scheduled_at: PropTypes.string,
+    apptmt_type_id: PropTypes.number,
+    title: PropTypes.string,
+    reference: PropTypes.string
 }
 
 Calendar.defaultProps = {
     customerFirstname: '',
     customerLastname: '',
+    staffFirstname: '',
+    staffLastname: '',
     appointment_type: '',
     id_staff: undefined,
-    scheduled_at: ''
+    scheduled_at: '',
+    apptmt_type_id: undefined,
+    title: '',
+    reference: ''
 }
 
 export default Calendar;
