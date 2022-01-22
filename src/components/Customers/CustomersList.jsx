@@ -1,12 +1,11 @@
-import React, { useContext} from "react";
-import { useState, useEffect } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
-import ApiRoutes from "../../utils/const/ApiRoutes";
-import { Context } from "../../utils/context/Context";
+import {Context} from "../../utils/context/Context";
 import Loader from "../Tools/Loader/Loader";
 import DataTable from "react-data-table-component";
+
 const TextField = styled.input`
 	height: 32px;
 	width: 200px;
@@ -105,20 +104,20 @@ const columns = [
         {" "}
         <Ul>
           <a href={`/customer_detail/${row.id}`}>
-            <i className="far fa-eye"></i>
+            <i className="far fa-eye"/>
           </a>
         </Ul>{" "}
         <Ul>
-          <i className="fas fa-globe ml-2"></i>
+          <i className="fas fa-globe ml-2"/>
         </Ul>
         <Ul>
-          <i className="far fa-calendar"></i>
+          <i className="far fa-calendar"/>
         </Ul>
         <Ul>
-          <i className="far fa-hand-pointer"></i>
+          <i className="far fa-hand-pointer"/>
         </Ul>{" "}
         <Ul>
-          <i className="fas fa-check"></i>
+          <i className="fas fa-check"/>
         </Ul>
       </ListIcons>
       

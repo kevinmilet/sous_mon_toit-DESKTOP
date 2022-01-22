@@ -1,16 +1,16 @@
-import React, { useContext } from "react";
-import { useState, useEffect } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import Loader from "../Tools/Loader/Loader";
-import { Context } from "../../utils/context/Context";
-import { useParams } from 'react-router-dom';
-import { ReactDimmer } from 'react-dimmer';
+import {useParams} from 'react-router-dom';
+import {ReactDimmer} from 'react-dimmer';
 import DataTable from "react-data-table-component";
-import {  FiEdit} from 'react-icons/fi';
+import {FiEdit} from 'react-icons/fi';
 import moment from 'moment';
 import 'moment/locale/fr';
+import {Context} from "../../utils/context/Context";
+import apiRoutes from "../../utils/const/ApiRoutes";
 
 const NavAccount = styled.div`
   .navbar {
@@ -71,9 +71,6 @@ const columns = [
         name: "Rayon",
         width: "10%",
         selector: (row) => row.search_radius,
-
-
-
     },
 ];
 
@@ -101,6 +98,7 @@ const columnsSchedule = [
 ];
 // const [openModalEditCustomer, setOpenModalEditCustomer] = useState(false);
 const CustomerDetail = ({setOpenModalEditCustomer}) => {
+    const API_URL = useContext(Context).apiUrl;
     const [customerData, setCustomerData] = useState({});
     const [customerScheduleData, setCustomerScheduleData] = useState({});
     const [customerTypeData, setCustomerTypeData] = useState({});
@@ -157,16 +155,12 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
         };
     });
     useEffect(() => {
-
-
-
         axios.get(
-            "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer/s/" + id
+            API_URL + apiRoutes.customer + '/' + id
         )
             .then((res) => {
                 setCustomerData(res.data);
                 console.log(res.data);
-
             })
             .catch((error) => {
                 console.log(error.message);
@@ -177,7 +171,7 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
 
         axios
             .get(
-                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer_search/s/" + id
+                API_URL + apiRoutes.customer_search_s + '/' + id
             )
             .then((res) => {
                 setCustomerSearchData(res.data);
@@ -190,7 +184,7 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
             });
             axios
             .get(
-                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/customer/" + id
+                API_URL + apiRoutes.customer_schedule + '/' + id
             )
             .then((res) => {
                 setCustomerScheduleData(res.data);
@@ -203,7 +197,7 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
             });
             axios
             .get(
-                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/" + id
+                API_URL + apiRoutes.get_one_event + id
             )
             .then((res) => {
                 setCustomerScheduleData(res.data);
@@ -234,7 +228,7 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
         // }, 2000);
         // return () => clearTimeout(timeout);
 
-    }, []);
+    }, [API_URL, id]);
 
     if (loading) {
         return <Loader />;
@@ -299,15 +293,9 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
                         columns={columns}
                         data={filteredItems}
                     />
-                  
-
                 </div>
             </div>
         </Container>
-
-
-
-
     );
 };
 

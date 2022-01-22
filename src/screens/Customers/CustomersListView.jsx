@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
 import CustomersListComponent from '../../components/Customers/CustomersList';
-import styled from "styled-components";
-import colors from "../../utils/styles/colors";
-import CalendarDetailsModal from "../../components/Calendar/CalendarDetailsModal";
-import CalendarAddEventModal from "../../components/Calendar/CalendarAddEventModal";
-import ModalCreateCustomer from '../../components/Customers/ModalCreateCustomer'; 
+import ModalCreateCustomer from '../../components/Customers/ModalCreateCustomer';
 
 const CustomersListView = () => {
 

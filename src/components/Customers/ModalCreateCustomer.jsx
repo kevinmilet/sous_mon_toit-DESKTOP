@@ -1,17 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "../../utils/styles/modal.css";
-import { Modal, Stack } from "react-bootstrap";
-import { StyledBtnPrimary, StyledBtnSecondary, StyledInput, StyledSelect, StyledTextarea } from "../../utils/styles/Atoms";
-import moment from "moment";
+import {Modal, Stack} from "react-bootstrap";
+import {StyledBtnPrimary, StyledBtnSecondary, StyledInput} from "../../utils/styles/Atoms";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import axios from "axios";
 import ApiRoutes from "../../utils/const/ApiRoutes";
-import { Context } from "../../utils/context/Context";
-import Loader from "../Tools/Loader/Loader";
-import { Formik, Field } from "formik";
+import {Context} from "../../utils/context/Context";
+import {Field, Formik} from "formik";
 import * as Yup from "yup";
-
 
 const Label = styled.label`
   font-weight: 700;
@@ -37,7 +34,6 @@ const ModalCreateCustomer = ({ openModalAddCustomer, setOpenModalAddCustomer, in
     const first_met = false;
     //Valeurs par défaut
     const phone = values.phone;
-
 
     axios.post(API_URL + ApiRoutes.create_customer, { lastname, firstname, mail, phone, gender, first_met })
       

@@ -1,13 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Formik, Field, Form, useField, isEmptyArray } from "formik";
+import React, {useContext} from "react";
+import {Field, Form, Formik, useField} from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../utils/styles/colors';
-import axios from 'axios';
-import ApiRoutes from "../../utils/const/ApiRoutes";
-import { Context } from "../../utils/context/Context";
-import { StyledBtnPrimary, StyledInput } from "../../utils/styles/Atoms";
-import { useParams } from 'react-router-dom';
+import {Context} from "../../utils/context/Context";
+import {StyledBtnPrimary, StyledInput} from "../../utils/styles/Atoms";
+import {useParams} from 'react-router-dom';
 
 // Style du container
 const AddEstateContainer = styled.div`

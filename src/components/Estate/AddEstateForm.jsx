@@ -104,7 +104,7 @@ const AddEstateForm = () => {
     // Recherche de l'addresse
     const searchAddressGouv = (value) => {
         // On remplace les espaces par des + pour notre requete
-        var conformeValue = value.replace(/ /g, "+");
+        const conformeValue = value.replace(/ /g, "+");
         //On enleve les header axios pour envoyer la requete a l'API du gouv ( sinon ça passse pas )
         axios.defaults.headers.common = {};
         axios.get(`https://api-adresse.data.gouv.fr/search?q=${conformeValue}`, {})

@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "../../utils/styles/modal.css";
-import { Modal, Stack } from "react-bootstrap";
-import { StyledBtnPrimary, StyledBtnSecondary, StyledInput, StyledSelect, StyledTextarea } from "../../utils/styles/Atoms";
-import moment from "moment";
+import {Modal, Stack} from "react-bootstrap";
+import {StyledBtnPrimary, StyledBtnSecondary, StyledInput} from "../../utils/styles/Atoms";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import axios from "axios";
-import ApiRoutes from "../../utils/const/ApiRoutes";
-import { Context } from "../../utils/context/Context";
-import Loader from "../Tools/Loader/Loader";
-import { Formik, Field } from "formik";
+import {Context} from "../../utils/context/Context";
+import Loader from "../../components/Tools/Loader/Loader";
+import {Formik} from "formik";
 import * as Yup from "yup";
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
 const Label = styled.label`
   font-weight: 700;
@@ -42,7 +40,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
         const first_met = 0;
         let datas = {};
 
-        if (values.mail == customerData.mail) {
+        if (values.mail === customerData.mail) {
             datas = { gender, firstname, lastname, phone, first_met };
         } else {
             datas = { gender, firstname, lastname, phone, first_met, mail };
@@ -53,7 +51,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
             .then(res => {
                 setOpenModalEditCustomer(false);
                 alert("vous etes inscrit !");
-                window.location.reload(false);
+                window.location.reload();
 
             }).catch(error => {
                 if (error.response.data.mail && error.response.data.mail[0] === "The mail has already been taken.") {
@@ -80,7 +78,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
+    }, [id]);
 
     return (
         loading ? <Loader /> :
