@@ -61,7 +61,7 @@ const Sidebar = () => {
                     <a href="/customers_list">
                         <Button className="btn btn-secondary"><img src={customerIcon} width="35" height="35" alt=""/>&nbsp;Client&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                     </a>
-                    <a href="#">
+                    <a href="/staff">
                         <Button className="btn btn-secondary"><img src={staffIcon} width="35" height="35" alt=""/>&nbsp;Agents&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>
                     </a>
                     {/*<a href="#">*/}

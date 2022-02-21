@@ -242,7 +242,7 @@ const AddEstateForm = () => {
                                         </div>
                                         <div className="col-6">
                                             <AddEstateLabel className="form-label">Type de contrat</AddEstateLabel><br />
-                                            <div class="form-check form-check-inline">
+                                            <div className="form-check form-check-inline">
                                                 <label class="form-check-label">
                                                     <Field type="radio" className="form-check-input" name="buy_or_rent" value="Achat" />
                                                     Achat

@@ -137,231 +137,247 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
     }
 
     return (
-        <Modal show={showAddEventModal} size="xl" backdrop="static" keyboard={false} centered>
-            {(loading) ?
-                <Loader/> : (
-                    <Formik
-                        initialValues={{
-                            notes: '',
-                            id_estate: '',
-                            id_customer: '',
-                            id_appointment_type: '',
-                            id_staff: '',
-                            date: dateValue,
-                            time: timeValue
-                        }}
-                        validationSchema={Yup.object({
-                            notes: Yup.string(),
-                            id_estate: Yup.number(),
-                            id_customer: Yup.string().required('Veuillez sélectionner un client/contact ou en créer un'),
-                            id_appointment_type: Yup.string().required('Veuillez sélectionner un type de rendez-vous'),
-                            id_staff: Yup.string().required('Veuillez sélectionner un agent'),
-                        })}
-                        onSubmit={async (values) => {
-                            const scheduled_at = (values.date ? values.date : dateValue) + ' ' + (values.time ? values.time : timeValue) + ':00';
-                            let data = {
-                                ...values, scheduled_at: scheduled_at
-                            }
-                            await new Promise(r => {
-                                insertAppointment(data);
-                            })
-                        }}
-                    >
-                        {({ handleChange,
-                            handleSubmit,
-                            setFieldValue,
-                            values,
-                            errors
-                          }) => (
-                            <Modal.Body>
-                                <div className='text-center mb-3'>
-                                    <h2>Ajouter un rendez-vous</h2>
-                                </div>
-                                <form>
-                                    <div className="row">
-                                        <div className="col m-3">
-                                            <Label>Client</Label>
-                                            <StyledInput
-                                                id="id_customer"
-                                                name="id_customer"
-                                                className="form-control"
-                                                value={textCustomer}
-                                                placeholder="Chercher un client"
-                                                onChange={(e) => {
-                                                    handleChange(e)
-                                                    setTextCustomer(e.target.value)
-                                                }}
-                                                onKeyUp={() => {
-                                                    setTimeout(() => {
-                                                        if (textCustomer.length >= 2) {
-                                                            getCustomersResults(textCustomer);
-                                                        } else {
-                                                            getCustomersResults(null)
-                                                        }
-                                                    }, 200);
-                                                }}
-                                            />
-                                            <div className="error mt-2" style={{color: "#E85A70", fontStyle: 'italic'}}>{errors.id_customer ?? null}</div>
-                                            {(customerSearchResult && customerSearchResult?.length !== 0) ? (
-                                                <SearchPanel>
-                                                    <ul>
-                                                        {
-                                                            customerSearchResult?.map(item => (
-                                                                <ListItem key={item.id}>
-                                                                    <LinkItem onClick={() => {onSelectedCustomer(item)
-                                                                        setFieldValue('id_customer', item.id)
-                                                                    }}>
-                                                                        {item.firstname} {item.lastname}
-                                                                    </LinkItem>
-                                                                </ListItem>
-                                                            ))
-                                                        }
-                                                    </ul>
-                                                </SearchPanel>) : null
-                                            }
-                                            {(customerSearchResult && customerSearchResult?.length === 0) ? (
+        <>
+            <Modal show={showAddEventModal} size="xl" backdrop="static" keyboard={false} centered>
+                {(loading) ?
+                    <Loader/> : (
+                        <Formik
+                            initialValues={{
+                                notes: '',
+                                id_estate: '',
+                                id_customer: '',
+                                id_appointment_type: '',
+                                id_staff: '',
+                                date: dateValue,
+                                time: timeValue
+                            }}
+                            validationSchema={Yup.object({
+                                notes: Yup.string(),
+                                id_estate: Yup.number(),
+                                id_customer: Yup.string().required('Veuillez sélectionner un client/contact ou en créer un'),
+                                id_appointment_type: Yup.string().required('Veuillez sélectionner un type de rendez-vous'),
+                                id_staff: Yup.string().required('Veuillez sélectionner un agent'),
+                            })}
+                            onSubmit={async (values) => {
+                                const scheduled_at = (values.date ? values.date : dateValue) + ' ' + (values.time ? values.time : timeValue) + ':00';
+                                let data = {
+                                    ...values, scheduled_at: scheduled_at
+                                }
+                                await new Promise(r => {
+                                    insertAppointment(data);
+                                })
+                            }}
+                        >
+                            {({
+                                  handleChange,
+                                  handleSubmit,
+                                  setFieldValue,
+                                  values,
+                                  errors
+                              }) => (
+                                <Modal.Body>
+                                    <div className='text-center mb-3'>
+                                        <h2>Ajouter un rendez-vous</h2>
+                                    </div>
+                                    <form>
+                                        <div className="row">
+                                            <div className="col m-3">
+                                                <Label>Client</Label>
+                                                <StyledInput
+                                                    id="id_customer"
+                                                    name="id_customer"
+                                                    className="form-control"
+                                                    value={textCustomer}
+                                                    placeholder="Chercher un client"
+                                                    onChange={(e) => {
+                                                        handleChange(e)
+                                                        setTextCustomer(e.target.value)
+                                                    }}
+                                                    onKeyUp={() => {
+                                                        setTimeout(() => {
+                                                            if (textCustomer.length >= 2) {
+                                                                getCustomersResults(textCustomer);
+                                                            } else {
+                                                                getCustomersResults(null)
+                                                            }
+                                                        }, 200);
+                                                    }}
+                                                />
+                                                <div className="error mt-2" style={{
+                                                    color: "#E85A70",
+                                                    fontStyle: 'italic'
+                                                }}>{errors.id_customer ?? null}</div>
+                                                {(customerSearchResult && customerSearchResult?.length !== 0) ? (
+                                                    <SearchPanel>
+                                                        <ul>
+                                                            {
+                                                                customerSearchResult?.map(item => (
+                                                                    <ListItem key={item.id}>
+                                                                        <LinkItem onClick={() => {
+                                                                            onSelectedCustomer(item)
+                                                                            setFieldValue('id_customer', item.id)
+                                                                        }}>
+                                                                            {item.firstname} {item.lastname}
+                                                                        </LinkItem>
+                                                                    </ListItem>
+                                                                ))
+                                                            }
+                                                        </ul>
+                                                    </SearchPanel>) : null
+                                                }
+                                                {(customerSearchResult && customerSearchResult?.length === 0) ? (
+                                                    <SearchPanel>
+                                                        <p>Pas de résultats...</p>
+                                                    </SearchPanel>) : null
+                                                }
+                                            </div>
+                                            <div className="col m-3">
+                                                <Label>Agent</Label>
+                                                <StyledSelect className="form-select" id="id_staff"
+                                                              name="id_staff"
+                                                              onChange={handleChange}
+                                                >
+                                                    <option selected value=""/>
+                                                    {staffList?.map(item => (
+                                                        <option value={item.id} key={item.id}>
+                                                            {item.firstname} {item.lastname}
+                                                        </option>))}
+                                                </StyledSelect>
+                                                <div className="error mt-2" style={{
+                                                    color: "#E85A70",
+                                                    fontStyle: 'italic'
+                                                }}>{errors.id_staff ?? null}</div>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col m-3">
+                                                <Label>Bien</Label>
+                                                <StyledInput
+                                                    id="id_estate"
+                                                    name="id_estate"
+                                                    className="form-control"
+                                                    value={textEstate}
+                                                    placeholder="Chercher un bien"
+                                                    onChange={(e) => {
+                                                        handleChange(e)
+                                                        setTextEstate(e.target.value)
+                                                    }}
+                                                    onKeyUp={() => {
+                                                        setTimeout(() => {
+                                                            if (textEstate.length >= 2) {
+                                                                getEstatesResults(textEstate);
+                                                            } else {
+                                                                getEstatesResults(null)
+                                                            }
+                                                        }, 200);
+                                                    }}
+                                                />
+                                                {(estateSearchResult && estateSearchResult?.length !== 0) ? (
+                                                    <SearchPanel>
+                                                        <ul>
+                                                            {
+                                                                estateSearchResult?.map(item => (
+                                                                    <ListItem key={item.id}>
+                                                                        <LinkItem onClick={() => {
+                                                                            onSelectedEstate(item)
+                                                                            setFieldValue('id_estate', item.id)
+                                                                        }}>
+                                                                            {item.reference} - {item.address} - {item.city} {item.zipcode}
+                                                                        </LinkItem>
+                                                                    </ListItem>
+                                                                ))
+                                                            }
+                                                        </ul>
+                                                    </SearchPanel>) : null
+                                                }{(estateSearchResult && estateSearchResult?.length === 0) ? (
                                                 <SearchPanel>
                                                     <p>Pas de résultats...</p>
                                                 </SearchPanel>) : null
                                             }
+                                            </div>
+                                            <div className="col m-3">
+                                                <Label>Type de rendez-vous</Label>
+                                                <StyledSelect className="form-select" id="id_appointment_type"
+                                                              name="id_appointment_type"
+                                                              onChange={handleChange}
+                                                >
+                                                    <option selected value=""/>
+                                                    {apptmtTypes?.map(item => (
+                                                        <option value={item.id}
+                                                                key={item.id}>{item.appointment_type} </option>))
+                                                    }
+                                                </StyledSelect>
+                                                <div className="error mt-2" style={{
+                                                    color: "#E85A70",
+                                                    fontStyle: 'italic'
+                                                }}>{errors.id_appointment_type ?? null}</div>
+                                            </div>
                                         </div>
-                                        <div className="col m-3">
-                                            <Label>Agent</Label>
-                                            <StyledSelect className="form-select" id="id_staff"
-                                                          name="id_staff"
-                                                          onChange={handleChange}
-                                            >
-                                                <option selected value=""/>
-                                                {staffList?.map(item => (
-                                                    <option value={item.id} key={item.id}>
-                                                        {item.firstname} {item.lastname}
-                                                    </option>))}
-                                            </StyledSelect>
-                                            <div className="error mt-2" style={{color: "#E85A70", fontStyle: 'italic'}}>{errors.id_staff ?? null}</div>
+                                        <div className="row">
+                                            <div className="col m-3">
+                                                <Label>Date</Label>
+                                                <StyledInput type="date"
+                                                             id="date"
+                                                             name="date"
+                                                             className="form-control"
+                                                             min={dateMin}
+                                                             value={values.date}
+                                                             onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col m-3">
+                                                <Label>Heure</Label>
+                                                <StyledInput type="time"
+                                                             id="time"
+                                                             name="time"
+                                                             className="form-control"
+                                                             min="08:00"
+                                                             max="19:00"
+                                                             value={values.time}
+                                                             onChange={handleChange}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div className="row">
+                                            <div className="col m-3">
+                                                <Label>Notes</Label>
+                                                <StyledTextarea className="form-control" id="notes"
+                                                                name="notes"
+                                                                onChange={handleChange}/>
+                                            </div>
+                                        </div>
+                                    </form>
                                     <div className="row">
-                                        <div className="col m-3">
-                                            <Label>Bien</Label>
-                                            <StyledInput
-                                                id="id_estate"
-                                                name="id_estate"
-                                                className="form-control"
-                                                value={textEstate}
-                                                placeholder="Chercher un bien"
-                                                onChange={(e) => {
-                                                    handleChange(e)
-                                                    setTextEstate(e.target.value)
-                                                }}
-                                                onKeyUp={() => {
-                                                    setTimeout(() => {
-                                                        if (textEstate.length >= 2) {
-                                                            getEstatesResults(textEstate);
-                                                        } else {
-                                                            getEstatesResults(null)
-                                                        }
-                                                    }, 200);
-                                                }}
-                                            />
-                                            {(estateSearchResult && estateSearchResult?.length !== 0) ? (
-                                                <SearchPanel>
-                                                    <ul>
-                                                        {
-                                                            estateSearchResult?.map(item => (
-                                                                <ListItem key={item.id}>
-                                                                    <LinkItem onClick={() => {onSelectedEstate(item)
-                                                                        setFieldValue('id_estate', item.id)
-                                                                    }}>
-                                                                        {item.reference} - {item.address} - {item.city} {item.zipcode}
-                                                                    </LinkItem>
-                                                                </ListItem>
-                                                            ))
-                                                        }
-                                                    </ul>
-                                                </SearchPanel>) : null
-                                            }{(estateSearchResult && estateSearchResult?.length === 0) ? (
-                                            <SearchPanel>
-                                                <p>Pas de résultats...</p>
-                                            </SearchPanel>) : null
-                                        }
+                                        <div className="col">
+                                            <div className='text-start m-3'>
+                                                <a href="/customers_list">
+                                                    <Button variant="link"
+                                                            style={{color: "#4EA1D5", fontWeight: 700}}
+                                                           >
+                                                        Créer un client
+                                                    </Button>
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div className="col m-3">
-                                            <Label>Type de rendez-vous</Label>
-                                            <StyledSelect className="form-select" id="id_appointment_type"
-                                                          name="id_appointment_type"
-                                                          onChange={handleChange}
-                                            >
-                                                <option selected value=""/>
-                                                {apptmtTypes?.map(item => (
-                                                    <option value={item.id}
-                                                            key={item.id}>{item.appointment_type} </option>))
-                                                }
-                                            </StyledSelect>
-                                            <div className="error mt-2" style={{color: "#E85A70", fontStyle: 'italic'}}>{errors.id_appointment_type ?? null}</div>
+                                        <div className="col">
+                                            <div className='text-end m-3'>
+                                                <StyledBtnSecondary className="m-3"
+                                                                    onClick={() => setShowAddEventModal(false)}>
+                                                    Annuler
+                                                </StyledBtnSecondary>
+                                                <StyledBtnPrimary type="submit" onClick={handleSubmit}>
+                                                    Valider
+                                                </StyledBtnPrimary>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <div className="col m-3">
-                                            <Label>Date</Label>
-                                            <StyledInput type="date"
-                                                         id="date"
-                                                         name="date"
-                                                         className="form-control"
-                                                         min={dateMin}
-                                                         value={values.date}
-                                                         onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="col m-3">
-                                            <Label>Heure</Label>
-                                            <StyledInput type="time"
-                                                         id="time"
-                                                         name="time"
-                                                         className="form-control"
-                                                         min="08:00"
-                                                         max="19:00"
-                                                         value={values.time}
-                                                         onChange={handleChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col m-3">
-                                            <Label>Notes</Label>
-                                            <StyledTextarea className="form-control" id="notes"
-                                                            name="notes"
-                                                            onChange={handleChange}/>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div className="row">
-                                    <div className="col">
-                                        <div className='text-start m-3'>
-                                            <Button variant="link"
-                                                    style={{color: "#4EA1D5", fontWeight: 700}}
-                                                    >
-                                                Créer un client
-                                            </Button>
-                                        </div>
-                                    </div>
-                                    <div className="col">
-                                        <div className='text-end m-3'>
-                                            <StyledBtnSecondary className="m-3"
-                                                                onClick={() => setShowAddEventModal(false)}>
-                                                Annuler
-                                            </StyledBtnSecondary>
-                                            <StyledBtnPrimary type="submit" onClick={handleSubmit}>
-                                                Valider
-                                            </StyledBtnPrimary>
-                                        </div>
-                                    </div>
-                                </div>
 
-                            </Modal.Body>
-                        )}
-                    </Formik>
-                )}
-        </Modal>
+                                </Modal.Body>
+                            )}
+                        </Formik>
+                    )}
+            </Modal>
+        </>
     );
 };
 

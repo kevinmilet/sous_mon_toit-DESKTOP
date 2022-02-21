@@ -13,6 +13,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Topbar from "./components/Topbar/Topbar";
 import HomeView from "./screens/Home/HomeView";
 import AddEstateView from './screens/Estates/AddEstateView';
+import StaffListView from "./screens/Staff/StaffListView";
 import AddEstateStep2View from './screens/Estates/AddEstateStep2View'
 
 const App = () => {
@@ -96,6 +97,9 @@ const App = () => {
                                     </Route>
                                     <Route exact path="/customer_detail/:id">
                                         <CustomersDetailView/>
+                                    </Route>
+                                    <Route exact path="/staff">
+                                        <StaffListView/>
                                     </Route>
                                 </Router>
                             </div>
