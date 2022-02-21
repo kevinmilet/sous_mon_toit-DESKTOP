@@ -6,6 +6,7 @@ import ApiRoutes from "../../utils/const/ApiRoutes";
 import {Context} from "../../utils/context/Context";
 import colors from "../../utils/styles/colors";
 import DataTable from 'react-data-table-component';
+import UpdateStaff from "./UpdateStaff";
 
 const StafTableContainer = styled.div`
     margin-top: -100px;
@@ -65,6 +66,13 @@ const Icon = styled.i`
     font-size: 22px
 `
 
+const AvatarImg = styled.img`
+    width: 50px;
+    heigth: 50px;
+    border-radius: 50%;
+    margin: .7rem
+`
+
 const FilterComponent = ({filterText, onFilter, onClear}) => (
     <>
         <TextField
@@ -83,7 +91,7 @@ const FilterComponent = ({filterText, onFilter, onClear}) => (
 
 const columns = [
     {
-        selector: row => row.avatar,
+        selector: row => <AvatarImg src={ApiRoutes.AVATAR_BASE_URL + row.avatar} alt={row.avatar}/>,
         sortable: true
     },
     {
@@ -122,9 +130,9 @@ const StaffList = () => {
     const [staffData, setStaffData] = useState({});
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         axios.get(API_URL + ApiRoutes.staff).then(res => {
-            console.log(res.data)
             setStaffData(res.data)
         }).catch(error => {
             console.log(error.message)
@@ -134,6 +142,14 @@ const StaffList = () => {
 
     }, [API_URL])
 
+    // Expanded row
+    const ExpandedComponent = (props) => {
+        return(
+            <div>
+                <UpdateStaff data={props}/>
+            </div>
+        );
+    }
     // style perso pour datatable
     const customStyles = {
         rows: {
@@ -174,8 +190,8 @@ const StaffList = () => {
     };
 
     // Barre de recherche de la datatable
-    const [filterText, setFilterText] = React.useState('');
-    const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+    const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = Object.values(staffData).filter(
         item =>
             JSON.stringify(item)
@@ -215,6 +231,8 @@ const StaffList = () => {
                         subHeaderComponent={subHeaderComponentMemo}
                         persistTableHead
                         noDataComponent="Pas de résultats"
+                        expandableRows
+                        expandableRowsComponent={ExpandedComponent}
                     >
                     </DataTable>
                 </StafTableContainer>
