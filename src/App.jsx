@@ -15,6 +15,7 @@ import HomeView from "./screens/Home/HomeView";
 import AddEstateView from './screens/Estates/AddEstateView';
 import StaffListView from "./screens/Staff/StaffListView";
 import AddEstateStep2View from './screens/Estates/AddEstateStep2View'
+import AddEstateStep3View from './screens/Estates/AddEstateStep3View'
 
 const App = () => {
     const [apiUrl, setApiUrl] = useState(ApiRoutes.API_URL);
@@ -91,6 +92,9 @@ const App = () => {
                                     </Route>
                                     <Route exact path="/ajout-bien/step-2/:id">
                                         <AddEstateStep2View/>
+                                    </Route>
+                                    <Route exact path="/ajout-bien/step-3/:id">
+                                        <AddEstateStep3View/>
                                     </Route>
                                     <Route exact path="/customers_list">
                                         <CustomersListView/>

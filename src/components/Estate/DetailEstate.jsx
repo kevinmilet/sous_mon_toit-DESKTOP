@@ -103,7 +103,7 @@ const DetailEstate = () => {
 
             <DivDetail className="container col-12 mx-auto p-4">
                 <div className="row justify-content-between align-items-baseline px-3">
-                    <p className="col-8 d-flex justify-content-between align-items-center"><b className="text-danger">{oneEstateData.reference}</b> <b>{oneEstateData.title}</b><b className="text-danger">{oneEstateData.price}€</b></p>
+                    <p className="col-8 d-flex justify-content-between align-items-center"><b className="text-danger">Référence: {oneEstateData.reference}</b> <b>{oneEstateData.title}</b><b className="text-danger">Prix: {oneEstateData.price}€</b></p>
                     <A className='col-2 btn'>Modifier</A>
                 </div>
                 <ScrollDiv>
@@ -115,6 +115,22 @@ const DetailEstate = () => {
                             {picturesList.map((picture, index) =>
                                 <img key={index} src={ApiRoutes.COVER_ESTATE_BASE_URL + (picture.name ?? "")} className="col-4 col-lg-2 img-fluid img-thumbnail" alt={oneEstateData.title} />
                             )}
+                        </div>
+                    </div>
+                    <div className="row mt-3">
+                        <H2>Localisation</H2>
+                        <div className="col-6 d-flex justify-content-center align-items-center">
+                            <b>{oneEstateData.address} {oneEstateData.zipcode} {oneEstateData.city}, FRANCE</b>
+                        </div>
+                        <div className="col-6">
+                            {/*Carte*/}
+                            <iframe
+                                width="400"
+                                height="250"
+                                loading="lazy"
+                                allowfullScreen
+                                src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyBqKdClbH20Svws6E7CB6sOcTr237Ryf1M&zoom=14&center=" + oneEstateData.estate_latitude + "%2C" + oneEstateData.estate_longitude + "&q=" + oneEstateData.address.replace(' ', '+') + "," + oneEstateData.city.replace(' ', '+') + ",France"}
+                            ></iframe>
                         </div>
                     </div>
                     <div className="row mt-3">
