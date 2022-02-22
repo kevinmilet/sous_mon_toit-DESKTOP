@@ -1,7 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
-import React, { useContext } from "react";
-import { useState, useEffect } from "react";
-import { Formik, Field, Form, useField, isEmptyArray } from "formik";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
@@ -10,12 +7,9 @@ import {useParams} from 'react-router-dom';
 import {ReactDimmer} from 'react-dimmer';
 import DataTable from "react-data-table-component";
 import {FiEdit} from 'react-icons/fi';
-import { FiEdit } from 'react-icons/fi';
-import { IoIosAdd } from 'react-icons/io';
+import {IoIosAdd} from 'react-icons/io';
 import moment from 'moment';
 import 'moment/locale/fr';
-import {Context} from "../../utils/context/Context";
-import apiRoutes from "../../utils/const/ApiRoutes";
 
 const NavAccount = styled.div`
   .navbar {

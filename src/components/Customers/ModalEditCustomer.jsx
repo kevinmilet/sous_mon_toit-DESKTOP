@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "../../utils/styles/modal.css";
-import { Modal, Stack } from "react-bootstrap";
-import { StyledBtnPrimary, StyledBtnSecondary, StyledInput, StyledSelect, StyledTextarea } from "../../utils/styles/Atoms";
-import moment from "moment";
+import {Modal, Stack} from "react-bootstrap";
+import {StyledBtnPrimary, StyledBtnSecondary, StyledInput} from "../../utils/styles/Atoms";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import axios from "axios";
-import ApiRoutes from "../../utils/const/ApiRoutes";
-import { Context } from "../../utils/context/Context";
+import {Context} from "../../utils/context/Context";
 import Loader from "../Tools/Loader/Loader";
-import { Formik, Field } from "formik";
+import {Formik} from "formik";
 import * as Yup from "yup";
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
 const Label = styled.label`
   font-weight: 700;
