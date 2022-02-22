@@ -1,7 +1,7 @@
 import React from 'react';
 import AddEstateFormStep3 from '../../components/Estate/AddEstateFormStep3';
 
-const AddEstateView = () => {
+const AddEstateView3 = () => {
     return (
         <div className='col-11 mx-auto'>
             <AddEstateFormStep3 />
@@ -9,4 +9,4 @@ const AddEstateView = () => {
     );
 };
 
-export default AddEstateView;
+export default AddEstateView3;

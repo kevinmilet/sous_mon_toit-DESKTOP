@@ -9,6 +9,7 @@ const API_URL = {
     refresh: 'api/c/refresh',
     create_estate:'estates/create',
     update_estate:'estates/update',
+    upload_pictures:'estates_pictures/upload',
     estates: 'estates',
     estates_types: 'estates_types',
     estates_rnd: 'estates/rnd',

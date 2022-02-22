@@ -7,6 +7,7 @@ import {Context} from "../../utils/context/Context";
 import {StyledBtnPrimary, StyledInput} from "../../utils/styles/Atoms";
 import {useParams} from 'react-router-dom';
 import axios from "axios";
+// import ApiRoutes from "../../utils/const/ApiRoutes";
 
 // Style du container
 const AddEstateContainer = styled.div`
@@ -84,9 +85,9 @@ const AddEstateFormStep2 = () => {
                         description: "",
                         disponibility: "",
                         year_of_construction: "",
-                        living_surface: "",
-                        carrez_law: "",
-                        land_surface: "",
+                        living_surface: 0,
+                        carrez_law: 0,
+                        land_surface: 0,
                         nb_rooms: 0,
                         nb_bedrooms: 0,
                         nb_bathrooms: 0,
@@ -283,14 +284,14 @@ const AddEstateFormStep2 = () => {
                                             <div className="col-6">
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Chauffage collectif</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="communal_heating" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="communal_heating" value="0" />
                                                             Non
                                                         </label>
@@ -298,14 +299,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Meublé</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="furnished" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="furnished" value="0" />
                                                             Non
                                                         </label>
@@ -313,14 +314,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Parking privé</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="private_parking" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="private_parking" value="0" />
                                                             Non
                                                         </label>
@@ -328,14 +329,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Accès handicapé</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="handicap_access" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="handicap_access" value="0" />
                                                             Non
                                                         </label>
@@ -343,14 +344,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Cave</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="cellar" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="cellar" value="0" />
                                                             Non
                                                         </label>
@@ -358,14 +359,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Terrace</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="terrace" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="terrace" value="0" />
                                                             Non
                                                         </label>
@@ -375,14 +376,14 @@ const AddEstateFormStep2 = () => {
                                             <div className="col-6">
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Piscine</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="swimming_pool" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="swimming_pool" value="0" />
                                                             Non
                                                         </label>
@@ -390,14 +391,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Cheminée</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="fireplace" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="fireplace" value="0" />
                                                             Non
                                                         </label>
@@ -405,14 +406,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Tout à l'égout</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="all_in_sewer" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="all_in_sewer" value="0" />
                                                             Non
                                                         </label>
@@ -420,14 +421,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Fosse Septique</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="septik_tank" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="septik_tank" value="0" />
                                                             Non
                                                         </label>
@@ -435,14 +436,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Grenier</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="attic" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="attic" value="0" />
                                                             Non
                                                         </label>
@@ -450,14 +451,14 @@ const AddEstateFormStep2 = () => {
                                                 </div>
                                                 <div className="">
                                                     <AddEstateLabel className="form-label">Ascensseur</AddEstateLabel><br />
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="elevator" value="1" />
                                                             Oui
                                                         </label>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-4">
-                                                        <label class="form-check-label">
+                                                    <div className="form-check form-check-inline mb-4">
+                                                        <label className="form-check-label">
                                                             <Field type="radio" className="form-check-input" name="elevator" value="0" />
                                                             Non
                                                         </label>
