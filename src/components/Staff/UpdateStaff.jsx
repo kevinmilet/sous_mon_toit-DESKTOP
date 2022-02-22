@@ -34,7 +34,7 @@ const UpdateStaff = ({data}) => {
         })
 
     }
-console.log((staffItem));
+
     return (
         <FormContainer>
             <Formik

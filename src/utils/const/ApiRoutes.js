@@ -31,6 +31,7 @@ const API_URL = {
     estates_cover: 'estates_pictures/cover',
     search_estates: 'estates/search',
     calendar: 'schedule/calendar',
+    staff_schedule: 'schedule/staff',
     update_event: 'schedule/update',
     get_one_event: 'schedule/',
     apptmtType: 'schedule/appointmentsTypes',

@@ -67,8 +67,6 @@ const LinkItem = styled.a`
 SearchPanel.propTypes = {children: PropTypes.node};
 const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventModal, appointmentDatas, staffList}) => {
 
-    console.log(appointmentDatas)
-
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
     const [apptmtTypes, setApptmtTypes] = useState();

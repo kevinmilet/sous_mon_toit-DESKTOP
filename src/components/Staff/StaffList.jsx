@@ -7,6 +7,8 @@ import {Context} from "../../utils/context/Context";
 import colors from "../../utils/styles/colors";
 import DataTable from 'react-data-table-component';
 import UpdateStaff from "./UpdateStaff";
+import StaffAppointments from "../Calendar/StaffAppointments";
+import {Modal} from "react-bootstrap";
 
 const StafTableContainer = styled.div`
     margin-top: -100px;
@@ -73,67 +75,67 @@ const AvatarImg = styled.img`
     margin: .7rem
 `
 
-const FilterComponent = ({filterText, onFilter, onClear}) => (
-    <>
-        <TextField
-            id="search"
-            type="text"
-            placeholder="Rechercher"
-            aria-label="Search Input"
-            value={filterText}
-            onChange={onFilter}
-        />
-        <ClearButton type="button" onClick={onClear}>
-            <i className="fas fa-ban"/>
-        </ClearButton>
-    </>
-);
+const Button = styled.button`
+    background: inherit;
+    border: none
+`
 
-const columns = [
-    {
-        selector: row => <AvatarImg src={ApiRoutes.AVATAR_BASE_URL + row.avatar} alt={row.avatar}/>,
-        sortable: true
-    },
-    {
-        selector: row => row.firstname + ' ' + row.lastname,
-        sortable: true
-    },
-    {
-        selector: row => row.phone,
-        sortable: true
-    },
-    {
-        selector: row => {
-            switch (row.id_function) {
-                case 1:
-                    return 'Directeur';
-                case 2:
-                    return 'Secrétaire';
-                case 3:
-                    return 'Agent';
-                case 4:
-                    return 'Stagiaire';
-                default:
-                    return 'Non défini';
-            }
-        },
-        sortable: true
-    },
-    {
-        selector: row => <a onClick={() => currentStaffAppointments(row.id)}><Icon className="fas fa-calendar-week"/></a>,
-        sortable: true
-    },
-]
-
-const currentStaffAppointments = (id) => {
-    alert('RDV de ' + id);
-}
-
-const StaffList = () => {
+const StaffList = ({setShowStaffApptmtModal, setStaffId}) => {
     const API_URL = useContext(Context).apiUrl;
     const [staffData, setStaffData] = useState({});
     const [loading, setLoading] = useState(true);
 
+    const FilterComponent = ({filterText, onFilter, onClear}) => (
+        <>
+            <TextField
+                id="search"
+                type="text"
+                placeholder="Rechercher"
+                aria-label="Search Input"
+                value={filterText}
+                onChange={onFilter}
+            />
+            <ClearButton type="button" onClick={onClear}>
+                <i className="fas fa-ban"/>
+            </ClearButton>
+        </>
+    );
+
+    const columns = [
+        {
+            selector: row => <AvatarImg src={ApiRoutes.AVATAR_BASE_URL + row.avatar} alt={row.avatar}/>,
+            sortable: true
+        },
+        {
+            selector: row => row.firstname + ' ' + row.lastname,
+            sortable: true
+        },
+        {
+            selector: row => row.phone,
+            sortable: true
+        },
+        {
+            selector: row => {
+                switch (row.id_function) {
+                    case 1:
+                        return 'Directeur';
+                    case 2:
+                        return 'Secrétaire';
+                    case 3:
+                        return 'Agent';
+                    case 4:
+                        return 'Stagiaire';
+                    default:
+                        return 'Non défini';
+                }
+            },
+            sortable: true
+        },
+        {
+            selector: row => <Button onClick={() => currentStaffAppointments(setStaffId(row.id), setShowStaffApptmtModal(true))}><Icon className="fas fa-calendar-week"/></Button>,
+            sortable: true
+        },
+    ];
 
     useEffect(() => {
         axios.get(API_URL + ApiRoutes.staff).then(res => {
@@ -154,6 +156,7 @@ const StaffList = () => {
             </div>
         );
     }
+
     // style perso pour datatable
     const customStyles = {
         rows: {
@@ -202,6 +205,7 @@ const StaffList = () => {
                 .toLowerCase()
                 .indexOf(filterText.toLowerCase()) !== -1
     );
+
     const subHeaderComponentMemo = React.useMemo(() => {
         const handleClear = () => {
             if (filterText) {
@@ -214,6 +218,12 @@ const StaffList = () => {
                              filterText={filterText}/>
         );
     }, [filterText, resetPaginationToggle]);
+
+    const currentStaffAppointments = (staffId) => {
+        return (
+            <StaffAppointments staffId={staffId}/>
+        );
+    }
 
     return (
         loading
