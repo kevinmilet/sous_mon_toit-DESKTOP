@@ -109,11 +109,11 @@ const DetailEstate = () => {
                 <ScrollDiv>
                     <div className="row align-items-center mt-3">
                         <div className='col-4'>
-                            <img src={ApiRoutes.COVER_ESTATE_BASE_URL + (pictureCover ? pictureCover.name : "")} className="img-fluid img-thumbnail" alt={oneEstateData.title} />
+                            <img src={ApiRoutes.COVER_ESTATE_BASE_URL + (pictureCover ? pictureCover.name : "estate_default.jpg")} className="img-fluid img-thumbnail" alt={oneEstateData.title} />
                         </div>
                         <div className='col-8'>
                             {picturesList.map((picture, index) =>
-                                <img key={index} src={ApiRoutes.COVER_ESTATE_BASE_URL + (picture.name ?? "")} className="col-4 col-lg-2 img-fluid img-thumbnail" alt={oneEstateData.title} />
+                                <img key={index} src={ApiRoutes.COVER_ESTATE_BASE_URL + (picture.name ?? "estate_default.jpg")} className="col-4 col-lg-2 img-fluid img-thumbnail" alt={oneEstateData.title} />
                             )}
                         </div>
                     </div>
