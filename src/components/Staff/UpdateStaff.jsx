@@ -4,9 +4,8 @@ import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import {Formik} from "formik";
 import * as Yup from "yup";
-import API_URL from "../../utils/const/ApiRoutes";
-import axios from "axios";
 import ApiRoutes from "../../utils/const/ApiRoutes";
+import axios from "axios";
 import {Context} from "../../utils/context/Context";
 
 const FormContainer = styled.div`
@@ -25,19 +24,17 @@ const UpdateStaff = ({data}) => {
     const staffItem = data.data;
 
     const updateStaffMember = (values) => {
-        // TODO corriger la méthode dans l'api
         axios.put(
-            // API_URL +
-            'http://localhost:8000/' +
+            API_URL +
             ApiRoutes.staff_update +
-            `/${values.id}?lastname=${values.lastname}&firstname=${values.firstname}&mail=${values.mail}&phone=${values.phone}`).then(res => {
+            `/${values.id}?lastname=${values.lastname}&firstname=${values.firstname}&mail=${values.mail}&phone=${values.phone}&id_role=${values.role}&id_function=${values.function}`).then(res => {
                 alert('Collaborateur modifié')
         }).catch(e => {
             console.log(e.message);
         })
 
     }
-
+console.log((staffItem));
     return (
         <FormContainer>
             <Formik
@@ -47,7 +44,9 @@ const UpdateStaff = ({data}) => {
                     lastname: staffItem.lastname,
                     firstname: staffItem.firstname,
                     mail: staffItem.mail,
-                    phone: staffItem.phone
+                    phone: staffItem.phone,
+                    role: staffItem.id_role,
+                    function: staffItem.id_function,
                 }}
                 validationSchema={Yup.object({
                     lastname: Yup.string()

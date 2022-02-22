@@ -120,10 +120,14 @@ const columns = [
         sortable: true
     },
     {
-        selector: row => <a href="#"><Icon className="fas fa-calendar-week"/></a>,
+        selector: row => <a onClick={() => currentStaffAppointments(row.id)}><Icon className="fas fa-calendar-week"/></a>,
         sortable: true
     },
 ]
+
+const currentStaffAppointments = (id) => {
+    alert('RDV de ' + id);
+}
 
 const StaffList = () => {
     const API_URL = useContext(Context).apiUrl;
