@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { useState, useEffect } from "react";
+import { Formik, Field, Form, useField, isEmptyArray } from "formik";
 import axios from "axios";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
@@ -8,7 +9,8 @@ import { Context } from "../../utils/context/Context";
 import { useParams } from 'react-router-dom';
 import { ReactDimmer } from 'react-dimmer';
 import DataTable from "react-data-table-component";
-import {  FiEdit} from 'react-icons/fi';
+import { FiEdit } from 'react-icons/fi';
+import { IoIosAdd } from 'react-icons/io';
 import moment from 'moment';
 import 'moment/locale/fr';
 
@@ -44,28 +46,28 @@ const TitleH3 = styled.h3`
 const columns = [
     {
         name: "Type",
-        width: "10%",
-        selector: (row) => row.buy_or_rent,
+        width: "20%",
+        selector: (row) => row.buy_or_rent + "/" + row.estate_type_name,
     },
     {
         name: "Surface",
-        width: "20%",
+        width: "10%",
         selector: (row) => row.surface_min,
     },
     {
-        name: "budget",
-        width: "20%",
+        name: "Budget",
+        width: "15%",
         selector: (row) => row.budget_max,
     },
     {
-        name: "Longitude",
-        width: "20%",
-        selector: (row) => row.search_longitude,
+        name: "Pièce",
+        width: "10%",
+        selector: (row) => row.number_rooms,
     },
     {
-        name: "Latitude",
+        name: "Localité",
         width: "20%",
-        selector: (row) => row.search_latitude,
+        selector: (row) => row.city,
     },
     {
         name: "Rayon",
@@ -81,12 +83,12 @@ const columnsSchedule = [
     {
         name: "Date",
         width: "20%",
-        selector: (row) =>moment(row.scheduled_at).format('DD-MM-YYYY'),
+        selector: (row) => moment(row.scheduled_at).format('DD-MM-YYYY'),
     },
     {
         name: "Heure",
         width: "20%",
-        selector: (row) =>moment(row.scheduled_at).format('HH:mm'),
+        selector: (row) => moment(row.scheduled_at).format('HH:mm'),
     },
     {
         name: "Lieu",
@@ -96,23 +98,31 @@ const columnsSchedule = [
     {
         name: "Agent",
         width: "20%",
-        selector: (row) => row.staffFirstname + " " + row.staffLastname  ,
+        selector: (row) => row.staffFirstname + " " + row.staffLastname,
     },
 ];
 // const [openModalEditCustomer, setOpenModalEditCustomer] = useState(false);
-const CustomerDetail = ({setOpenModalEditCustomer}) => {
+const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearch }) => {
     const [customerData, setCustomerData] = useState({});
     const [customerScheduleData, setCustomerScheduleData] = useState({});
     const [customerTypeData, setCustomerTypeData] = useState({});
     const [customerSearchData, setCustomerSearchData] = useState({});
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
+    const [city, setCity] = useState("");
     const [filterText, setFilterText] = React.useState("");
     const [pending, setPending] = React.useState(true);
     const [rows, setRows] = React.useState([]);
     const [isMenuOpen, setMenuOpen] = useState(false);
+    const [searchAddressResult, setSearchAddressResult] = useState(null);
     const handleClick = (value) => { window.location.href = '/customer_detail/' + value };
-    const filteredItems = [customerSearchData];
+    const filteredItems = Object.values(customerSearchData).filter(
+        item =>
+            JSON.stringify(item)
+                .toLowerCase()
+                .indexOf(filterText.toLowerCase()) !== -1
+    );
+    // [customerSearchData];
     const schedule = [customerScheduleData]
 
     const customStyles = {
@@ -156,6 +166,38 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
             }
         };
     });
+
+
+    // Recherche de l'addresse
+    // const searchAddressGouv = (latitude, longitude) => {
+    //     // On remplace les espaces par des + pour notre requete
+    //     // var conformeValue = value.replace(/ /g, "+");
+    //     //On enleve les header axios pour envoyer la requete a l'API du gouv ( sinon ça passse pas )
+    //     axios.defaults.headers.common = {};
+    //     axios.get(`https://api-adresse.data.gouv.fr/reverse/?lon=${longitude}&lat=${latitude}"`, {})
+    //         .then(res => {
+    //             if (isEmptyArray(res.data.features)) {
+    //                 setSearchAddressResult([{ properties: { label: "Aucun résultats" } }])
+    //             } else {
+    //                 setSearchAddressResult(res.data.features);
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.log(error)
+    //         })
+    // }
+    // Selection de l'adresse
+    // const selectAddressResult = (e) => {
+    //     // setAddress(e.properties.name);
+    //     setCity(e.properties.city);
+    //     // setZipcode(e.properties.postcode);
+    //     // setEstate_longitude(e.geometry.coordinates[0])
+    //     // setEstate_latitude(e.geometry.coordinates[1])
+    //     setSearchAddressResult(null);
+    //     // document.getElementById('div_valid_address').style.border="2px solid green";
+
+    // }
+
     useEffect(() => {
 
 
@@ -165,6 +207,7 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
         )
             .then((res) => {
                 setCustomerData(res.data);
+
                 console.log(res.data);
 
             })
@@ -177,44 +220,51 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
 
         axios
             .get(
-                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer_search/s/" + id
+                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer_search/s/customer/" + id
             )
             .then((res) => {
                 setCustomerSearchData(res.data);
+                // const
+                // console.log(customerSearchData.search_latitude , "lat");
+                // const sLatitude = res.data.search_latitude;
+                // const sLongitude = res.data.search_longitude
+                //  searchAddressGouv(sLatitude , sLongitude);
+                console.log(res.data, "search");
             })
             .catch((error) => {
                 console.log(error.message);
             })
             .finally(() => {
-                setLoading(false);
+                axios
+                    .get(
+                        "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/customer/" + id
+                    )
+                    .then((res) => {
+                        setCustomerScheduleData(res.data);
+                    })
+                    .catch((error) => {
+                        console.log(error.message);
+                    })
+                    .finally(() => {
+                        axios
+                            .get(
+                                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/" + id
+                            )
+                            .then((res) => {
+                                setCustomerScheduleData(res.data);
+                                console.log(res.data);
+                            })
+                            .catch((error) => {
+                                console.log(error.message);
+                            })
+                            .finally(() => {
+                                setLoading(false);
+                            });
+                    });
+
             });
-            axios
-            .get(
-                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/customer/" + id
-            )
-            .then((res) => {
-                setCustomerScheduleData(res.data);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-            axios
-            .get(
-                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/" + id
-            )
-            .then((res) => {
-                setCustomerScheduleData(res.data);
-                console.log(res.data);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        console.log(customerSearchData, "lat2");
+
         // axios
         //     .get(
         //         "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/describe_customer_type/joinCustomer/" + localStorage["userId"]
@@ -234,6 +284,7 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
         // }, 2000);
         // return () => clearTimeout(timeout);
 
+
     }, []);
 
     if (loading) {
@@ -247,7 +298,7 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
                     <TitleH3 className="card-title text-center text-decoration-underline">
                         Informations Client : # {customerData.n_customer}
                     </TitleH3>
-                    <FiEdit size={40} style={{ position: 'absolute', right: 0 , marginTop: '-50px'}} onClick={ () => {setOpenModalEditCustomer(true)} }/>
+                    <FiEdit size={40} style={{ position: 'absolute', right: 0, marginTop: '-50px' }} onClick={() => { setOpenModalEditCustomer(true) }} />
                     <Ul className="col-12 ">
                         <li className="mt-2">
                             <b>Prénom: </b> {customerData.firstname}
@@ -287,8 +338,10 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
                     />
                 </div>
                 <div className="card col-10 mt-3" >
-                    <TitleH3 className="card-title text-center text-decoration-underline">Recherche</TitleH3>
-
+                    <div>
+                        <TitleH3 className="card-title text-center text-decoration-underline">Recherche</TitleH3>
+                        <IoIosAdd size={40} style={{ position: 'absolute', right: 0, marginTop: '-50px' }} onClick={() => { setOpenModalAddCustomerSearch(true) }} />
+                    </div>
                     <DataTable
                         fixedHeader
                         fixedHeaderScrollHeight="50vh"
@@ -299,8 +352,6 @@ const CustomerDetail = ({setOpenModalEditCustomer}) => {
                         columns={columns}
                         data={filteredItems}
                     />
-                  
-
                 </div>
             </div>
         </Container>

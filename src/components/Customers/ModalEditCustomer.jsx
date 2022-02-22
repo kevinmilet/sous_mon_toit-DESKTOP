@@ -52,7 +52,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
 
             .then(res => {
                 setOpenModalEditCustomer(false);
-                alert("vous etes inscrit !");
+                alert("Profil modifié!");
                 window.location.reload(false);
 
             }).catch(error => {
