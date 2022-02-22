@@ -27,7 +27,8 @@ const UpdateStaff = ({data}) => {
     const updateStaffMember = (values) => {
         // TODO corriger la méthode dans l'api
         axios.put(
-            API_URL +
+            // API_URL +
+            'http://localhost:8000/' +
             ApiRoutes.staff_update +
             `/${values.id}?lastname=${values.lastname}&firstname=${values.firstname}&mail=${values.mail}&phone=${values.phone}`).then(res => {
                 alert('Collaborateur modifié')
