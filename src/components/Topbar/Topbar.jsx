@@ -22,17 +22,22 @@ const RowContainer = styled.div`
 `
 
 const Topbar = () => {
+    const currentUser = localStorage.getItem('userId')
+
     return (
+        <>
             <MainContainer>
-                <RowContainer className="row">
-                    <div className="col text-start">
-                        <Search/>
-                    </div>
-                    <div className="col text-end">
+                {currentUser ?
+                    <RowContainer className="row">
+                        <div className="col text-start">
+                            <Search/>
+                        </div>
+                        <div className="col text-end">
                             <Avatar/>
-                    </div>
-                </RowContainer>
+                        </div>
+                    </RowContainer> : null}
             </MainContainer>
+        </>
     );
 };
 
