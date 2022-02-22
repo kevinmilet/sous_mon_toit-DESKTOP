@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Modal, Table} from "react-bootstrap";
+import {Modal, Table} from "react-bootstrap";
 import Loader from "../Tools/Loader/Loader";
 import axios from "axios";
 import {Context} from "../../utils/context/Context";
@@ -21,7 +21,6 @@ const StaffAppointment = ({staffId, setShowStaffApptmtModal, showStaffApptmtModa
     const handleClose = () => setShowStaffApptmtModal(false);
 
     useEffect(() => {
-        // axios.get('http://localhost:8000/' + apiRoutes.staff_schedule + '/' + staffId).then(res => {
         axios.get(API_URL + apiRoutes.staff_schedule + '/' + staffId).then(res => {
             setData(res.data.sort((a,b) => {
                 if (a.scheduled_at < b.scheduled_at)

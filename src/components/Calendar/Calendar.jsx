@@ -176,7 +176,7 @@ const Calendar = ({
                     }}
                     customButtons={{
                         addEventButton: {
-                            text: <i class="fas fa-plus"/>,
+                            text: <i className="fas fa-plus"/>,
                             click: () => {
                                 setShowAddEventModal(true);
                             },

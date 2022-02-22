@@ -22,6 +22,7 @@
     "jquery": "^3.6.0",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",
+    "node-sass": "^7.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.1",
@@ -33,6 +34,7 @@
     "react-leaflet": "^3.2.5",
     "react-scripts": "5.0.0",
     "routes": "^2.1.0",
+    "sass": "^1.49.8",
     "styled-components": "^5.3.3",
     "yup": "^0.32.9"
   },
