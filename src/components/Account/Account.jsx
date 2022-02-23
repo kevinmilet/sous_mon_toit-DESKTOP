@@ -68,6 +68,16 @@ const Title = styled.h2`
     margin: 4rem 1rem .5rem .5rem;
 `
 
+const Login = styled.h5`
+    margin: 1rem 1rem 1.5rem .5rem;
+    font-weight: 700;
+    color: ${colors.primary};
+`
+
+const Span = styled.span`
+    font-weight: 400;
+`
+
 const Label = styled.label`
     font-weight: 700;
     color: ${colors.primary};
@@ -154,7 +164,9 @@ const Account = () => {
                                         <div className="row">
                                             <Title>{data.firstname} {data.lastname}</Title>
                                         </div>
-
+                                        <div className="row">
+                                            <Login>Login: <Span>{data.login}</Span></Login>
+                                        </div>
                                         <div className="row">
                                             <div className="col m-3">
                                                 <Label>Email</Label>
