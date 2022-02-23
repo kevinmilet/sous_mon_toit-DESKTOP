@@ -60,13 +60,17 @@ const Avatar = () => {
         })
     };
 
+    const handleClick = (id) => {
+        window.location.href = '/compte/' + id;
+    }
+
     return (
         loading ? <Loader/> :
         <div>
             <div className="dropdown">
                 <AvatarContainer src={ApiRoutes.AVATAR_BASE_URL + currentUser.avatar ?? avatarDefault} alt="User Avatar"/>
                 <div className="dropdown-content">
-                    <Link href="#">Mon compte</Link>
+                    <Link onClick={() => handleClick(currentUser.id)}>Mon compte</Link>
                     <Link onClick={logout}>Déconnexion</Link>
                 </div>
             </div>

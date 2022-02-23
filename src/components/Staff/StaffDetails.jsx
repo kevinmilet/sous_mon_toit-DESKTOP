@@ -32,7 +32,6 @@ const AvatarImg = styled.img`
 `
 
 const Title = styled.h2`
-    font-size: 1.5rem;
     font-weight: 700;
     color: ${colors.primary};
     margin: 4rem 1rem .5rem .5rem;
@@ -66,7 +65,6 @@ const StaffDetails = () => {
     useEffect(() => {
         // Get staff member datas
         axios.get(API_URL + ApiRoutes.staff + '/' + id).then(res => {
-            console.log(res.data);
             setData(res.data);
         }).catch(e => {
             console.log(e.message);

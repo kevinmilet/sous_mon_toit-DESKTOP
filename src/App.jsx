@@ -17,6 +17,7 @@ import StaffListView from "./screens/Staff/StaffListView";
 import AddEstateStep2View from './screens/Estates/AddEstateStep2View'
 import AddEstateStep3View from './screens/Estates/AddEstateStep3View'
 import StaffDetailsView from "./screens/Staff/StaffDetailsView";
+import AccountView from "./screens/AccountView/AccountView";
 
 const App = () => {
     const [apiUrl, setApiUrl] = useState(ApiRoutes.API_URL);
@@ -108,6 +109,9 @@ const App = () => {
                                     </Route>
                                     <Route exact path="/details-staff/:id">
                                         <StaffDetailsView/>
+                                    </Route>
+                                    <Route exact path="/compte/:id">
+                                        <AccountView/>
                                     </Route>
                                 </Router>
                             </div>
