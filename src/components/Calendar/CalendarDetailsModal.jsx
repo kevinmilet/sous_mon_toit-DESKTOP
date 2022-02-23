@@ -167,7 +167,6 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
 
     }
 
-
     const updateAppointment = (datas) => {
         axios.put(API_URL + ApiRoutes.update_event
             + `/${appointmentDatas.id}?id_appointment_type=${datas.id_appointment_type}&id_customer=${datas.id_customer}&id_estate=${datas.id_estate}&id_staff=${datas.id_staff}&notes=${datas.notes}&scheduled_at=${datas.scheduled_at}`).then(res => {
@@ -209,7 +208,6 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
                                 ...values, scheduled_at: scheduled_at
                             }
                             await new Promise(r => {
-                                console.log(data);
                                 updateAppointment(data);
                             })
                         }}

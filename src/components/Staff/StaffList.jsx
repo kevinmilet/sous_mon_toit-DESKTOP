@@ -6,9 +6,9 @@ import ApiRoutes from "../../utils/const/ApiRoutes";
 import {Context} from "../../utils/context/Context";
 import colors from "../../utils/styles/colors";
 import DataTable from 'react-data-table-component';
-import UpdateStaff from "./UpdateStaff";
 import StaffAppointments from "../Calendar/StaffAppointments";
-import {Modal} from "react-bootstrap";
+import AddStaffMember from "./AddStaffMember";
+import avatarDefault from '../../assets/img/user_default.png';
 
 const StafTableContainer = styled.div`
     margin-top: -100px;
@@ -80,7 +80,7 @@ const Button = styled.button`
     border: none
 `
 
-const StaffList = ({setShowStaffApptmtModal, setStaffId}) => {
+const StaffList = ({setShowStaffApptmtModal, setStaffId, setShowAddStaffModal}) => {
     const API_URL = useContext(Context).apiUrl;
     const [staffData, setStaffData] = useState({});
     const [loading, setLoading] = useState(true);
@@ -103,11 +103,15 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId}) => {
 
     const columns = [
         {
-            selector: row => <AvatarImg src={ApiRoutes.AVATAR_BASE_URL + row.avatar} alt={row.avatar}/>,
+            selector: row => <AvatarImg src={ApiRoutes.AVATAR_BASE_URL + row.avatar ?? avatarDefault} alt={row.avatar ?? avatarDefault}/>,
             sortable: true
         },
         {
             selector: row => row.firstname + ' ' + row.lastname,
+            sortable: true
+        },
+        {
+            selector: row => row.mail,
             sortable: true
         },
         {
@@ -148,20 +152,14 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId}) => {
 
     }, [API_URL])
 
-    // Expanded row
-    const ExpandedComponent = (props) => {
-        return(
-            <div>
-                <UpdateStaff data={props}/>
-            </div>
-        );
-    }
-
     // style perso pour datatable
     const customStyles = {
         rows: {
             style: {
-
+                '&:hover': {
+                    backgroundColor: colors.backgroundSecondary,
+                    cursor: 'pointer'
+                },
             },
         },
         header: {
@@ -219,10 +217,22 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId}) => {
         );
     }, [filterText, resetPaginationToggle]);
 
+    // Fonction au click sur une ligne du tableau
+    const handleClick = (id) => {
+        window.location.href = '/details-staff/' + id;
+    }
+
     const currentStaffAppointments = (staffId) => {
         return (
             <StaffAppointments staffId={staffId}/>
         );
+    }
+
+    const addStaffMember = () => {
+        setShowAddStaffModal(true)
+        return (
+            <AddStaffMember />
+        )
     }
 
     return (
@@ -230,11 +240,12 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId}) => {
             ? (<Loader/>)
             : (
                 <StafTableContainer>
-                    <AddStaff href="#" className='float-right col-2 btn'>Ajouter un collaborateur</AddStaff>
+                    <AddStaff onClick={() => addStaffMember()} className='float-right col-2 btn'>Ajouter un collaborateur</AddStaff>
                     <DataTable
                         title="Liste du personel"
                         columns={columns}
                         data={filteredItems}
+                        onRowClicked={(row) => handleClick(row.id)}
                         customStyles={customStyles}
                         pagination
                         paginationPerPage={5}
@@ -245,8 +256,6 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId}) => {
                         subHeaderComponent={subHeaderComponentMemo}
                         persistTableHead
                         noDataComponent="Pas de résultats"
-                        expandableRows
-                        expandableRowsComponent={ExpandedComponent}
                     >
                     </DataTable>
                 </StafTableContainer>
