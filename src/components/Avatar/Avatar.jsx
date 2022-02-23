@@ -1,11 +1,12 @@
-import React, {useContext} from 'react';
-import avatar from '../../assets/img/user_default.png'
+import React, {useContext, useEffect, useState} from 'react';
+import avatarDefault from '../../assets/img/user_default.png'
 import styled from "styled-components";
 import './avatar.scss';
 import colors from "../../utils/styles/colors";
 import axios from "axios";
 import {Context} from "../../utils/context/Context";
 import ApiRoutes from "../../utils/const/ApiRoutes";
+import Loader from "../Tools/Loader/Loader";
 
 const AvatarContainer = styled.img`
     width: 50px;
@@ -30,6 +31,23 @@ const Link = styled.a`
 
 const Avatar = () => {
     const API_URL = useContext(Context).apiUrl;
+    const [loading, setLoading] = useState(true);
+    const [currentUser, setCurrentUser] = useState(null);
+
+    useEffect(() => {
+        // Get current user
+        if (!currentUser) {
+            let id = localStorage.getItem('userId');
+            axios.get(API_URL + ApiRoutes.staff + '/' + id).then(res => {
+                setCurrentUser(res.data);
+            }).catch(e => {
+                console.log(e.message);
+            }).finally(() => {
+                setLoading(false);
+            })
+        }
+    }, [API_URL, currentUser]);
+
 
     const logout = () => {
         axios.post(API_URL + ApiRoutes.logout)
@@ -43,10 +61,10 @@ const Avatar = () => {
     };
 
     return (
+        loading ? <Loader/> :
         <div>
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <div className="dropdown">
-                <AvatarContainer src={avatar} alt="User Avatar"/>
+                <AvatarContainer src={ApiRoutes.AVATAR_BASE_URL + currentUser.avatar ?? avatarDefault} alt="User Avatar"/>
                 <div className="dropdown-content">
                     <Link href="#">Mon compte</Link>
                     <Link onClick={logout}>Déconnexion</Link>
