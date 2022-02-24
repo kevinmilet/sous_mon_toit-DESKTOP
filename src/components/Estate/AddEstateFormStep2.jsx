@@ -1,13 +1,13 @@
-import React, {useContext} from "react";
-import {Field, Form, Formik, useField} from "formik";
+import React, { useContext } from "react";
+import { Field, Form, Formik, useField } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../utils/styles/colors';
-import {Context} from "../../utils/context/Context";
-import {StyledBtnPrimary, StyledInput} from "../../utils/styles/Atoms";
-import {useParams} from 'react-router-dom';
+import { Context } from "../../utils/context/Context";
+import { StyledBtnPrimary, StyledInput } from "../../utils/styles/Atoms";
+import { useParams } from 'react-router-dom';
 import axios from "axios";
-// import ApiRoutes from "../../utils/const/ApiRoutes";
+import ApiRoutes from "../../utils/const/ApiRoutes";
 
 // Style du container
 const AddEstateContainer = styled.div`
@@ -62,17 +62,17 @@ const AddEstateFormStep2 = () => {
     const UpdateEstate = (values) => {
 
         console.log(values);
-        // axios.post(API_URL + ApiRoutes.update_estate, {value})
-        axios.put("http://localhost:8000/estates/update/" + id ,values)
-        .then(res => {
-            if(res.data[0].id){
-                window.location.href = '/ajout-bien/step-3/' + res.data[0].id;
-            }else{
-                console.log('Une erreur est survenu ...')
-            }
-        }).catch(error => {
-            console.log(error.response);
-        })
+        axios.put(API_URL + ApiRoutes.update_estate + "/" + id + "/step3", values)
+            // axios.put("http://localhost:8000/estates/update/" + id ,values)
+            .then(res => {
+                if (res.data[0].id) {
+                    window.location.href = '/ajout-bien/step-3/' + res.data[0].id;
+                } else {
+                    console.log('Une erreur est survenu ...')
+                }
+            }).catch(error => {
+                console.log(error.response);
+            })
     }
 
     return (
@@ -145,8 +145,8 @@ const AddEstateFormStep2 = () => {
                                                     label="Date de construction"
                                                     name="year_of_construction"
                                                     type="number"
-                                                    min="1800" 
-                                                    max="2099" 
+                                                    min="1800"
+                                                    max="2099"
                                                     step="1"
                                                 />
                                             </div>
