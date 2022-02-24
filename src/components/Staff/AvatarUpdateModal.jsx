@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {Modal} from "react-bootstrap";
 import {Context} from "../../utils/context/Context";
 import {StyledBtnPrimary, StyledBtnSecondary} from "../../utils/styles/Atoms";
@@ -7,16 +7,16 @@ import styled from "styled-components";
 import ApiRoutes from "../../utils/const/ApiRoutes";
 import avatarDefault from "../../assets/img/user_default.png";
 import * as Yup from "yup";
-import {Formik, Form} from "formik";
+import {Form, Formik} from "formik";
 import axios from "axios";
 
 const Container = styled.div`
     height: fit-content;
     text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 `
 
 const Img = styled.img`
@@ -29,7 +29,6 @@ const fileTypes = ["JPG", "JPEG", "PNG", "GIF"];
 
 const AvatarUpdateModal = ({setShowAvatarUpdateModal, showAvatarUpdateModal, userData}) => {
     const API_URL = useContext(Context).apiUrl;
-    const [loading, setLoading] = useState(true);
 
     const handleClose = () => setShowAvatarUpdateModal(false);
 
@@ -43,13 +42,15 @@ const AvatarUpdateModal = ({setShowAvatarUpdateModal, showAvatarUpdateModal, use
 
     // Insertion en bdd
     const insertImg = (values) => {
-        console.log(values.file);
         let formData = new FormData();
-        formData.append('avatar', values.file);
+        formData.append('file', values.file);
 
-        // axios.post(API_URL + ApiRoutes.upload_pictures + "/" + id, formData)
-        if (formData.get('avatar')) {
-            axios.put("http://localhost:8000/" + ApiRoutes.staff_update + '/' + userData.id, formData)
+        if (formData.get('file')) {
+            // axios.post(API_URL + ApiRoutes.staff_update + "/" + userData.id, formData)
+            axios.post("http://localhost:8000/" + ApiRoutes.staff_update + '/' + userData.id, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }})
                 .then(res => {
                     console.log(res);
                     // window.location.href = '/compte/' + userData.id;
@@ -75,7 +76,7 @@ const AvatarUpdateModal = ({setShowAvatarUpdateModal, showAvatarUpdateModal, use
                             file: Yup.mixed().required('La photo de profil est obligatoire'),
                         })}
                         onSubmit={async (values) => {
-                            await new Promise(r => {
+                            await new Promise(() => {
                                 insertImg(values);
                             })
                         }}
