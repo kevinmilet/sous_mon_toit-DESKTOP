@@ -155,7 +155,7 @@ const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSea
                                             value={props.values.buy_or_rent}
                                             onChange={props.handleChange}
                                         >
-                                            <Option value="Achat" key="Achat">Location</Option>
+                                            <Option value="Location" key="Location">Location</Option>
                                             <Option value="Achat" key="Achat">Achat</Option>
                                             <Option value="Vente" key="Vente">Vente</Option>
 

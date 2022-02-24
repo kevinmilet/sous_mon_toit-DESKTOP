@@ -1,6 +1,6 @@
 const API_URL = {
-    API_URL: 'http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/',
-    API_URL_DEV: 'http://localhost:8000/',
+    API_URL:  'http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/',
+    API_URL_DEV:'http://localhost:8000/',
     COVER_ESTATE_BASE_URL:'http://api-sousmontoit.am.manusien-ecolelamanu.fr/storage/app/public/pictures/estates/',
     AVATAR_BASE_URL:'http://api-sousmontoit.am.manusien-ecolelamanu.fr/storage/app/public/pictures/avatars/',
     login: 'login/staff',

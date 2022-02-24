@@ -1,16 +1,17 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../../utils/styles/modal.css";
-import {Modal, Stack} from "react-bootstrap";
-import {StyledBtnPrimary, StyledBtnSecondary, StyledInput} from "../../utils/styles/Atoms";
+import { Modal, Stack } from "react-bootstrap";
+import { StyledBtnPrimary, StyledBtnSecondary, StyledInput , StyledTextarea} from "../../utils/styles/Atoms";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import axios from "axios";
-import {Context} from "../../utils/context/Context";
+import { Context } from "../../utils/context/Context";
 import Loader from "../Tools/Loader/Loader";
-import {Formik} from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
-import {useParams} from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
+import moment from "moment";
+import DatePicker from 'react-date-picker';
 const Label = styled.label`
   font-weight: 700;
   color: ${colors.primary};
@@ -27,26 +28,32 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
     const [text, setText] = useState("");
     const [searchResult, setSearchResult] = useState();
     const { id } = useParams();
+    const [value, onChange] = useState(new Date());
+
 
 
     const editCustomer = values => {
         console.log(customerData.gender);
-
+       
         const gender = customerData.gender;
         const firstname = values.firstname;
         const lastname = values.lastname;
         const mail = values.mail;
         const phone = values.phone;
-        const first_met = 0;
+        const address = values.address;
+        const first_met = false;
+        const birthdate = values.birthdate;
+
         let datas = {};
 
+
         if (values.mail == customerData.mail) {
-            datas = { gender, firstname, lastname, phone, first_met };
+            datas = { gender, firstname, lastname, phone, first_met , birthdate};
         } else {
-            datas = { gender, firstname, lastname, phone, first_met, mail };
+            datas = { gender, firstname, lastname, phone, first_met, mail, birthdate };
         }
 
-        axios.put("http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer/s/update" + "/" + id, datas)
+        axios.put(API_URL + "customer/s/update/" + id, datas)
 
             .then(res => {
                 setOpenModalEditCustomer(false);
@@ -65,7 +72,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
 
     useEffect(() => {
         axios.get(
-            "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer/s/" + id
+            API_URL + "customer/s/" + id
         )
             .then((res) => {
                 setCustomerData(res.data);
@@ -93,6 +100,8 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
                         firstname: customerData.firstname,
                         mail: customerData.mail,
                         phone: customerData.phone,
+                        address: customerData.address,
+                        birthdate: customerData.birthdate
                     }}
                         validationSchema={Yup.object({
 
@@ -106,7 +115,10 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
                                 .email("Adresse mail invalide")
                                 .required("Champs requis"),
                             phone: Yup.string()
-                                .max(14, "14 caractères maximum")
+                                .max(14, "14 caractères maximum"),
+                            address: Yup.string()
+                                .max(500, "14 caractères maximum"),
+                            birthdate: Yup.date()    
                         })}
                         onSubmit={(values, { setSubmitting }) => {
                             setTimeout(() => {
@@ -123,6 +135,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
                                         <StyledInput type="text" onChange={props.handleChange} onBlur={props.handleBlur} value={props.values.lastname} name="lastname" />
                                         {props.errors.lastname && (<div id="feedback" className="text-danger">{props.errors.lastname}</div>)}
                                     </div>
+                                    
                                     <div className="my-2">
                                         <Label className="col-12">Prénom
                                         </Label>{" "}
@@ -136,11 +149,25 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
                                         <StyledInput type="mail" onChange={props.handleChange} onBlur={props.handleBlur} value={props.values.mail} name="mail" />
                                         {props.errors.mail && (<div id="feedback" className="text-danger">{props.errors.mail}</div>)}
                                     </div>
+                                    
+                                    <div className="my-2">
+                                        <Label className="col-12">Date de naissance
+                                        </Label>{" "}
+                                        <StyledInput type="date" onChange={props.handleChange} onBlur={props.handleBlur} value={props.values.birthdate} name="birthdate" />
+                                        {props.errors.birthdate && (<div id="feedback" className="text-danger">{props.errors.birthdate}</div>)}
+                                    </div>
+         
                                     <div className="my-2">
                                         <Label className="col-12">Tel
                                         </Label>{" "}
                                         <StyledInput type="text" onChange={props.handleChange} onBlur={props.handleBlur} value={props.values.phone} name="phone" />
                                         {props.errors.phone && (<div id="feedback" className="text-danger">{props.errors.phone}</div>)}
+                                    </div>
+                                    <div className="my-2">
+                                        <Label className="col-12">Addresse compléte 
+                                        </Label>{" "}
+                                        <StyledTextarea type="text" onChange={props.handleChange} onBlur={props.handleBlur} value={props.values.address} name="address" />
+                                        {props.errors.address && (<div id="feedback" className="text-danger">{props.errors.address}</div>)}
                                     </div>
                                     <Stack direction="horizontal" gap={2}>
                                         <StyledBtnPrimary type="submit" >Submit</StyledBtnPrimary>

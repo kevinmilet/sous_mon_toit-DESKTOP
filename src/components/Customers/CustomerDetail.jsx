@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import axios from "axios";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
@@ -10,6 +10,7 @@ import {FiEdit} from 'react-icons/fi';
 import {IoIosAdd} from 'react-icons/io';
 import moment from 'moment';
 import 'moment/locale/fr';
+import {Context} from "../../utils/context/Context";
 
 const NavAccount = styled.div`
   .navbar {
@@ -79,27 +80,28 @@ const columns = [
 const columnsSchedule = [
     {
         name: "Date",
-        width: "20%",
+        width: "25%",
         selector: (row) => moment(row.scheduled_at).format('DD-MM-YYYY'),
     },
     {
         name: "Heure",
-        width: "20%",
+        width: "25%",
         selector: (row) => moment(row.scheduled_at).format('HH:mm'),
     },
     {
         name: "Lieu",
-        width: "20%",
+        width: "25%",
         selector: (row) => row.appointment_type,
     },
     {
         name: "Agent",
-        width: "20%",
+        width: "25%",
         selector: (row) => row.staffFirstname + " " + row.staffLastname,
     },
 ];
 // const [openModalEditCustomer, setOpenModalEditCustomer] = useState(false);
 const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearch }) => {
+    const API_URL = useContext(Context).apiUrl;
     const [customerData, setCustomerData] = useState({});
     const [customerScheduleData, setCustomerScheduleData] = useState({});
     const [customerTypeData, setCustomerTypeData] = useState({});
@@ -200,7 +202,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
 
 
         axios.get(
-            "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer/s/" + id
+           API_URL + "customer/s/" + id
         )
             .then((res) => {
                 setCustomerData(res.data);
@@ -217,7 +219,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
 
         axios
             .get(
-                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer_search/s/customer/" + id
+                API_URL + "customer_search/s/customer/" + id
             )
             .then((res) => {
                 setCustomerSearchData(res.data);
@@ -234,7 +236,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
             .finally(() => {
                 axios
                     .get(
-                        "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/customer/" + id
+                         API_URL + "schedule/customer/" + id
                     )
                     .then((res) => {
                         setCustomerScheduleData(res.data);
@@ -245,7 +247,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                     .finally(() => {
                         axios
                             .get(
-                                "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/schedule/" + id
+                                API_URL + "schedule/" + id
                             )
                             .then((res) => {
                                 setCustomerScheduleData(res.data);

@@ -32,10 +32,12 @@ const ModalCreateCustomer = ({ openModalAddCustomer, setOpenModalAddCustomer, in
     const mail = values.mail;
     const gender = "H";
     const first_met = false;
+    const birthdate = values.birthdate;
     //Valeurs par défaut
+  
     const phone = values.phone;
 
-    axios.post(API_URL + ApiRoutes.create_customer, { lastname, firstname, mail, phone, gender, first_met })
+    axios.post(API_URL + ApiRoutes.create_customer, { lastname, firstname, mail, phone, gender, first_met, birthdate })
       
       .then(res => {
         setOpenModalAddCustomer(false);
@@ -65,6 +67,7 @@ const ModalCreateCustomer = ({ openModalAddCustomer, setOpenModalAddCustomer, in
           lastname: "",
           mail: "",
           phone: "",
+          birthdate :""
         }}
           validationSchema={Yup.object({
             gender: Yup.string()
@@ -123,6 +126,12 @@ const ModalCreateCustomer = ({ openModalAddCustomer, setOpenModalAddCustomer, in
                   <StyledInput type="mail" onChange={props.handleChange} onBlur={props.handleBlur} value={props.values.mail} name="mail" />
                   {props.errors.mail && (<div id="feedback" className="text-danger">{props.errors.mail}</div>)}
                 </div>
+                <div className="my-2">
+                                        <Label className="col-12">Date de naissance
+                                        </Label>{" "}
+                                        <StyledInput type="date" onChange={props.handleChange} onBlur={props.handleBlur} value={props.values.birthdate} name="birthdate" />
+                                        {props.errors.birthdate && (<div id="feedback" className="text-danger">{props.errors.birthdate}</div>)}
+                                    </div>
                 <div className="my-2">
                   <Label className="col-12">Tel
                   </Label>{" "}
