@@ -55,7 +55,6 @@ const Overlay = styled.div`
     left: 75%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
-    // text-align: center;
 `
 
 const OverlayImg = styled.img`
@@ -86,17 +85,7 @@ const Label = styled.label`
     margin-left: 10px;
 `
 
-const Icon = styled.i`
-    color: ${colors.primaryBtn};
-    font-size: 22px
-`
-
-const Button = styled.button`
-    border: none;
-    background-color: ${colors.backgroundPrimary}
-`
-
-const Account = ({showAvatarUpdateModal, setShowAvatarUpdateModal, setUserData}) => {
+const Account = ({setShowAvatarUpdateModal, setUserData}) => {
     const {id} = useParams();
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true);
@@ -167,10 +156,9 @@ const Account = ({showAvatarUpdateModal, setShowAvatarUpdateModal, setUserData})
                             await new Promise(r => {
                                 console.log(values);
                                 if (values.password === values.pwdConf) {
-                                    console.log('GOOD!!!')
                                     updateAccount(values);
                                 } else {
-                                    console.log('PAS GOOD!!!')
+                                    alert('Les mots de passe ne correspondent pas')
                                 }
 
                             })
