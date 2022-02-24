@@ -29,6 +29,7 @@
     "react-data-table-component": "^7.4.6",
     "react-dimmer": "^1.0.7",
     "react-dom": "^17.0.2",
+    "react-drag-drop-files": "^2.3.4",
     "react-formik-ui": "^5.5.4",
     "react-icons": "^4.3.1",
     "react-leaflet": "^3.2.5",

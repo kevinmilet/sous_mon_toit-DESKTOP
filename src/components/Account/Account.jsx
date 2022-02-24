@@ -7,12 +7,13 @@ import Loader from "../Tools/Loader/Loader";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import avatarDefault from "../../assets/img/user_default.png";
-import {StyledInput} from "../../utils/styles/Atoms";
+import editIcon from '../../assets/icons/editer.png';
+import {StyledBtnPrimary, StyledBtnSecondary, StyledInput} from "../../utils/styles/Atoms";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 
 const MainContainer = styled.div`
-    min-height: 550px;
+    height: 550px;
     margin-top: -100px;
     background-color: ${colors.backgroundPrimary};
     border-top-left-radius: 20px;
@@ -24,11 +25,12 @@ const MainContainer = styled.div`
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 `
 const ImgContainer = styled.div`
+    cursor: pointer;
     position: relative;
     width: 50%;
     margin: 2rem;
     &:hover .img {
-        opacity: 0.3;
+        opacity: 0.6;
     }
     &:hover .overlay {
         opacity: 1;
@@ -49,17 +51,16 @@ const Overlay = styled.div`
     transition: .5s ease;
     opacity: 0;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 45%;
+    left: 75%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     // text-align: center;
 `
 
 const OverlayImg = styled.img`
-    // padding: 16px 32px;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
 `
 
 const Title = styled.h2`
@@ -95,7 +96,7 @@ const Button = styled.button`
     background-color: ${colors.backgroundPrimary}
 `
 
-const Account = () => {
+const Account = ({showAvatarUpdateModal, setShowAvatarUpdateModal, setUserData}) => {
     const {id} = useParams();
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true);
@@ -109,8 +110,27 @@ const Account = () => {
         }).finally(() => {
             setLoading(false);
         })
-
     }, [API_URL, id]);
+
+    const goToHome = () => {
+        window.location.href = '/';
+    }
+
+    const updateAccount = (values) => {
+        axios.put(
+            API_URL +
+            ApiRoutes.staff_update +
+            `/${id}?mail=${values.mail}&phone=${values.phone}&password=${values.password}&pwdConf=${values.pwdConf}`).then(res => {
+                if (res.status === 200) {
+                    alert('Informations modifiées');
+                    goToHome();
+                } else {
+                    alert('Les informations n\'ont pas été modifiées');
+                }
+        }).catch(e => {
+            console.log(e.message);
+        })
+    }
     
     return (
 
@@ -135,11 +155,24 @@ const Account = () => {
                                 .max(14, 'Le téléphone doit comporter au maximum 14 charactères')
                                 .matches(/^[0-9\s\-.]{10,14}$/, 'Le format du téléphone est incorrect')
                                 .required('Le numéro de téléphone est obligatoire'),
+                            password: Yup.string()
+                                .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
+                                .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%&?,;:#()<>\'.\/\\_éèàùûêâôöëç ])([-+!*$@%&.,;:#()<>\'.\/\\_éèàùûêâôöëç \w]{8,})$/,
+                                    'Le format du mot de passe est incorrecte (min 8 char., 1 chiffre, 1 minuscule, 1 majuscule et 1 char. spécial'),
+                            pwdConf: Yup.string()
+                                .min(8, 'La confirmation doit contenir au moins 8 caractères')
+                                .oneOf([Yup.ref('password'), null], 'Les 2 mots de passe ne correspondent pas')
                         })}
                         onSubmit={async (values) => {
                             await new Promise(r => {
                                 console.log(values);
-                                //updateAccount(values);
+                                if (values.password === values.pwdConf) {
+                                    console.log('GOOD!!!')
+                                    updateAccount(values);
+                                } else {
+                                    console.log('PAS GOOD!!!')
+                                }
+
                             })
                         }}
                     >
@@ -152,11 +185,16 @@ const Account = () => {
                             <form>
                                 <div className="row">
                                     <div className="col-3">
-                                        <ImgContainer>
+                                        <ImgContainer onClick={() => {
+                                                setUserData(data);
+                                                setShowAvatarUpdateModal(true)
+                                        }}>
                                             <AvatarImg className="img" src={ApiRoutes.AVATAR_BASE_URL + data.avatar ?? avatarDefault}
-                                                       alt={data.avatar ?? avatarDefault}/>
+                                                       alt={data.avatar ?? avatarDefault}
+
+                                            />
                                             <Overlay className="overlay">
-                                                <OverlayImg src={avatarDefault}/>
+                                                <OverlayImg src={editIcon}/>
                                             </Overlay>
                                         </ImgContainer>
                                     </div>
@@ -167,7 +205,7 @@ const Account = () => {
                                         <div className="row">
                                             <Login>Login: <Span>{data.login}</Span></Login>
                                         </div>
-                                        <div className="row">
+                                        <div className="row mx-2">
                                             <div className="col m-3">
                                                 <Label>Email</Label>
                                                 <StyledInput type="email"
@@ -200,7 +238,7 @@ const Account = () => {
                                             </div>
                                         </div>
 
-                                        <div className="row">
+                                        <div className="row mx-2">
                                             <div className="col m-3">
                                                 <Label>Mot de passe</Label>
                                                 <StyledInput type="password"
@@ -218,8 +256,8 @@ const Account = () => {
                                             <div className="col m-3">
                                                 <Label>Confirmation</Label>
                                                 <StyledInput type="password"
-                                                             id="password_confirm"
-                                                             name="password_confirm"
+                                                             id="pwdConf"
+                                                             name="pwdConf"
                                                              className="form-control edit"
                                                              value={values.lastname}
                                                              onChange={handleChange}
@@ -227,42 +265,25 @@ const Account = () => {
                                                 <div className="error mt-2" style={{
                                                     color: "#E85A70",
                                                     fontStyle: 'italic'
-                                                }}>{errors.password_confirm ?? null}</div>
+                                                }}>{errors.pwdConf ?? null}</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/*<div className="row m-3">*/}
-                                {/*    <div className="col text-start mx-3">*/}
-                                {/*        <span>*/}
-                                {/*            <Button onClick={() => deleteStaff(data.id)}>*/}
-                                {/*                <Icon className="far fa-trash-alt m-2"/>*/}
-                                {/*            </Button>*/}
-                                {/*            <Button type="button" onClick={() => onEdit()}>*/}
-                                {/*                <Icon className="far fa-edit m-2"/>*/}
-                                {/*            </Button>*/}
-                                {/*        </span>*/}
-                                {/*        <span className="edit-link" style={{display: 'none'}}>*/}
-                                {/*            <Button variant="link"*/}
-                                {/*                    style={{color: "#4EA1D5", fontWeight: 700}}*/}
-                                {/*                    onClick={() => onCancel()}>*/}
-                                {/*            Annuler*/}
-                                {/*            </Button>*/}
-                                {/*            <Button variant="link"*/}
-                                {/*                    style={{color: "#4EA1D5", fontWeight: 700}}*/}
-                                {/*                    type="submit" onClick={handleSubmit}>*/}
-                                {/*            Sauvegarder*/}
-                                {/*            </Button>*/}
-                                {/*        </span>*/}
-                                {/*    </div>*/}
-                                {/*    <div className='col text-end mx-3'>*/}
-                                {/*        <StyledBtnSecondary type="button" className="mx-3"*/}
-                                {/*                            onClick={() => toLocation()}>*/}
-                                {/*            Annuler*/}
-                                {/*        </StyledBtnSecondary>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
+                                <div className="row mt-5 mb-2 mx-3">
+                                    <div className="col text-end">
+                                        <StyledBtnSecondary type="button" className="mx-3"
+                                                            onClick={() => goToHome()}>
+                                            Annuler
+                                        </StyledBtnSecondary>
+                                        <StyledBtnPrimary type="button" className="mx-3"
+                                                            onClick={handleSubmit}>
+                                            Modifier
+                                        </StyledBtnPrimary>
+                                    </div>
+
+                                </div>
                             </form>
                         )}
                     </Formik>
