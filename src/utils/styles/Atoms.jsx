@@ -48,7 +48,7 @@ export const StyledInput = styled.input`
     }
 `
 export const StyledTextarea = styled.textarea`
-    border-radius: 25px;
+    border-radius: 10px;
     resize: none;
     border: 2px solid ${colors.secondaryBtn};
     &:focus {

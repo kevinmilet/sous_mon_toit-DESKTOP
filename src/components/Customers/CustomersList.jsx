@@ -78,51 +78,51 @@ const Thead = styled.thead`
 const columns = [
   {
     name: "Nom/Prénom",
-    width: "20%",
+    width: "25%",
     selector: (row) =>row.lastname + " " + row.firstname,
   },
   {
     name: "Mail",
-    width: "20%",
+    width: "25%",
     selector: (row) => row.mail,
   },
   {
     name: "Téléphone",
-    width: "20%",
+    width: "25%",
     selector: (row) => row.phone,
   },
   {
     name: "N° client",
-    width: "10%",
+    width: "25%",
     selector: (row) => row.n_customer,
-  },
-  {
-    name: "",
-    width: "30%",
-    cell: (row) => (
-      <ListIcons>
-        {" "}
-        <Ul>
-          <a href={`/customer_detail/${row.id}`}>
-            <i className="far fa-eye"/>
-          </a>
-        </Ul>{" "}
-        <Ul>
-          <i className="fas fa-globe ml-2"/>
-        </Ul>
-        <Ul>
-          <i className="far fa-calendar"/>
-        </Ul>
-        <Ul>
-          <i className="far fa-hand-pointer"/>
-        </Ul>{" "}
-        <Ul>
-          <i className="fas fa-check"/>
-        </Ul>
-      </ListIcons>
+  }
+  // {
+  //   name: "",
+  //   width: "30%",
+  //   cell: (row) => (
+  //     <ListIcons>
+  //       {" "}
+  //       <Ul>
+  //         <a href={`/customer_detail/${row.id}`}>
+  //           <i className="far fa-eye"/>
+  //         </a>
+  //       </Ul>{" "}
+  //       <Ul>
+  //         <i className="fas fa-globe ml-2"/>
+  //       </Ul>
+  //       <Ul>
+  //         <i className="far fa-calendar"/>
+  //       </Ul>
+  //       <Ul>
+  //         <i className="far fa-hand-pointer"/>
+  //       </Ul>{" "}
+  //       <Ul>
+  //         <i className="fas fa-check"/>
+  //       </Ul>
+  //     </ListIcons>
       
-    ),
-  },
+  //   ),
+  // },
 ];
 
 const CustomersList = ({setOpenModalAddCustomer}) => {
@@ -165,7 +165,7 @@ const CustomersList = ({setOpenModalAddCustomer}) => {
   useEffect(() => {
     axios
       .get(
-        "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/customer/s"
+        API_URL + "customer/s"
       )
       .then((res) => {
         setCustomersData(res.data);
