@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import {Context} from "../../utils/context/Context";
 import {StyledBtnPrimary, StyledBtnSecondary} from "../../utils/styles/Atoms";
@@ -9,7 +9,6 @@ import avatarDefault from "../../assets/img/user_default.png";
 import * as Yup from "yup";
 import {Form, Formik} from "formik";
 import axios from "axios";
-import {toast} from "react-toastify";
 
 const Container = styled.div`
     height: fit-content;
@@ -31,7 +30,12 @@ const fileTypes = ["JPG", "JPEG", "PNG", "GIF"];
 const AvatarUpdateModal = ({setShowAvatarUpdateModal, showAvatarUpdateModal, userData}) => {
     const API_URL = useContext(Context).apiUrl;
     const handleClose = () => setShowAvatarUpdateModal(false);
-    const notify = () => toast("Wow so easy!");
+
+    const [crop, setCrop] = useState({ x: 0, y: 0 })
+    const [zoom, setZoom] = useState(1)
+    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+        console.log(croppedArea, croppedAreaPixels)
+    }, [])
 
     //Changement de l'aperçu de l'image
     const changeImg = (target) => {
@@ -47,15 +51,17 @@ const AvatarUpdateModal = ({setShowAvatarUpdateModal, showAvatarUpdateModal, use
         formData.append('file', values.file);
 
         if (formData.get('file')) {
-            // axios.post(API_URL + ApiRoutes.staff_update + "/" + userData.id, formData)
-            axios.post("http://localhost:8000/" + ApiRoutes.staff_update + '/' + userData.id, formData, {
+            axios.post(API_URL + ApiRoutes.staff_update + "/" + userData.id, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }})
+            // axios.post("http://localhost:8000/" + ApiRoutes.staff_update + '/' + userData.id, formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data'
+            //     }})
                 .then(res => {
                     console.log(res);
-                    notify();
-                    // window.location.href = '/compte/' + userData.id;
+                    window.location.href = '/compte/' + userData.id;
                 }).catch(error => {
                 console.log(error.response);
             })
