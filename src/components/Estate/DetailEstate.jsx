@@ -10,6 +10,7 @@ import cross from '../../assets/icons/times-circle-regular.svg';
 import ModalUpdateEquipment from "./updateForm/ModalUpdateEquipment";
 import ModalUpdateCaract from "./updateForm/ModalUpdateCaract";
 import ModalUpdateInfo from "./updateForm/ModalUpdateInfo";
+import ModalUpdateLoca from "./updateForm/ModalUpdateLoca";
 
 import { useParams } from 'react-router-dom';
 
@@ -57,7 +58,7 @@ const Icon = styled.i`
     font-size: 22px
 `
 
-const DetailEstate = ({ setShowUpdateEquipEstateModal, setShowUpdateCaractEstateModal, setShowUpdateInfoEstateModal, setEstateId }) => {
+const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateModal, setShowUpdateCaractEstateModal, setShowUpdateInfoEstateModal, setEstateId }) => {
 
     const { id } = useParams();
     const [oneEstateData, setOneEstateData] = useState({})
@@ -132,6 +133,11 @@ const DetailEstate = ({ setShowUpdateEquipEstateModal, setShowUpdateCaractEstate
             <ModalUpdateInfo estateId={estateId} />
         );
     }
+    const modalUpdateLoca = (estateId) => {
+        return (
+            <ModalUpdateLoca estateId={estateId} />
+        );
+    }
     return (
 
         loading ? <Loader /> :
@@ -141,7 +147,7 @@ const DetailEstate = ({ setShowUpdateEquipEstateModal, setShowUpdateCaractEstate
                     <p className="col-8 d-flex justify-content-between align-items-center"> <b>{oneEstateData.estate_type_name}</b><b className="text-danger">Référence: {oneEstateData.reference}</b> <b>{oneEstateData.title}</b><b className="text-danger">Prix: {oneEstateData.price}€</b></p>
                 </div>
                 <div id='divButton'>
-                    <A className=' btn' style={{backgroundColor: colors.secondaryBtn}} onClick={(e) => { ChangeOnglet("informations", e.target) }} >Informations</A>
+                    <A className=' btn' style={{ backgroundColor: colors.secondaryBtn }} onClick={(e) => { ChangeOnglet("informations", e.target) }} >Informations</A>
                     <A className=' btn' onClick={(e) => { ChangeOnglet("proprietaire", e.target) }} >Propriétaire</A>
                     <A className=' btn' onClick={(e) => { ChangeOnglet("photos", e.target) }} >Photos</A>
                     <A className=' btn' onClick={(e) => { ChangeOnglet("localisation", e.target) }} >Localisation</A>
@@ -162,18 +168,20 @@ const DetailEstate = ({ setShowUpdateEquipEstateModal, setShowUpdateCaractEstate
                                 </a>
                             </div>
                         </div>
-                        <p>{oneEstateData.buy_or_rent}</p>
-                        <p>{oneEstateData.estate_type_name} </p>
-                        <p><b>{oneEstateData.title}</b></p>
-                        <p>Disponibilité : <b>{oneEstateData.disponibility}</b></p>
-                        <div className="col-6">
+                        <div className="col-4">
                             <H3>Général</H3>
+                            <p>Type de contrat : <b>{oneEstateData.buy_or_rent}</b></p>
+                            <p>Type de biens : <b>{oneEstateData.estate_type_name}</b></p>
                             <p>Année de construction : <b>{oneEstateData.year_of_construction ? oneEstateData.year_of_construction.substring(0, 4) : ""}</b></p>
+                            <p>Disponibilité : <b>{oneEstateData.disponibility}</b></p>
+                        </div>
+                        <div className="col-4">
+                            <H3>Surface</H3>
                             <p>Surface habitable au sol : <b>{oneEstateData.living_surface}m²</b></p>
-                            <p>Surface habitable ( selon Loi Carrez ) : <b>{oneEstateData.carrez_law}m²</b></p>
+                            <p>Surface habitable (Loi Carrez) : <b>{oneEstateData.carrez_law}m²</b></p>
                             <p>Superficie du terrain : <b>{oneEstateData.land_surface}m²</b></p>
                         </div>
-                        <div className="col-6">
+                        <div className="col-4">
                             <H3>Aspects financiers</H3>
                             <p>Prix : <b>{oneEstateData.price}€</b></p>
                             <p>Taxe foncière : <b>{oneEstateData.property_charge}€</b></p>
@@ -182,14 +190,14 @@ const DetailEstate = ({ setShowUpdateEquipEstateModal, setShowUpdateCaractEstate
                         </div>
                         <div className='col-12'>
                             <H3>Description</H3>
-                            <p>{oneEstateData.description}</p>
+                            <p>Titre : <b>{oneEstateData.title}</b></p>
+                            <p>Description : {oneEstateData.description}</p>
                         </div>
                     </div>
                     {/* Propriétaire */}
                     <div className="row mt-3" style={{ display: "none" }} id='proprietaire'>
                         <H2>Propriétaire</H2>
                         <div className='col-12'>
-                            <H3>Propriétaire</H3>
                             <h4>{oneEstateData.lastname} {oneEstateData.firstname}</h4>
                             <p>Numéro Client: {oneEstateData.n_customer} </p>
                             <p>Mail : {oneEstateData.mail}</p>
@@ -211,9 +219,18 @@ const DetailEstate = ({ setShowUpdateEquipEstateModal, setShowUpdateCaractEstate
                     </div>
                     {/* Localisation */}
                     <div className="row mt-3" style={{ display: "none" }} id='localisation'>
-                        <H2>Localisation</H2>
-                        <div className="col-6 d-flex justify-content-center align-items-center">
-                            <b style={{ display: "inline-block" }}>{oneEstateData.address} {oneEstateData.zipcode} {oneEstateData.city}, FRANCE</b>
+                        <div className='col-12'>
+                            <div className='row justify-content-between'>
+                                <div className="col-8"><H2 className="">Localisation</H2></div>
+                                <a
+                                    className="col-2 btn"
+                                    onClick={() => modalUpdateLoca(setEstateId(oneEstateData.id), setShowUpdateLocaEstateModal(true))}
+                                >
+                                    Modifier <Icon className="far fa-edit" />
+                                </a>
+                            </div>
+                        </div>                        <div className="col-6 d-flex justify-content-center align-items-center">
+                            <b style={{ display: "inline-block" }}>{oneEstateData.estateAddress} {oneEstateData.zipcode} {oneEstateData.city}, FRANCE</b>
                         </div>
                         <div className="col-6 d-flex justify-content-center align-items-center">
                             {/*Carte*/}
@@ -222,7 +239,7 @@ const DetailEstate = ({ setShowUpdateEquipEstateModal, setShowUpdateCaractEstate
                                 height="250"
                                 loading="lazy"
                                 allowFullScreen
-                                src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyBqKdClbH20Svws6E7CB6sOcTr237Ryf1M&zoom=14&center=" + oneEstateData.estate_latitude + "%2C" + oneEstateData.estate_longitude + "&q=" + oneEstateData.address.replace(' ', '+') + "," + oneEstateData.city.replace(' ', '+') + ",France"}
+                                src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyBqKdClbH20Svws6E7CB6sOcTr237Ryf1M&zoom=14&center=" + oneEstateData.estate_latitude + "%2C" + oneEstateData.estate_longitude + "&q=" + oneEstateData.estateAddress.replace(' ', '+') + "," + oneEstateData.city.replace(' ', '+') + ",France"}
                             ></iframe>
                         </div>
                     </div>

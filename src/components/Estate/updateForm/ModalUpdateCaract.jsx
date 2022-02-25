@@ -8,7 +8,7 @@ import { Field, Form, Formik, useField } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../../utils/styles/colors';
-import { StyledBtnPrimary, StyledInput } from "../../../utils/styles/Atoms";
+import { StyledBtnPrimary, StyledInput, StyledBtnSecondary } from "../../../utils/styles/Atoms";
 
 const ScrollDiv = styled.div`
     height:70vh;
@@ -83,35 +83,38 @@ const ModalUpdateCaract = ({ estateId, setShowUpdateCaractEstateModal, showUpdat
                 {(loading) ?
                     <Loader /> : (
                         <>
-                            <Modal.Body>
-                                <Formik
-                                    initialValues={{
-                                        nb_rooms: data.nb_rooms,
-                                        nb_bedrooms: data.nb_bedrooms,
-                                        nb_bathrooms: data.nb_bathrooms,
-                                        nb_sanitary: data.nb_sanitary,
-                                        nb_toilet: data.nb_toilet,
-                                        nb_kitchen: data.nb_kitchen,
-                                        nb_garage: data.nb_garage,
-                                        nb_parking: data.nb_parking,
-                                        nb_balcony: data.nb_balcony,
-                                        type_kitchen: data.type_kitchen,
-                                        heaters: data.heaters,
-                                    }}
-                                    validationSchema={Yup.object({
 
-                                    })}
-                                    onSubmit={async (values, { setSubmitting }) => {
-                                        await new Promise(r => setTimeout(r, 500));
-                                        setSubmitting(false);
-                                        UpdateEstate(values);
-                                    }}
-                                >
-                                    {({ handleChange, values }) => (
-                                        <Form>
-                                            <div className='text-center mb-3'>
-                                                <H2>Modifier les caractéristiques</H2>
-                                            </div>
+                            <Formik
+                                initialValues={{
+                                    nb_rooms: data.nb_rooms,
+                                    nb_bedrooms: data.nb_bedrooms,
+                                    nb_bathrooms: data.nb_bathrooms,
+                                    nb_sanitary: data.nb_sanitary,
+                                    nb_toilet: data.nb_toilet,
+                                    nb_kitchen: data.nb_kitchen,
+                                    nb_garage: data.nb_garage,
+                                    nb_parking: data.nb_parking,
+                                    nb_balcony: data.nb_balcony,
+                                    type_kitchen: data.type_kitchen,
+                                    heaters: data.heaters,
+                                }}
+                                validationSchema={Yup.object({
+
+                                })}
+                                onSubmit={async (values, { setSubmitting }) => {
+                                    await new Promise(r => setTimeout(r, 500));
+                                    setSubmitting(false);
+                                    UpdateEstate(values);
+                                }}
+                            >
+                                {({ handleChange, values }) => (
+                                    <Form>
+                                        <Modal.Header>
+                                            <Modal.Title style={{ color: colors.secondary, fontWeight: "bold" }}>
+                                                Modifier les caractéristiques
+                                            </Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
                                             <div className="row">
                                                 <div className="col-6">
                                                     <MyTextInput
@@ -173,16 +176,18 @@ const ModalUpdateCaract = ({ estateId, setShowUpdateCaractEstateModal, showUpdat
                                                     />
                                                 </div>
                                             </div>
-                                            <div className='text-end m-3'>
-                                                <StyledBtnPrimary type="submit" className="btn">Enregistrer les informations</StyledBtnPrimary>
-                                                <button type="button" className="btn mx-3" onClick={handleClose}>
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <div className='text-end'>
+                                                <StyledBtnPrimary type="submit" className="btn">Enregistrer</StyledBtnPrimary>
+                                                <StyledBtnSecondary type="button" className="btn ms-3" onClick={handleClose}>
                                                     Annuler
-                                                </button>
+                                                </StyledBtnSecondary>
                                             </div>
-                                        </Form>
-                                    )}
-                                </Formik>
-                            </Modal.Body>
+                                        </Modal.Footer>
+                                    </Form>
+                                )}
+                            </Formik>
                         </>
                     )}
             </Modal>
