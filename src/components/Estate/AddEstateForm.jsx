@@ -181,8 +181,8 @@ const AddEstateForm = () => {
         axios.defaults.headers.common = {
             Authorization: `Bearer ${localStorage["token"]}`,
         };
-        // axios.post(API_URL + ApiRoutes.create_estate, { id_estate_type , id_customer, title, buy_or_rent, address, city, zipcode , estate_longitude ,estate_latitude})
-            axios.post("http://localhost:8000/estates/create", { id_estate_type , id_customer, title, buy_or_rent, address, city, zipcode , estate_longitude ,estate_latitude})
+        axios.post(API_URL + ApiRoutes.create_estate, { id_estate_type , id_customer, title, buy_or_rent, address, city, zipcode , estate_longitude ,estate_latitude})
+            // axios.post("http://localhost:8000/estates/create", { id_estate_type , id_customer, title, buy_or_rent, address, city, zipcode , estate_longitude ,estate_latitude})
             .then(res => {
                 if(res.data[0].id){
                     window.location.href = '/ajout-bien/step-2/' + res.data[0].id;

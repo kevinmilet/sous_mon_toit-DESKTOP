@@ -88,8 +88,8 @@ const AddEstateFormStep3 = () => {
         formData.append('file2', values.file2);
         formData.append('file3', values.file3);
 
-        // axios.post(API_URL + ApiRoutes.upload_pictures + "/" + id, formData)
-        axios.post("http://localhost:8000/estates_pictures/upload/" + id, formData)
+        axios.post(API_URL + ApiRoutes.upload_pictures + "/" + id, formData)
+        // axios.post("http://localhost:8000/estates_pictures/upload/" + id, formData)
             .then(res => {
                 console.log(res);
                 window.location.href = '/detail-biens/' + id;
