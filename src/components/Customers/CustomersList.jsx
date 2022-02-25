@@ -149,7 +149,7 @@ const CustomersList = ({ setOpenModalAddCustomer }) => {
     rows: {
       style: {
         '&:hover': {
-          backgroundColor: colors.secondaryBtn,
+          backgroundColor: colors.backgroundSecondary,
           cursor: 'pointer'
         },
       },
