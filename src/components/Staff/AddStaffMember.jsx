@@ -21,7 +21,7 @@ const Label = styled.label`
     margin-left: 10px;
 `
 
-const AddStaffMember = ({showAddStaffModal, setShowAddStaffModal}) => {
+const AddStaffMember = ({showAddStaffModal, setShowAddStaffModal, setShowMessageModal, setMessageContent, setAction}) => {
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
     const [functionList, setFunctionList] = useState({});
@@ -50,12 +50,9 @@ const AddStaffMember = ({showAddStaffModal, setShowAddStaffModal}) => {
     const createStaffMember = (data) => {
         // axios.post('http://localhost:8000/' + ApiRoutes.staff_create, data).then(res => {
         axios.post(API_URL + ApiRoutes.staff_create, data).then(res => {
-            console.log(res)
-            // console.log(res.data);
-            alert('Collaborateur enregistré. Voici le mot de passe provisoire. Pensez à le changer : ' + res.data.tmp_pwd);
             setTmpPwd(res.data.tmp_pwd);
-            // à changer
-            window.location.reload();
+            setShowMessageModal(true);
+            setMessageContent('Collaborateur enregistré. Voici le mot de passe provisoire. Pensez à le changer : ' + res.data.tmp_pwd);
         }).catch(e => {
             console.log(e.message)
         })

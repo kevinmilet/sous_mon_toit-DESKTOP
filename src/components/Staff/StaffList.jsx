@@ -80,7 +80,7 @@ const Button = styled.button`
     border: none
 `
 
-const StaffList = ({setShowStaffApptmtModal, setStaffId, setShowAddStaffModal}) => {
+const StaffList = ({setShowStaffApptmtModal, setStaffId, setShowAddStaffModal, setShowMessageModal, setMessageContent}) => {
     const API_URL = useContext(Context).apiUrl;
     const [staffData, setStaffData] = useState({});
     const [loading, setLoading] = useState(true);
@@ -223,7 +223,8 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId, setShowAddStaffModal}) 
         if (role === '1' || role === '2' ) {
             window.location.href = '/details-staff/' + id;
         } else {
-            alert('Vous n\'êtes pas autorisé à accéder à cette fonctionnalité')
+            setShowMessageModal(true);
+            setMessageContent('Vous n\'êtes pas autorisé à accéder à cette fonctionnalité');
         }
     }
 

@@ -85,7 +85,7 @@ const Label = styled.label`
     margin-left: 10px;
 `
 
-const Account = ({setShowAvatarUpdateModal, setUserData}) => {
+const Account = ({setShowAvatarUpdateModal, setUserData, setShowMessageModal, setMessageContent, setAction}) => {
     const {id} = useParams();
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true);
@@ -101,12 +101,7 @@ const Account = ({setShowAvatarUpdateModal, setUserData}) => {
         })
     }, [API_URL, id]);
 
-    const goToHome = () => {
-        window.location.href = '/';
-    }
-
     const updateAccount = (values) => {
-        console.log(values);
         let requestPwd = '';
         if (values.password && values.pwdConf) {
             requestPwd = `&password=${values.password}&pwdConf=${values.pwdConf}`;
@@ -116,10 +111,11 @@ const Account = ({setShowAvatarUpdateModal, setUserData}) => {
             ApiRoutes.staff_update +
             `/${id}?mail=${values.mail}&phone=${values.phone}` + requestPwd).then(res => {
                 if (res.status === 200) {
-                    alert('Informations modifiées');
-                    goToHome();
+                    setShowMessageModal(true);
+                    setMessageContent('Informations modifiées');
                 } else {
-                    alert('Les informations n\'ont pas été modifiées');
+                    setShowMessageModal(true);
+                    setMessageContent('les informations n\'ont pas été modifiées');
                 }
         }).catch(e => {
             console.log(e.message);
@@ -159,7 +155,6 @@ const Account = ({setShowAvatarUpdateModal, setUserData}) => {
                         })}
                         onSubmit={async (values) => {
                             await new Promise(r => {
-                                console.log(values);
                                 if (values.password === values.pwdConf) {
                                     updateAccount(values);
                                 } else {
@@ -267,7 +262,7 @@ const Account = ({setShowAvatarUpdateModal, setUserData}) => {
                                 <div className="row mt-5 mb-2 mx-3">
                                     <div className="col text-end">
                                         <StyledBtnSecondary type="button" className="mx-3"
-                                                            onClick={() => goToHome()}>
+                                                            onClick={() => setAction()}>
                                             Annuler
                                         </StyledBtnSecondary>
                                         <StyledBtnPrimary type="submit" className="mx-3"

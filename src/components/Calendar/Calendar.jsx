@@ -38,6 +38,9 @@ const Calendar = ({
                       setShowAddEventModal,
                       setInfos,
                       setStaffList,
+                      setShowMessageModal,
+                      setMessageContent,
+                      setData
 }) => {
     const API_URL = useContext(Context).apiUrl;
     const today = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -91,8 +94,9 @@ const Calendar = ({
             let id = datas.event.id;
             let values= moment(datas.event.start).format('YYYY-MM-DD HH:mm:ss');
             if (values < today) {
-                alert('Impossible de déplacer un rendez-vous à une date inférieure!');
                 datas.revert();
+                setShowMessageModal(true);
+                setMessageContent('Impossible de déplacer un rendez-vous à une date inférieure!');
             } else {
                 axios.put(API_URL + apiRoutes.update_event + `/${id}?scheduled_at=${values}`).then(res => {
                    console.log('Evénement déplacé avec succès')

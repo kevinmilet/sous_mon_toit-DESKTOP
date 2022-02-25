@@ -65,7 +65,7 @@ const LinkItem = styled.a`
 `
 
 SearchPanel.propTypes = {children: PropTypes.node};
-const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventModal, appointmentDatas, staffList}) => {
+const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventModal, appointmentDatas, staffList, setShowMessageModal, setMessageContent, setAction}) => {
 
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
@@ -127,12 +127,12 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
         if (confirm('Voulez-vous vraiment supprimer ce rendez-vous?')) {
             axios.delete(API_URL + apiRoutes.delete_apptmt + apptmtId).then(
                 res => {
-                    console.log(res.status);
-                    alert('Rendez-vous supprimé');
-                    window.location.reload();
+                    setShowMessageModal(true);
+                    setMessageContent('Rendez-vous supprimé');
                 }).catch(e => {
                 console.error(e.message)
-                alert('Le rendez-vous n\'a pas pu être supprimé');
+                setShowMessageModal(true);
+                setMessageContent('Le rendez-vous n\'a pas pu être supprimé');
             })
             showDetailledEventModal(false)
         }
@@ -170,9 +170,8 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
     const updateAppointment = (datas) => {
         axios.put(API_URL + ApiRoutes.update_event
             + `/${appointmentDatas.id}?id_appointment_type=${datas.id_appointment_type}&id_customer=${datas.id_customer}&id_estate=${datas.id_estate}&id_staff=${datas.id_staff}&notes=${datas.notes}&scheduled_at=${datas.scheduled_at}`).then(res => {
-            alert('Rendez-vous modifié')
-            // à changer
-            window.location.reload();
+            setShowMessageModal(true);
+            setMessageContent('Rendez-vous modifié');
         }).catch(e => {
             console.log(e.message)
         })

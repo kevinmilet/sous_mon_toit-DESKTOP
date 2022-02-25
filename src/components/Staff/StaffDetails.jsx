@@ -54,7 +54,7 @@ const Button = styled.button`
     background-color: ${colors.backgroundPrimary}
 `
 
-const StaffDetails = () => {
+const StaffDetails = ({setShowMessageModal, setMessageContent, setAction}) => {
     const {id} = useParams();
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true);
@@ -87,10 +87,6 @@ const StaffDetails = () => {
         })
     }, [API_URL, id]);
 
-    const toLocation = () => {
-        window.location.href = '/staff/';
-    }
-
     const onEdit = () => {
         let inputs = document.getElementsByClassName('edit');
         for (let i = 0; i < inputs.length; i++) {
@@ -113,10 +109,11 @@ const StaffDetails = () => {
             ApiRoutes.staff_update +
             `/${id}?lastname=${values.lastname}&firstname=${values.firstname}&mail=${values.mail}&phone=${values.phone}&id_role=${values.id_role}&id_function=${values.id_function}`).then(res => {
                 if (res.status === 200) {
-                    alert('Collaborateur modifié')
-                    toLocation();
+                    setShowMessageModal(true);
+                    setMessageContent('L\'utilisateur a été modifié');
                 } else {
-                    alert('L\'utilisateur n\'a pas été modifé');
+                    setShowMessageModal(true);
+                    setMessageContent('L\'utilisateur n\'a pas été modifé');
                 }
         }).catch(e => {
             console.log(e.message);
@@ -128,12 +125,13 @@ const StaffDetails = () => {
         // eslint-disable-next-line no-restricted-globals
         if (confirm('Voulez-vous vraiment supprimer ce membre du personel?')) {
             axios.delete(API_URL + ApiRoutes.staff_delete + '/' + id).then(res => {
-                console.log(res.status);
-                alert('Membre du personel supprimé');
-                toLocation();
+                setShowMessageModal(true);
+                setMessageContent('Membre du personel supprimé');
+                setAction();
             }).catch(e => {
                 console.error(e.message)
-                alert('Le membre du personel n\'a pas pu être supprimé');
+                setShowMessageModal(true);
+                setMessageContent('Le membre du personel n\'a pas pu être supprimé');
             })
         }
     }
@@ -338,7 +336,7 @@ const StaffDetails = () => {
                                     </div>
                                     <div className='col text-end mx-3'>
                                         <StyledBtnSecondary type="button" className="mx-3"
-                                                            onClick={() => toLocation()}>
+                                                            onClick={() => setAction()}>
                                             Annuler
                                         </StyledBtnSecondary>
                                     </div>

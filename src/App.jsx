@@ -18,11 +18,14 @@ import AddEstateStep2View from './screens/Estates/AddEstateStep2View'
 import AddEstateStep3View from './screens/Estates/AddEstateStep3View'
 import StaffDetailsView from "./screens/Staff/StaffDetailsView";
 import AccountView from "./screens/AccountView/AccountView";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
     const [apiUrl, setApiUrl] = useState(ApiRoutes.API_URL);
     const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showToast, setShowToast] = useState(false);
 
     axios.defaults.headers.common = {
 
@@ -35,6 +38,9 @@ const App = () => {
         }, function (error) {
             if (error.response) {
                 if (error.response.status === 401) {
+                    if (error.response.data.message === 'Wrong login or password') {
+                        return error.response;
+                    }
                     localStorage.clear()
                     return window.location = '/' // redirect to login page
                 }
@@ -55,9 +61,18 @@ const App = () => {
         return <></>;
     }
 
+    // function Notify() {
+    //     toast.info("Photo de profil modifiée",{
+    //         position: "top-right",
+    //         autoClose: 5000,
+    //         toastId: '1'
+    //     });
+    // }
+
     return (
-        <Context.Provider value={{apiUrl, setApiUrl}}>
+        <Context.Provider value={{apiUrl, setApiUrl, showToast, setShowToast}}>
             <div className="App">
+                {/*<ToastContainer />*/}
                 <div className="container-fluid m-0">
                     <div className="row gx-0">
                         <div className="col-md-2 m-0">

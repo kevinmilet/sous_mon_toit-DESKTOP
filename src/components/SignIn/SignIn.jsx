@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useState} from 'react';
 import styled from "styled-components";
 import colors from '../../utils/styles/colors';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import ApiRoutes from "../../utils/const/ApiRoutes";
 import { StyledBtnPrimary, StyledInput } from "../../utils/styles/Atoms";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import {Alert} from "react-bootstrap";
 
 const ConnexionForm = styled.form`
     background-color: ${colors.backgroundPrimary};
@@ -41,16 +42,22 @@ const SignIn = () => {
         }
     })
 
+    const [error, setError] = useState(false);
+
     const login = (values) => {
         console.log(values);
         axios.post(API_URL + ApiRoutes.login, values)
             .then(res => {
-                console.log(res.data)
-                localStorage['token'] = res.data.token; // enregistrement du token dans le local storage
-                localStorage['userId'] = res.data.user.id; // enregistrement de l'id user
-                localStorage['userRole'] = res.data.user.id_role // enregisrtrement du role
-                window.location.href = '/';
-                // Redirection ??!
+                console.log(res);
+                if (res.status !== 401) {
+                    localStorage['token'] = res.data.token; // enregistrement du token dans le local storage
+                    localStorage['userId'] = res.data.user.id; // enregistrement de l'id user
+                    localStorage['userRole'] = res.data.user.id_role // enregisrtrement du role
+                    window.location.href = '/';
+                    // Redirection ??!
+                } else {
+                    setError(true);
+                }
             }).catch(error => {
                 console.log(error.message);
             })
@@ -90,6 +97,14 @@ const SignIn = () => {
 
                 <StyledBtnPrimary type="submit" className="btn">Connexion</StyledBtnPrimary>
             </ConnexionForm>
+            {
+                error ?
+                    <div className="m-3">
+                        <Alert variant="danger">
+                            Login et/ou mot de passe incorrecte
+                        </Alert>
+                    </div> : null
+            }
         </div>
     );
 };

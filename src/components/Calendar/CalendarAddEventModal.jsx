@@ -61,7 +61,7 @@ const Button = styled.button`
     background-color: ${colors.backgroundPrimary}
 `
 
-const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffList, infos}) => {
+const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffList, infos, setShowMessageModal, setMessageContent, setAction}) => {
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
     const [apptmtTypes, setApptmtTypes] = useState();
@@ -127,9 +127,8 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
 
     const insertAppointment = (datas) => {
         axios.post(API_URL + ApiRoutes.create_apptmt, datas).then(res => {
-            alert('Rendez-vous enregistré')
-            // à changer
-            window.location.reload();
+            setShowMessageModal(true);
+            setMessageContent('Rendez-vous enregistré');
         }).catch(e => {
             console.log(e.message)
         })
