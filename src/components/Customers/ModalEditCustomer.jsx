@@ -1,15 +1,16 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../../utils/styles/modal.css";
-import {Modal, Stack} from "react-bootstrap";
-import {StyledBtnPrimary, StyledBtnSecondary, StyledInput, StyledTextarea} from "../../utils/styles/Atoms";
+import { Modal, Stack } from "react-bootstrap";
+import { StyledBtnPrimary, StyledBtnSecondary, StyledInput , StyledTextarea} from "../../utils/styles/Atoms";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import axios from "axios";
-import {Context} from "../../utils/context/Context";
+import { Context } from "../../utils/context/Context";
 import Loader from "../Tools/Loader/Loader";
-import {Formik} from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import moment from "moment";
 
 const Label = styled.label`
   font-weight: 700;
@@ -170,7 +171,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
                                     </div>
                                     <Stack direction="horizontal" gap={2}>
                                         <StyledBtnPrimary type="submit" >Submit</StyledBtnPrimary>
-                                        <StyledBtnSecondary onClick={() => setOpenModalEditCustomer(false)} className="ms-auto">Annuler</StyledBtnSecondary>
+                                        <StyledBtnSecondary type="button" onClick={() => setOpenModalEditCustomer(false)} className="ms-auto">Annuler</StyledBtnSecondary>
                                     </Stack>
                                 </form>)
                         }
