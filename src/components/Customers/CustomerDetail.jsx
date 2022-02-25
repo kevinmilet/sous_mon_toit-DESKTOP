@@ -48,14 +48,14 @@ const columns = [
         selector: (row) => row.buy_or_rent + "/" + row.estate_type_name,
     },
     {
-        name: "Surface",
-        width: "10%",
+        name: "Surface (m²)",
+        width: "15%",
         selector: (row) => row.surface_min,
     },
     {
         name: "Budget",
-        width: "15%",
-        selector: (row) => row.budget_max,
+        width: "20%",
+        selector: (row) => row.budget_max + " EUR",
     },
     {
         name: "Pièce",
@@ -64,12 +64,12 @@ const columns = [
     },
     {
         name: "Localité",
-        width: "20%",
+        width: "15%",
         selector: (row) => row.city,
     },
     {
-        name: "Rayon",
-        width: "10%",
+        name: "Rayon (Km²)",
+        width: "15%",
         selector: (row) => row.search_radius,
 
 
@@ -322,7 +322,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                 </div>
             </div>
             <div className="row justify-content-center mt-3 ">
-                <div className="card col-10" >
+                <div className="card col-12" >
                     <TitleH3 className="card-title text-center text-decoration-underline">Rendez-vous</TitleH3>
 
                     <DataTable
@@ -336,7 +336,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                         data={schedule}
                     />
                 </div>
-                <div className="card col-10 mt-3" >
+                <div className="card col-12 mt-3" >
                     <div>
                         <TitleH3 className="card-title text-center text-decoration-underline">Recherche</TitleH3>
                         <IoIosAdd size={40} style={{ position: 'absolute', right: 0, marginTop: '-50px' }} onClick={() => { setOpenModalAddCustomerSearch(true) }} />

@@ -140,7 +140,7 @@ const ModalCreateCustomer = ({ openModalAddCustomer, setOpenModalAddCustomer, in
                 </div>
                 <Stack direction="horizontal" gap={2}>
                   <StyledBtnPrimary type="submit">Submit</StyledBtnPrimary>
-                  <StyledBtnSecondary onClick={() => setOpenModalAddCustomer(false)} className="ms-auto">Annuler</StyledBtnSecondary>
+                  <StyledBtnSecondary type="button" onClick={() => setOpenModalAddCustomer(false)} className="ms-auto">Annuler</StyledBtnSecondary>
                 </Stack>
               </form>)
           }

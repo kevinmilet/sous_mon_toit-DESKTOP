@@ -83,7 +83,7 @@ const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSea
     return (
         <Modal show={openModalAddCustomerSearch} backdrop="static" keyboard={false} centered="centered">
             <div className="text-center mb-3">
-                <h2>Ajouter un client</h2>
+                <h2>Ajout recherche client</h2>
             </div>
             <Modal.Body >
                 <Formik initialValues={{
@@ -130,7 +130,7 @@ const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSea
                 </div> */}
 
                                 <div className="col-6">
-                                    <AddEstateLabel className="form-label">Type de bien</AddEstateLabel><br />
+                                    <Label className="form-label">Type de bien</Label><br />
                                     <div className="">
                                         <select name="id_estate_type"
                                             style={{ borderRadius: "50px", border: "2px solid" + colors.secondaryBtn }}
@@ -146,7 +146,7 @@ const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSea
                                     </div>
                                 </div>
                                 <div className="col-6">
-                                    <AddEstateLabel className="form-label">Achat/Vente</AddEstateLabel><br />
+                                    <Label className="form-label">Achat/Vente</Label><br />
                                     <div className="">
                                         <select name="buy_or_rent"
                                             style={{ borderRadius: "50px", border: "2px solid" + colors.secondaryBtn }}
@@ -195,7 +195,7 @@ const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSea
                                 </div>
                                 <Stack direction="horizontal" gap={2}>
                                     <StyledBtnPrimary type="submit">Submit</StyledBtnPrimary>
-                                    <StyledBtnSecondary onClick={() => setOpenModalAddCustomerSearch(false)} className="ms-auto">Annuler</StyledBtnSecondary>
+                                    <StyledBtnSecondary type="button" onClick={() => setOpenModalAddCustomerSearch(false)} className="ms-auto">Annuler</StyledBtnSecondary>
                                 </Stack>
                             </form>)
                     }

@@ -11,7 +11,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useParams } from 'react-router-dom';
 import moment from "moment";
-import DatePicker from 'react-date-picker';
+
 const Label = styled.label`
   font-weight: 700;
   color: ${colors.primary};
@@ -171,7 +171,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
                                     </div>
                                     <Stack direction="horizontal" gap={2}>
                                         <StyledBtnPrimary type="submit" >Submit</StyledBtnPrimary>
-                                        <StyledBtnSecondary onClick={() => setOpenModalEditCustomer(false)} className="ms-auto">Annuler</StyledBtnSecondary>
+                                        <StyledBtnSecondary type="button" onClick={() => setOpenModalEditCustomer(false)} className="ms-auto">Annuler</StyledBtnSecondary>
                                     </Stack>
                                 </form>)
                         }
