@@ -108,7 +108,7 @@ const StaffDetails = () => {
     }
 
     const updateStaffMember = (values) => {
-        axios.put(
+        axios.post(
             API_URL +
             ApiRoutes.staff_update +
             `/${id}?lastname=${values.lastname}&firstname=${values.firstname}&mail=${values.mail}&phone=${values.phone}&id_role=${values.id_role}&id_function=${values.id_function}`).then(res => {
@@ -316,7 +316,7 @@ const StaffDetails = () => {
                                 <div className="row m-3">
                                     <div className="col text-start mx-3">
                                         <span>
-                                            <Button onClick={() => deleteStaff(data.id)}>
+                                            <Button type="button" onClick={() => deleteStaff(data.id)}>
                                                 <Icon className="far fa-trash-alt m-2"/>
                                             </Button>
                                             <Button type="button" onClick={() => onEdit()}>
@@ -326,7 +326,7 @@ const StaffDetails = () => {
                                         <span className="edit-link" style={{display: 'none'}}>
                                             <Button variant="link"
                                                     style={{color: "#4EA1D5", fontWeight: 700}}
-                                                    onClick={() => onCancel()}>
+                                                    type="button" onClick={() => onCancel()}>
                                             Annuler
                                             </Button>
                                             <Button variant="link"

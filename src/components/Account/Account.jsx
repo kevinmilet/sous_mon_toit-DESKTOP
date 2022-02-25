@@ -106,10 +106,15 @@ const Account = ({setShowAvatarUpdateModal, setUserData}) => {
     }
 
     const updateAccount = (values) => {
-        axios.put(
+        console.log(values);
+        let requestPwd = '';
+        if (values.password && values.pwdConf) {
+            requestPwd = `&password=${values.password}&pwdConf=${values.pwdConf}`;
+        }
+        axios.post(
             API_URL +
             ApiRoutes.staff_update +
-            `/${id}?mail=${values.mail}&phone=${values.phone}&password=${values.password}&pwdConf=${values.pwdConf}`).then(res => {
+            `/${id}?mail=${values.mail}&phone=${values.phone}` + requestPwd).then(res => {
                 if (res.status === 200) {
                     alert('Informations modifiées');
                     goToHome();
@@ -265,7 +270,7 @@ const Account = ({setShowAvatarUpdateModal, setUserData}) => {
                                                             onClick={() => goToHome()}>
                                             Annuler
                                         </StyledBtnSecondary>
-                                        <StyledBtnPrimary type="button" className="mx-3"
+                                        <StyledBtnPrimary type="submit" className="mx-3"
                                                             onClick={handleSubmit}>
                                             Modifier
                                         </StyledBtnPrimary>

@@ -404,12 +404,13 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
                                 <div className="row mt-3">
                                     <div className="col text-start">
                         <span>
-                            <Button onClick={() => deleteAppointment(appointmentDatas.id)}><Icon
+                            <Button type="button" onClick={() => deleteAppointment(appointmentDatas.id)}><Icon
                                 className="far fa-trash-alt m-2"/></Button>
-                            <Button onClick={() => onEditClick()}><Icon className="far fa-edit m-2"/></Button>
+                            <Button type="button" onClick={() => onEditClick()}><Icon className="far fa-edit m-2"/></Button>
                         </span>
                                         <span className="edit-link" style={{display: 'none'}}>
                             <Button variant="link"
+                                    type="button"
                                     style={{color: "#4EA1D5", fontWeight: 700}}
                                     onClick={() => onCancelClick()}>
                                 Annuler

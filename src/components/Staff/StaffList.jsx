@@ -84,6 +84,7 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId, setShowAddStaffModal}) 
     const API_URL = useContext(Context).apiUrl;
     const [staffData, setStaffData] = useState({});
     const [loading, setLoading] = useState(true);
+    const role = localStorage.getItem('userRole');
 
     const FilterComponent = ({filterText, onFilter, onClear}) => (
         <>
@@ -219,7 +220,11 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId, setShowAddStaffModal}) 
 
     // Fonction au click sur une ligne du tableau
     const handleClick = (id) => {
-        window.location.href = '/details-staff/' + id;
+        if (role === '1' || role === '2' ) {
+            window.location.href = '/details-staff/' + id;
+        } else {
+            alert('Vous n\'êtes pas autorisé à accéder à cette fonctionnalité')
+        }
     }
 
     const currentStaffAppointments = (staffId) => {
@@ -240,7 +245,10 @@ const StaffList = ({setShowStaffApptmtModal, setStaffId, setShowAddStaffModal}) 
             ? (<Loader/>)
             : (
                 <StafTableContainer>
-                    <AddStaff onClick={() => addStaffMember()} className='float-right col-2 btn'>Ajouter un collaborateur</AddStaff>
+                    {(role === '1' || role === '2') ?
+                        <AddStaff type="button" onClick={() => addStaffMember()} className='float-right col-2 btn'>Ajouter un
+                            collaborateur</AddStaff> : null
+                    }
                     <DataTable
                         title="Liste du personel"
                         columns={columns}

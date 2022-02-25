@@ -361,7 +361,7 @@ const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffLi
                                         </div>
                                         <div className="col">
                                             <div className='text-end m-3'>
-                                                <StyledBtnSecondary className="m-3"
+                                                <StyledBtnSecondary type="button" className="m-3"
                                                                     onClick={() => setShowAddEventModal(false)}>
                                                     Annuler
                                                 </StyledBtnSecondary>

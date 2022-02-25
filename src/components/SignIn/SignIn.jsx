@@ -45,9 +45,10 @@ const SignIn = () => {
         console.log(values);
         axios.post(API_URL + ApiRoutes.login, values)
             .then(res => {
-                console.log(res)
+                console.log(res.data)
                 localStorage['token'] = res.data.token; // enregistrement du token dans le local storage
                 localStorage['userId'] = res.data.user.id; // enregistrement de l'id user
+                localStorage['userRole'] = res.data.user.id_role // enregisrtrement du role
                 window.location.href = '/';
                 // Redirection ??!
             }).catch(error => {
