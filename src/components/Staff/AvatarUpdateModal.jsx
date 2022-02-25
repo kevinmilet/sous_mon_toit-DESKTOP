@@ -9,6 +9,7 @@ import avatarDefault from "../../assets/img/user_default.png";
 import * as Yup from "yup";
 import {Form, Formik} from "formik";
 import axios from "axios";
+import {toast} from "react-toastify";
 
 const Container = styled.div`
     height: fit-content;
@@ -29,8 +30,8 @@ const fileTypes = ["JPG", "JPEG", "PNG", "GIF"];
 
 const AvatarUpdateModal = ({setShowAvatarUpdateModal, showAvatarUpdateModal, userData}) => {
     const API_URL = useContext(Context).apiUrl;
-
     const handleClose = () => setShowAvatarUpdateModal(false);
+    const notify = () => toast("Wow so easy!");
 
     //Changement de l'aperçu de l'image
     const changeImg = (target) => {
@@ -53,6 +54,7 @@ const AvatarUpdateModal = ({setShowAvatarUpdateModal, showAvatarUpdateModal, use
                 }})
                 .then(res => {
                     console.log(res);
+                    notify();
                     // window.location.href = '/compte/' + userData.id;
                 }).catch(error => {
                 console.log(error.response);
@@ -107,7 +109,7 @@ const AvatarUpdateModal = ({setShowAvatarUpdateModal, showAvatarUpdateModal, use
                         <StyledBtnSecondary type="button" className="mx-3" onClick={handleClose}>
                             Annuler
                         </StyledBtnSecondary>
-                        <StyledBtnPrimary type="submit" className="mx-3" onClick={handleSubmit}>
+                        <StyledBtnPrimary type="submit" className="mx-3" onClick={() => {handleSubmit(); handleClose()}}>
                             Sauvegarder
                         </StyledBtnPrimary>
                     </div>
