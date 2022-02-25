@@ -128,15 +128,15 @@ const columns = [
         sortable: true,
     },
     {
-        name: 'Ville',
-        selector: row => row.city,
+        name: 'Code postal',
+        selector: row => row.zipcode + " " + row.city,
         sortable: true,
     },
-    {
-        name: 'Code Postal',
-        selector: row => row.zipcode,
-        sortable: true,
-    },
+    // {
+    //     name: 'Code Postal',
+    //     selector: row => row.zipcode,
+    //     sortable: true,
+    // },
 ];
 
 const EstateTable = () => {
