@@ -235,7 +235,7 @@ const EstateTable = () => {
                     title="Liste des biens"
                     columns={columns}
                     data={filteredItems}
-                    onRowClicked={(row) => handleClick(row.id)}
+                    onRowClicked={(row) => handleClick(row.id_estate)}
                     customStyles={customStyles}
                     pagination
                     paginationPerPage={8}

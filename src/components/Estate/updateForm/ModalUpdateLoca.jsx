@@ -4,17 +4,12 @@ import Loader from "../../Tools/Loader/Loader";
 import axios from "axios";
 import { Context } from "../../../utils/context/Context";
 import apiRoutes from "../../../utils/const/ApiRoutes";
-import { Field, Form, Formik, useField, isEmptyArray } from "formik";
+import { Form, Formik, useField, isEmptyArray } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../../utils/styles/colors';
 import { StyledBtnPrimary, StyledInput, StyledBtnSecondary } from "../../../utils/styles/Atoms";
 
-const ScrollDiv = styled.div`
-    height:70vh;
-    padding:20px;
-    overflow:auto
-`
 const SearchResultDiv = styled.div`
     padding:0.5%;
     border: 0px solid black;
@@ -26,18 +21,15 @@ const SearchResultDiv = styled.div`
         cursor: pointer;
     }
 `
-const H2 = styled.h2`
-    color: ${colors.secondary};
-    font-weight: bold;
-`
-const AddEstateH1 = styled.h1`
-    color: ${colors.secondary};
-`
 const AddEstateH4 = styled.h4`
     color: ${colors.secondaryBtn};
 `
 const AddEstateLabel = styled.label`
     color: ${colors.secondary};
+`
+const ModifSuccess = styled.p`
+    font-size: 1rem;
+    display: none;
 `
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -59,7 +51,6 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
 
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState({})
     const handleClose = () => setShowUpdateLocaEstateModal(false);
 
     const [searchAddressResult, setSearchAddressResult] = useState(null);
@@ -73,7 +64,6 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
 
     useEffect(() => {
         axios.get(API_URL + apiRoutes.estates + '/' + estateId).then(res => {
-            setData(res.data)
             console.log(res.data)
             setAddress(res.data.estateAddress);
             setCity(res.data.city);
@@ -142,7 +132,13 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
             // axios.put("http://localhost:8000/estates/update/" + id ,values)
             .then(res => {
                 console.log(res.data)
-                window.location.href = '/detail-biens/' + estateId;
+                // Message de succès
+                window.scrollTo(0, 0);
+                document.getElementById('modifLocaSuccess').style.cssText = "display: flex;";
+                document.getElementById('modifLocaSuccess').innerHTML = "Localisation modifié avec succès !";
+                setTimeout(() => {
+                    window.location.href = '/detail-biens/' + estateId;
+                }, 2000);
             }).catch(error => {
                 console.log(error.response);
             })
@@ -174,6 +170,7 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
                                         </Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
+                                        <ModifSuccess className="text-center p-4 alert-success" id="modifLocaSuccess" />
                                         {/* ADRESSE  */}
                                         <div className="px-3">
                                             <AddEstateH4>Localisation</AddEstateH4>

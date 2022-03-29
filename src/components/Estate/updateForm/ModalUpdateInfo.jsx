@@ -15,13 +15,6 @@ const ScrollDiv = styled.div`
     padding:20px;
     overflow:auto
 `
-const H2 = styled.h2`
-    color: ${colors.secondary};
-    font-weight: bold;
-`
-const AddEstateH1 = styled.h1`
-    color: ${colors.secondary};
-`
 const AddEstateH4 = styled.h4`
     color: ${colors.secondaryBtn};
 `
@@ -39,6 +32,10 @@ const Textarea = styled.textarea`
         outline: none;
         -webkit-box-shadow: 0px 0px 2px 2px rgba(232,90,112,0.65); 
         box-shadow: 0px 0px 2px 2px rgba(232,90,112,0.65);
+`
+const ModifSuccess = styled.p`
+    font-size: 1rem;
+    display: none;
 `
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -110,8 +107,13 @@ const ModalUpdateInfo = ({ estateId, setShowUpdateInfoEstateModal, showUpdateInf
             // axios.put("http://localhost:8000/estates/update/" + id ,values)
             .then(res => {
                 console.log(res.data);
-                window.location.href = '/detail-biens/' + estateId;
-
+                // Message de succès
+                window.scrollTo(0, 0);
+                document.getElementById('modifInfoSuccess').style.cssText = "display: flex;";
+                document.getElementById('modifInfoSuccess').innerHTML = "Information modifié avec succès !";
+                setTimeout(() => {
+                    window.location.href = '/detail-biens/' + estateId;
+                }, 2000);
             }).catch(error => {
                 console.log(error.response);
             })
@@ -165,6 +167,7 @@ const ModalUpdateInfo = ({ estateId, setShowUpdateInfoEstateModal, showUpdateInf
                                             </Modal.Title>
                                         </Modal.Header>
                                         <Modal.Body>
+                                            <ModifSuccess className="text-center p-4 alert-success" id="modifInfoSuccess" />
                                             <ScrollDiv>
                                                 <div className="row">
                                                     <div className="col-4">

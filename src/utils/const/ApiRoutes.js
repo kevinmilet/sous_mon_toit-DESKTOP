@@ -12,6 +12,7 @@ const API_URL = {
     create_estate:'estates/create',
     update_estate:'estates/update',
     upload_pictures:'estates_pictures/upload',
+    delete_pictures:'estates_pictures/delete',
     estates: 'estates',
     estates_types: 'estates_types',
     estates_rnd: 'estates/rnd',

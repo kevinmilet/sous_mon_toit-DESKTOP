@@ -11,7 +11,7 @@ import ModalUpdateEquipment from "./updateForm/ModalUpdateEquipment";
 import ModalUpdateCaract from "./updateForm/ModalUpdateCaract";
 import ModalUpdateInfo from "./updateForm/ModalUpdateInfo";
 import ModalUpdateLoca from "./updateForm/ModalUpdateLoca";
-
+import ModalUpdatePhoto from "./updateForm/ModalUpdatePhoto";
 import { useParams } from 'react-router-dom';
 
 const DivDetail = styled.div`
@@ -44,6 +44,10 @@ const A = styled.a`
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 `
+const ModifSuccess = styled.p`
+    font-size: 1rem;
+    display: none;
+`
 
 const H3 = styled.h3`
     color: ${colors.secondaryBtn}
@@ -58,11 +62,10 @@ const Icon = styled.i`
     font-size: 22px
 `
 
-const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateModal, setShowUpdateCaractEstateModal, setShowUpdateInfoEstateModal, setEstateId }) => {
+const DetailEstate = ({ setShowUpdatePhotoEstateModal, setShowUpdateLocaEstateModal, setShowUpdateEquipEstateModal, setShowUpdateCaractEstateModal, setShowUpdateInfoEstateModal, setEstateId }) => {
 
     const { id } = useParams();
     const [oneEstateData, setOneEstateData] = useState({})
-    const [pictureCover, setPictureCover] = useState({})
     const [picturesList, setPicturesList] = useState({})
     const [loading, setLoading] = useState(true);
     const API_URL = useContext(Context).apiUrl;
@@ -82,31 +85,41 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
                 console.log(error.message)
             }).finally(() => {
 
-                //Image de couverture du bien
-                // axios.get("http://localhost:8000/estates_pictures/cover/" + id)
-                axios.get(API_URL + ApiRoutes.estates_cover + "/" + id)
+                // liste des images du bien
+                // axios.get("http://localhost:8000/estates_pictures/" + id)
+                axios.get(API_URL + ApiRoutes.estates_pictures + "/" + id)
                     .then(res => {
-                        setPictureCover(res.data[0])
+                        setPicturesList(res.data)
                     }).catch(error => {
                         console.log(error.message)
                     }).finally(() => {
-
-                        // liste des images du bien
-                        // axios.get("http://localhost:8000/estates_pictures/" + id)
-                        axios.get(API_URL + ApiRoutes.estates_pictures + "/" + id)
-                            .then(res => {
-                                setPicturesList(res.data)
-                            }).catch(error => {
-                                console.log(error.message)
-                            }).finally(() => {
-                                setLoading(false)
-                            })
-
+                        setLoading(false)
                     })
+
             })
 
     }, [API_URL, id])
 
+    // Suppression d'une image
+    const DeleteImg = (pictureId) => {
+
+        axios.delete(API_URL + ApiRoutes.delete_pictures + "/" + pictureId)
+            // axios.post("http://localhost:8000/estates_pictures/delete/" + id, formData)
+            .then(res => {
+                console.log(res);
+                // Message de succès
+                window.scrollTo(0, 0);
+                document.getElementById('deleteImgSuccess').style.cssText = "display: flex;";
+                document.getElementById('deleteImgSuccess').innerHTML = "Photo effacé avec succès !";
+                setTimeout(() => {
+                    window.location.href = '/detail-biens/' + id;
+                }, 4000);
+            }).catch(error => {
+                console.log(error.response);
+            })
+    }
+
+    // Fonction de changement d'onglet
     const ChangeOnglet = (id, button) => {
         // Masquage des divs
         var divIds = ["informations", "proprietaire", "photos", "localisation", "caracteristiques", "equipement"]
@@ -118,6 +131,8 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
         //Affichage de la div
         document.getElementById(id).style.cssText = "display: flex;";
     }
+
+    //Fonction d'affichage des modals
     const modalUpdateEquipment = (estateId) => {
         return (
             <ModalUpdateEquipment estateId={estateId} />
@@ -138,11 +153,17 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
             <ModalUpdateLoca estateId={estateId} />
         );
     }
+    const modalUpdatePhoto = (estateId) => {
+        return (
+            <ModalUpdatePhoto estateId={estateId} />
+        );
+    }
+
     return (
 
         loading ? <Loader /> :
-
             <DivDetail className="container col-12 mx-auto p-4">
+                <ModifSuccess className="text-center p-4 alert-success" id="deleteImgSuccess" />
                 <div className="row justify-content-between align-items-baseline px-3">
                     <p className="col-8 d-flex justify-content-between align-items-center"> <b>{oneEstateData.estate_type_name}</b><b className="text-danger">Référence: {oneEstateData.reference}</b> <b>{oneEstateData.title}</b><b className="text-danger">Prix: {oneEstateData.price}€</b></p>
                 </div>
@@ -160,12 +181,12 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
                         <div className='col-12'>
                             <div className='row justify-content-between'>
                                 <div className="col-8"><H2 className="">Informations</H2></div>
-                                <a
+                                <button
                                     className="col-2 btn"
                                     onClick={() => modalUpdateInfo(setEstateId(oneEstateData.id), setShowUpdateInfoEstateModal(true))}
                                 >
                                     Modifier <Icon className="far fa-edit" />
-                                </a>
+                                </button>
                             </div>
                         </div>
                         <div className="col-4">
@@ -207,14 +228,31 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
                     </div>
                     {/* Photos */}
                     <div className="row mt-3 align-items-center" style={{ display: "none" }} id='photos'>
-                        <H2 className="">Photos</H2>
-                        <div className='col-4'>
-                            <img src={ApiRoutes.COVER_ESTATE_BASE_URL + (pictureCover ? pictureCover.name : "estate_default.jpg")} className="img-fluid img-thumbnail" alt={oneEstateData.title} />
+                        <div className='col-12'>
+                            <div className='row justify-content-between'>
+                                <div className="col-8"><H2 className="">Photo</H2></div>
+                            </div>
                         </div>
-                        <div className='col-8'>
-                            {picturesList.map((picture, index) =>
-                                <img key={index} src={ApiRoutes.COVER_ESTATE_BASE_URL + (picture.name ?? "estate_default.jpg")} className="col-4 col-lg-2 img-fluid img-thumbnail" alt={oneEstateData.title} />
-                            )}
+                        <div className='col-12'>
+                            <div className='row d-flex'>
+                                {picturesList.map((picture, index) =>
+                                    <div className='col-4' key={index}>
+                                        <img src={ApiRoutes.COVER_ESTATE_BASE_URL + (picture.name ?? "estate_default.jpg")} className="img-fluid" alt={oneEstateData.title} />
+                                        <p style={{ color: colors.secondary }}>
+                                            {picture.cover === 1 ? "Image de couverture" : <button className='btn btn-danger' onClick={(e) => { DeleteImg(picture.id) }}>Supprimer</button>}
+                                        </p>
+                                    </div>
+                                )}
+                                <div className='col-4 d-flex justify-content-center align-items-center'>
+                                    <button
+                                        className="btn border rounded"
+                                        style={{ color: colors.secondary }}
+                                        onClick={() => modalUpdatePhoto(setEstateId(oneEstateData.id), setShowUpdatePhotoEstateModal(true))}
+                                    >
+                                        Ajouter une photo <Icon className="fas fa-plus" />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {/* Localisation */}
@@ -222,14 +260,15 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
                         <div className='col-12'>
                             <div className='row justify-content-between'>
                                 <div className="col-8"><H2 className="">Localisation</H2></div>
-                                <a
+                                <button
                                     className="col-2 btn"
                                     onClick={() => modalUpdateLoca(setEstateId(oneEstateData.id), setShowUpdateLocaEstateModal(true))}
                                 >
                                     Modifier <Icon className="far fa-edit" />
-                                </a>
+                                </button>
                             </div>
-                        </div>                        <div className="col-6 d-flex justify-content-center align-items-center">
+                        </div>
+                        <div className="col-6 d-flex justify-content-center align-items-center">
                             <b style={{ display: "inline-block" }}>{oneEstateData.estateAddress} {oneEstateData.zipcode} {oneEstateData.city}, FRANCE</b>
                         </div>
                         <div className="col-6 d-flex justify-content-center align-items-center">
@@ -237,6 +276,7 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
                             <iframe
                                 width="400"
                                 height="250"
+                                title='carte de localisation'
                                 loading="lazy"
                                 allowFullScreen
                                 src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyBqKdClbH20Svws6E7CB6sOcTr237Ryf1M&zoom=14&center=" + oneEstateData.estate_latitude + "%2C" + oneEstateData.estate_longitude + "&q=" + oneEstateData.estateAddress.replace(' ', '+') + "," + oneEstateData.city.replace(' ', '+') + ",France"}
@@ -248,12 +288,12 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
                         <div className='col-12'>
                             <div className='row justify-content-between'>
                                 <div className="col-8"><H2 className="">Caractéristiques</H2></div>
-                                <a
+                                <button
                                     className="col-2 btn"
                                     onClick={() => modalUpdateCaract(setEstateId(oneEstateData.id), setShowUpdateCaractEstateModal(true))}
                                 >
                                     Modifier <Icon className="far fa-edit" />
-                                </a>
+                                </button>
                             </div>
                         </div>
                         <div className="col-6">
@@ -280,12 +320,12 @@ const DetailEstate = ({ setShowUpdateLocaEstateModal, setShowUpdateEquipEstateMo
                         <div className='col-12'>
                             <div className='row justify-content-between'>
                                 <div className="col-8"><H2 className="">Equipement</H2></div>
-                                <a
+                                <button
                                     className="col-2 btn"
                                     onClick={() => modalUpdateEquipment(setEstateId(oneEstateData.id), setShowUpdateEquipEstateModal(true))}
                                 >
                                     Modifier <Icon className="far fa-edit" />
-                                </a>
+                                </button>
                             </div>
                         </div>
                         <div className='col-6'>
