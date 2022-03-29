@@ -10,7 +10,7 @@ import Loader from "../Tools/Loader/Loader";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useParams } from 'react-router-dom';
-import moment from "moment";
+
 
 const Label = styled.label`
   font-weight: 700;
@@ -24,11 +24,11 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
     const [errorMail, setErrorMail] = useState("");
-    const [errorPassword, setErrorPassword] = useState("");
-    const [text, setText] = useState("");
-    const [searchResult, setSearchResult] = useState();
+    // const [errorPassword, setErrorPassword] = useState("");
+    // const [text, setText] = useState("");
+    // const [searchResult, setSearchResult] = useState();
     const { id } = useParams();
-    const [value, onChange] = useState(new Date());
+    // const [value, onChange] = useState(new Date());
 
 
 
@@ -40,14 +40,14 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
         const lastname = values.lastname;
         const mail = values.mail;
         const phone = values.phone;
-        const address = values.address;
+        // const address = values.address;
         const first_met = false;
         const birthdate = values.birthdate;
 
         let datas = {};
 
 
-        if (values.mail == customerData.mail) {
+        if (values.mail === customerData.mail) {
             datas = { gender, firstname, lastname, phone, first_met , birthdate};
         } else {
             datas = { gender, firstname, lastname, phone, first_met, mail, birthdate };
@@ -64,9 +64,9 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
                 if (error.response.data.mail && error.response.data.mail[0] === "The mail has already been taken.") {
                     setErrorMail("Cette adresse mail est déja prise.");
                 }
-                if (error.response.data.password && error.response.data.password[0] === "The password format is invalid.") {
-                    setErrorPassword("Le mot de passe doit comporter au minimum 8 caractères (dont masjuscule, minuscule , chiffre et caractères spéciaux).");
-                }
+                // if (error.response.data.password && error.response.data.password[0] === "The password format is invalid.") {
+                //     setErrorPassword("Le mot de passe doit comporter au minimum 8 caractères (dont masjuscule, minuscule , chiffre et caractères spéciaux).");
+                // }
             });
     };
 
@@ -85,7 +85,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
+    }, ['API_URL', id]);
 
     return (
         loading ? <Loader /> :
@@ -148,6 +148,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
 
                                         <StyledInput type="mail" onChange={props.handleChange} onBlur={props.handleBlur} value={props.values.mail} name="mail" />
                                         {props.errors.mail && (<div id="feedback" className="text-danger">{props.errors.mail}</div>)}
+                                        <div className="error" style={{ color: "#E85A70", fontStyle: 'italic' }}>{errorMail}</div>
                                     </div>
                                     
                                     <div className="my-2">

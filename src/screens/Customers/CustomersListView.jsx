@@ -5,9 +5,9 @@ import ModalCreateCustomer from '../../components/Customers/ModalCreateCustomer'
 const CustomersListView = () => {
 
     const [openModalAddCustomer, setOpenModalAddCustomer] = useState(false);
-    const [showAddEventModal, setShowAddEventModal] = useState(false);
-    const [appointmentDatas, setAppointmentDatas] = useState();
-    const [infos, setInfos] = useState();
+    // const [showAddEventModal, setShowAddEventModal] = useState(false);
+    // const [appointmentDatas, setAppointmentDatas] = useState();
+    // const [infos, setInfos] = useState();
 
     return (
         <div className="row justify-content-center align-items-center">
