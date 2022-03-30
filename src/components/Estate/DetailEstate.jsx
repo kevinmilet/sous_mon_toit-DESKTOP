@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import styled from "styled-components";
 import colors from '../../utils/styles/colors';
 import axios from 'axios';
@@ -13,6 +13,8 @@ import ModalUpdateInfo from "./updateForm/ModalUpdateInfo";
 import ModalUpdateLoca from "./updateForm/ModalUpdateLoca";
 import ModalUpdatePhoto from "./updateForm/ModalUpdatePhoto";
 import { useParams } from 'react-router-dom';
+import ImageViewer from 'react-simple-image-viewer';
+import { useSnackbar } from 'react-simple-snackbar';
 
 const DivDetail = styled.div`
     margin-top: -100px;
@@ -25,13 +27,11 @@ const DivDetail = styled.div`
     -moz-box-shadow:    0px 3px 6px rgba(0, 0, 0, 0.16);
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 `
-
 const ScrollDiv = styled.div`
     height:65vh;
     padding:15px;
     overflow:auto
 `
-
 const H2 = styled.h2`
     color: ${colors.secondary};
     font-weight: bold;
@@ -44,11 +44,6 @@ const A = styled.a`
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 `
-const ModifSuccess = styled.p`
-    font-size: 1rem;
-    display: none;
-`
-
 const H3 = styled.h3`
     color: ${colors.secondaryBtn}
 `
@@ -56,31 +51,48 @@ const Icons = styled.img`
     width: 40px;
     height: 40px
 `
-
 const Icon = styled.i`
     color: ${colors.primaryBtn};
     font-size: 22px
 `
 
-const DetailEstate = ({ setShowUpdatePhotoEstateModal, setShowUpdateLocaEstateModal, setShowUpdateEquipEstateModal, setShowUpdateCaractEstateModal, setShowUpdateInfoEstateModal, setEstateId }) => {
+const DetailEstate = ({ reload, setReload, setShowUpdatePhotoEstateModal, setShowUpdateLocaEstateModal, setShowUpdateEquipEstateModal, setShowUpdateCaractEstateModal, setShowUpdateInfoEstateModal, setEstateId }) => {
 
     const { id } = useParams();
     const [oneEstateData, setOneEstateData] = useState({})
     const [picturesList, setPicturesList] = useState({})
     const [loading, setLoading] = useState(true);
     const API_URL = useContext(Context).apiUrl;
+    const [currentImage, setCurrentImage] = useState(0);
+    const [isViewerOpen, setIsViewerOpen] = useState(false);
+    const [picturesArray, setPicturesArray] = useState([]);
+    const [openSnackbar] = useSnackbar({
+        position: 'top-center',
+        style: {
+            backgroundColor: colors.backgroundPrimary,
+            border: '2px solid black',
+            borderColor: colors.secondary,
+            borderRadius: "50px",
+            color: colors.secondaryBtn,
+            fontSize: '20px',
+            textAlign: 'center',
+        },
+    })
+
 
     useEffect(() => {
 
         // Récupération des données de l'estate
         // axios.get("http://localhost:8000/estates/" + id)
+        if (reload === true) {
+            setReload(false)
+        }
         axios.get(API_URL + ApiRoutes.estates + "/" + id)
             .then(res => {
                 if (res.data === "aucun resultat") {
                     return window.location.href = '/liste-des-biens'
                 }
                 setOneEstateData(res.data)
-                console.log(res.data)
             }).catch(error => {
                 console.log(error.message)
             }).finally(() => {
@@ -90,6 +102,12 @@ const DetailEstate = ({ setShowUpdatePhotoEstateModal, setShowUpdateLocaEstateMo
                 axios.get(API_URL + ApiRoutes.estates_pictures + "/" + id)
                     .then(res => {
                         setPicturesList(res.data)
+                        // Tableau d'image pour le viewer
+                        let array = []
+                        res.data.forEach(picture => {
+                            array.push(ApiRoutes.COVER_ESTATE_BASE_URL + picture.name)
+                        });
+                        setPicturesArray(array);
                     }).catch(error => {
                         console.log(error.message)
                     }).finally(() => {
@@ -98,22 +116,73 @@ const DetailEstate = ({ setShowUpdatePhotoEstateModal, setShowUpdateLocaEstateMo
 
             })
 
-    }, [API_URL, id])
+    }, [API_URL, id, reload, setReload])
+
+    // Fonctions du viewer d'image
+    const openImageViewer = useCallback((index) => {
+        setCurrentImage(index);
+        setIsViewerOpen(true);
+    }, []);
+
+    const closeImageViewer = () => {
+        setCurrentImage(0);
+        setIsViewerOpen(false);
+    };
+
 
     // Suppression d'une image
     const DeleteImg = (pictureId) => {
 
-        axios.delete(API_URL + ApiRoutes.delete_pictures + "/" + pictureId)
-            // axios.post("http://localhost:8000/estates_pictures/delete/" + id, formData)
+        if (window.confirm('Voulez-vous vraiment supprimer cette photo?')) {
+            axios.delete(API_URL + ApiRoutes.delete_pictures + "/" + pictureId)
+                // axios.post("http://localhost:8000/estates_pictures/delete/" + id, formData)
+                .then(res => {
+                    // Message de succès
+                    openSnackbar('Photo effacé avec succès !', 3000)
+                    setReload(true)
+                }).catch(error => {
+                    console.log(error.response);
+                })
+        }
+
+    }
+
+    // Suppression du bien !
+    const DeleteEstate = (pictureId) => {
+
+        if (window.confirm('Voulez-vous vraiment supprimer ce bien?')) {
+            axios.delete(API_URL + ApiRoutes.delete_all_pictures_estate + "/" + id)
+                // axios.delete("http://localhost:8000/estates/delete/" + id)
+                .then(res => {
+                    axios.delete(API_URL + ApiRoutes.delete_estate + "/" + id)
+                        // axios.delete("http://localhost:8000/estates/delete/" + id)
+                        .then(res => {
+
+                            // Message de succès
+                            openSnackbar('Supression du bien ... vous allez être redirigé ...', 3000)
+                            setTimeout(() => {
+                                // return window.location.href = '/liste-des-biens'
+                            }, 3000);
+
+                        }).catch(error => {
+                            console.log(error.response);
+                        })
+                }).catch(error => {
+                    console.log(error.response);
+                })
+        }
+
+    }
+
+    // Changer la photo de couverture
+    const ChoiceCover = (pictureId) => {
+
+        axios.post(API_URL + ApiRoutes.choiceCover_pictures + "/" + id + "/" + pictureId)
+            // axios.post("http://localhost:8000/estates_pictures/choiceCover" + "/" + id + "/" + pictureId)
             .then(res => {
-                console.log(res);
                 // Message de succès
-                window.scrollTo(0, 0);
-                document.getElementById('deleteImgSuccess').style.cssText = "display: flex;";
-                document.getElementById('deleteImgSuccess').innerHTML = "Photo effacé avec succès !";
-                setTimeout(() => {
-                    window.location.href = '/detail-biens/' + id;
-                }, 4000);
+                openSnackbar('Photo effacé avec succès !', 3000)
+                setReload(true)
             }).catch(error => {
                 console.log(error.response);
             })
@@ -158,14 +227,19 @@ const DetailEstate = ({ setShowUpdatePhotoEstateModal, setShowUpdateLocaEstateMo
             <ModalUpdatePhoto estateId={estateId} />
         );
     }
-
     return (
 
         loading ? <Loader /> :
             <DivDetail className="container col-12 mx-auto p-4">
-                <ModifSuccess className="text-center p-4 alert-success" id="deleteImgSuccess" />
-                <div className="row justify-content-between align-items-baseline px-3">
+                <div className="row d-flex flex-row justify-content-between align-items-baseline px-3">
                     <p className="col-8 d-flex justify-content-between align-items-center"> <b>{oneEstateData.estate_type_name}</b><b className="text-danger">Référence: {oneEstateData.reference}</b> <b>{oneEstateData.title}</b><b className="text-danger">Prix: {oneEstateData.price}€</b></p>
+                    <A
+                        className='btn col-2'
+                        onClick={(e) => { DeleteEstate() }}
+                    >
+                        Supprimer
+                        <Icon style={{ color: colors.backgroundPrimary }} className="far fa-trash-alt m-2 cursor-pointer" />
+                    </A>
                 </div>
                 <div id='divButton'>
                     <A className=' btn' style={{ backgroundColor: colors.secondaryBtn }} onClick={(e) => { ChangeOnglet("informations", e.target) }} >Informations</A>
@@ -236,12 +310,50 @@ const DetailEstate = ({ setShowUpdatePhotoEstateModal, setShowUpdateLocaEstateMo
                         <div className='col-12'>
                             <div className='row d-flex'>
                                 {picturesList.map((picture, index) =>
-                                    <div className='col-4' key={index}>
-                                        <img src={ApiRoutes.COVER_ESTATE_BASE_URL + (picture.name ?? "estate_default.jpg")} className="img-fluid" alt={oneEstateData.title} />
-                                        <p style={{ color: colors.secondary }}>
-                                            {picture.cover === 1 ? "Image de couverture" : <button className='btn btn-danger' onClick={(e) => { DeleteImg(picture.id) }}>Supprimer</button>}
-                                        </p>
+                                    <div className='col-4 p-2' style={{ boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)" }} key={index}>
+                                        <img
+                                            src={ApiRoutes.COVER_ESTATE_BASE_URL + (picture.name ?? "estate_default.jpg")}
+                                            className="img-fluid"
+                                            alt="test"
+                                            onClick={() => openImageViewer(index)}
+                                        />
+                                        <div >
+                                            {picture.cover === 1
+                                                ?
+                                                <div className='d-flex justify-content-center'>Photo de couverture</div>
+                                                :
+                                                <div>
+                                                    <button
+                                                        className='btn border'
+                                                        style={{ color: colors.secondary }}
+                                                        onClick={(e) => { DeleteImg(picture.id) }}
+                                                    >
+                                                        Supprimer
+                                                        <Icon className="far fa-trash-alt m-2 cursor-pointer" />
+                                                    </button>
+                                                    <button
+                                                        className='btn border'
+                                                        style={{ color: colors.secondaryBtn }}
+                                                        onClick={(e) => { ChoiceCover(picture.id) }}
+                                                    >
+                                                        Définir comme photo de couverture
+                                                    </button>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
+                                )}
+                                {isViewerOpen && (
+                                    <ImageViewer
+                                        src={picturesArray}
+                                        currentIndex={currentImage}
+                                        disableScroll={false}
+                                        closeOnClickOutside={true}
+                                        onClose={closeImageViewer}
+                                        backgroundStyle={{
+                                            backgroundColor: "rgba(0,0,0,0.9)"
+                                        }}
+                                    />
                                 )}
                                 <div className='col-4 d-flex justify-content-center align-items-center'>
                                     <button

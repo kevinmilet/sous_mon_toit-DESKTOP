@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Route} from "react-router-dom";
-import {Context} from "./utils/context/Context";
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Context } from "./utils/context/Context";
 import CustomersListView from "./screens/Customers/CustomersListView";
 import CustomersDetailView from "./screens/Customers/CustomerDetailView";
 import axios from 'axios';
 import ApiRoutes from "./utils/const/ApiRoutes";
-
+import SnackbarProvider from 'react-simple-snackbar'
 import SignInView from './screens/SignIn/SignInView';
 import EstatesListView from './screens/Estates/EstatesListView';
 import DetailEstateView from './screens/Estates/DetailEstateView';
@@ -70,70 +70,72 @@ const App = () => {
     // }
 
     return (
-        <Context.Provider value={{apiUrl, setApiUrl, showToast, setShowToast}}>
-            <div className="App">
-                {/*<ToastContainer />*/}
-                <div className="container-fluid m-0">
-                    <div className="row gx-0">
-                        <div className="col-md-2 m-0">
-                            <Sidebar/>
-                        </div>
-                        <div className="col-md-10 m-0 d-flex flex-column">
-                            <div className="row-fluid">
-                                <Topbar/>
+        <Context.Provider value={{ apiUrl, setApiUrl, showToast, setShowToast }}>
+            <SnackbarProvider>
+                <div className="App">
+                    {/*<ToastContainer />*/}
+                    <div className="container-fluid m-0">
+                        <div className="row gx-0">
+                            <div className="col-md-2 m-0">
+                                <Sidebar />
                             </div>
-                            <div className="row-fluid">
-                                {/*Content here.....*/}
-                                <Router>
-                                    {token === null ? (
-                                        <React.Fragment>
-                                            <Route exact path="/">
-                                                <SignInView/>
-                                            </Route>
-                                        </React.Fragment>
-                                    ) : (
-                                        <React.Fragment>
-                                            <Route exact path="/">
-                                                <HomeView/>
-                                            </Route>
-                                        </React.Fragment>
-                                    )}
-                                    <Route exact path="/liste-des-biens">
-                                        <EstatesListView/>
-                                    </Route>
-                                    <Route exact path="/detail-biens/:id">
-                                        <DetailEstateView/>
-                                    </Route>
-                                    <Route exact path="/ajout-bien">
-                                        <AddEstateView/>
-                                    </Route>
-                                    <Route exact path="/ajout-bien/step-2/:id">
-                                        <AddEstateStep2View/>
-                                    </Route>
-                                    <Route exact path="/ajout-bien/step-3/:id">
-                                        <AddEstateStep3View/>
-                                    </Route>
-                                    <Route exact path="/customers_list">
-                                        <CustomersListView/>
-                                    </Route>
-                                    <Route exact path="/customer_detail/:id">
-                                        <CustomersDetailView/>
-                                    </Route>
-                                    <Route exact path="/staff">
-                                        <StaffListView/>
-                                    </Route>
-                                    <Route exact path="/details-staff/:id">
-                                        <StaffDetailsView/>
-                                    </Route>
-                                    <Route exact path="/compte/:id">
-                                        <AccountView/>
-                                    </Route>
-                                </Router>
+                            <div className="col-md-10 m-0 d-flex flex-column">
+                                <div className="row-fluid">
+                                    <Topbar />
+                                </div>
+                                <div className="row-fluid">
+                                    {/*Content here.....*/}
+                                    <Router>
+                                        {token === null ? (
+                                            <React.Fragment>
+                                                <Route exact path="/">
+                                                    <SignInView />
+                                                </Route>
+                                            </React.Fragment>
+                                        ) : (
+                                            <React.Fragment>
+                                                <Route exact path="/">
+                                                    <HomeView />
+                                                </Route>
+                                            </React.Fragment>
+                                        )}
+                                        <Route exact path="/liste-des-biens">
+                                            <EstatesListView />
+                                        </Route>
+                                        <Route exact path="/detail-biens/:id">
+                                            <DetailEstateView />
+                                        </Route>
+                                        <Route exact path="/ajout-bien">
+                                            <AddEstateView />
+                                        </Route>
+                                        <Route exact path="/ajout-bien/step-2/:id">
+                                            <AddEstateStep2View />
+                                        </Route>
+                                        <Route exact path="/ajout-bien/step-3/:id">
+                                            <AddEstateStep3View />
+                                        </Route>
+                                        <Route exact path="/customers_list">
+                                            <CustomersListView />
+                                        </Route>
+                                        <Route exact path="/customer_detail/:id">
+                                            <CustomersDetailView />
+                                        </Route>
+                                        <Route exact path="/staff">
+                                            <StaffListView />
+                                        </Route>
+                                        <Route exact path="/details-staff/:id">
+                                            <StaffDetailsView />
+                                        </Route>
+                                        <Route exact path="/compte/:id">
+                                            <AccountView />
+                                        </Route>
+                                    </Router>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </SnackbarProvider>
         </Context.Provider>
     );
 }

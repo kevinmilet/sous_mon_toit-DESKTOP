@@ -9,6 +9,8 @@ import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../../utils/styles/colors';
 import { StyledBtnPrimary, StyledInput, StyledBtnSecondary } from "../../../utils/styles/Atoms";
+import { useSnackbar } from 'react-simple-snackbar'
+
 
 const ScrollDiv = styled.div`
     height:60vh;
@@ -32,10 +34,6 @@ const Textarea = styled.textarea`
         outline: none;
         -webkit-box-shadow: 0px 0px 2px 2px rgba(232,90,112,0.65); 
         box-shadow: 0px 0px 2px 2px rgba(232,90,112,0.65);
-`
-const ModifSuccess = styled.p`
-    font-size: 1rem;
-    display: none;
 `
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -69,13 +67,29 @@ const MyTextareaInput = ({ label, ...props }) => {
 };
 
 
-const ModalUpdateInfo = ({ estateId, setShowUpdateInfoEstateModal, showUpdateInfoEstateModal }) => {
+const ModalUpdateInfo = ({ setReload ,estateId, setShowUpdateInfoEstateModal, showUpdateInfoEstateModal }) => {
 
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState({})
     const handleClose = () => setShowUpdateInfoEstateModal(false);
     const [estatesTypes, setEstatesTypes] = useState({});
+    const [openSnackbar] = useSnackbar({
+        position: 'top-center',
+        style: {
+            backgroundColor: colors.backgroundPrimary,
+            border: '2px solid black',
+            borderColor: colors.secondary,
+            borderRadius : "50px",            
+            color: colors.secondaryBtn,
+            fontSize: '20px',
+            textAlign: 'center',
+        },
+        closeStyle: {
+            color: 'lightcoral',
+            fontSize: '16px',
+        },
+    })
 
 
     useEffect(() => {
@@ -108,12 +122,9 @@ const ModalUpdateInfo = ({ estateId, setShowUpdateInfoEstateModal, showUpdateInf
             .then(res => {
                 console.log(res.data);
                 // Message de succès
-                window.scrollTo(0, 0);
-                document.getElementById('modifInfoSuccess').style.cssText = "display: flex;";
-                document.getElementById('modifInfoSuccess').innerHTML = "Information modifié avec succès !";
-                setTimeout(() => {
-                    window.location.href = '/detail-biens/' + estateId;
-                }, 2000);
+                openSnackbar('Information modifié avec succès !', 3000)
+                setReload(true)
+                handleClose()
             }).catch(error => {
                 console.log(error.response);
             })
@@ -167,7 +178,6 @@ const ModalUpdateInfo = ({ estateId, setShowUpdateInfoEstateModal, showUpdateInf
                                             </Modal.Title>
                                         </Modal.Header>
                                         <Modal.Body>
-                                            <ModifSuccess className="text-center p-4 alert-success" id="modifInfoSuccess" />
                                             <ScrollDiv>
                                                 <div className="row">
                                                     <div className="col-4">

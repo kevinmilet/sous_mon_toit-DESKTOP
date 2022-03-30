@@ -33,46 +33,6 @@ const AddEstateH1 = styled.h1`
 const AddEstateH4 = styled.h4`
     color: ${colors.secondaryBtn};
 `
-const AddEstateLabel = styled.label`
-    color: ${colors.secondary};
-`
-// const MyTextInput = ({ label, ...props }) => {
-//     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-//     // which we can spread on <input> and alse replace ErrorMessage entirely.
-//     const [field, meta] = useField(props);
-//     return (
-//         <>
-//             <div className="mb-3">
-//                 <AddEstateLabel className="form-label">{label}</AddEstateLabel>
-//                 <StyledInput className="text-input form-control" {...field} {...props} />
-//                 {meta.touched && meta.error ? (
-//                     <div className="error" style={{ color: "#E85A70", fontStyle: 'italic' }}>{meta.error}</div>
-//                 ) : null}
-//             </div>
-//         </>
-//     );
-// };
-// // const MyImageInput = ({ index, ...props }) => {
-// //     return (
-// //         <div className="row">
-// //             <div className="col-4 d-flex justify-content-center align-items-center">
-// //                 <img height="150" width="150" id={"file" + index} src="2" alt="Image Preview" />
-// //             </div>
-// //             <div className="col-6 d-flex justify-content-center align-items-center">
-// //                 <input
-// //                     accept="image/*"
-// //                     type='file'
-// //                     name={"file" + index}
-// // onChange={(e) => {
-// //     handleChange(e);
-// //     setFieldValue("file"+ index , e.currentTarget.files[0]);
-// //     ChangeImg(e.target);
-// // }}
-// //                 />
-// //             </div>
-// //         </div>
-// //     );
-// // };
 
 const AddEstateFormStep3 = () => {
 

@@ -14,6 +14,7 @@ const DetailEstateView = () => {
     const [showUpdateCaractEstateModal, setShowUpdateCaractEstateModal] = useState(false);
     const [showUpdateEquipEstateModal, setShowUpdateEquipEstateModal] = useState(false);
     const [estateId, setEstateId] = useState(null);
+    const [reload, setReload] = useState(false);
 
     return (
         <div className='col-11 mx-auto'>
@@ -24,12 +25,15 @@ const DetailEstateView = () => {
                 setShowUpdateEquipEstateModal={setShowUpdateEquipEstateModal}
                 setShowUpdateCaractEstateModal={setShowUpdateCaractEstateModal}
                 setEstateId={setEstateId}
+                reload={reload}
+                setReload={setReload}
             />
             {showUpdateInfoEstateModal ?
                 <ModalUpdateInfo
                     setShowUpdateInfoEstateModal={setShowUpdateInfoEstateModal}
                     showUpdateInfoEstateModal={showUpdateInfoEstateModal}
                     estateId={estateId}
+                    setReload={setReload}
                 />
                 : null
             }
@@ -38,6 +42,7 @@ const DetailEstateView = () => {
                     setShowUpdatePhotoEstateModal={setShowUpdatePhotoEstateModal}
                     showUpdatePhotoEstateModal={showUpdatePhotoEstateModal}
                     estateId={estateId}
+                    setReload={setReload}
                 />
                 : null
             }
@@ -46,6 +51,7 @@ const DetailEstateView = () => {
                     setShowUpdateLocaEstateModal={setShowUpdateLocaEstateModal}
                     showUpdateLocaEstateModal={showUpdateLocaEstateModal}
                     estateId={estateId}
+                    setReload={setReload}
                 />
                 : null
             }
@@ -54,6 +60,7 @@ const DetailEstateView = () => {
                     setShowUpdateCaractEstateModal={setShowUpdateCaractEstateModal}
                     showUpdateCaractEstateModal={showUpdateCaractEstateModal}
                     estateId={estateId}
+                    setReload={setReload}
                 />
                 : null
             }
@@ -62,6 +69,7 @@ const DetailEstateView = () => {
                     setShowUpdateEquipEstateModal={setShowUpdateEquipEstateModal}
                     showUpdateEquipEstateModal={showUpdateEquipEstateModal}
                     estateId={estateId}
+                    setReload={setReload}
                 />
                 : null
             }
