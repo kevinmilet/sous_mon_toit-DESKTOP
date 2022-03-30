@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
-import { Context } from "../../utils/context/Context";
+import {Context} from "../../utils/context/Context";
 import Loader from "../Tools/Loader/Loader";
-import { FaTrashAlt } from 'react-icons/fa';
 import DataTable from "react-data-table-component";
-import ApiRoutes from "../../utils/const/ApiRoutes";
 
 const TextField = styled.input`
 	height: 32px;
@@ -83,9 +81,7 @@ const Thead = styled.thead`
   background-color: ${colors.secondary};
 `;
 
-
-
-const CustomersList = ({ setOpenModalAddCustomer }) => {
+const CustomersList = ({ setOpenModalAddCustomer, setCustomerId, setConfirmContent, setShowConfirmModal }) => {
   const API_URL = useContext(Context).apiUrl;
   const [CustomersData, setCustomersData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -94,22 +90,15 @@ const CustomersList = ({ setOpenModalAddCustomer }) => {
   const [rows, setRows] = React.useState([]);
 
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
-  const handleClick = (value) => { window.location.href = '/customer_detail/' + value };
-  const deleteCustomer = (custID) => {
-    // eslint-disable-next-line no-restricted-globals
-    if (confirm('Voulez-vous vraiment supprimer ce client?')) {
-      axios.delete(API_URL + ApiRoutes.delete_customer + custID).then(
-        res => {
-          console.log(res.status);
-          alert('Client supprimé');
-          window.location.reload();
-        }).catch(e => {
-          console.error(e.message)
-          alert('Le client n\'a pas pu être supprimé');
-        })
 
-    }
+  const handleClick = (value) => { window.location.href = '/customer_detail/' + value };
+
+  const deleteCustomer = (custID) => {
+    setCustomerId(custID);
+    setConfirmContent('Voulez-vous vraiment supprimer ce client?');
+    setShowConfirmModal(true);
   }
+
   const columns = [
     {
       name: "Nom/Prénom",
@@ -200,7 +189,6 @@ const CustomersList = ({ setOpenModalAddCustomer }) => {
       )
       .then((res) => {
         setCustomersData(res.data);
-        console.log(res.data);
       })
       .catch((error) => {
         console.log(error.message);

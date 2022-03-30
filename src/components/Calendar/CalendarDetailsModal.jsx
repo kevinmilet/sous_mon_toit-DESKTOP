@@ -65,7 +65,17 @@ const LinkItem = styled.a`
 `
 
 SearchPanel.propTypes = {children: PropTypes.node};
-const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventModal, appointmentDatas, staffList, setShowMessageModal, setMessageContent, setAction}) => {
+const CalendarDetailsModal = ({
+                                  showDetailledEventModal,
+                                  setShowDetailledEventModal,
+                                  appointmentDatas,
+                                  staffList,
+                                  setShowMessageModal,
+                                  setMessageContent,
+                                  setConfirmContent,
+                                  setShowConfirmModal,
+                                  setEventId,
+}) => {
 
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
@@ -90,7 +100,6 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
     }
 
     const getCustomersResults = (textCustomer) => {
-        console.log(textCustomer)
         axios.get(API_URL + ApiRoutes.search_customer + textCustomer).then(res => {
             setCustomerSearchResult(res.data)
         }).catch(error => {
@@ -123,19 +132,9 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
     }, []);
 
     const deleteAppointment = (apptmtId) => {
-        // eslint-disable-next-line no-restricted-globals
-        if (confirm('Voulez-vous vraiment supprimer ce rendez-vous?')) {
-            axios.delete(API_URL + apiRoutes.delete_apptmt + apptmtId).then(
-                res => {
-                    setShowMessageModal(true);
-                    setMessageContent('Rendez-vous supprimé');
-                }).catch(e => {
-                console.error(e.message)
-                setShowMessageModal(true);
-                setMessageContent('Le rendez-vous n\'a pas pu être supprimé');
-            })
-            showDetailledEventModal(false)
-        }
+        setEventId(apptmtId);
+        setConfirmContent('Voulez-vous vraiment supprimer ce rendez-vous?');
+        setShowConfirmModal(true);
     }
 
     const onEditClick = () => {
@@ -258,9 +257,10 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
                                                 id="id_staff"
                                                 name="id_staff"
                                                 onChange={handleChange}
+                                                defaultValue={appointmentDatas.id_staff}
                                                 disabled
                                             >
-                                                <option selected value={appointmentDatas.id_staff}
+                                                <option value={appointmentDatas.id_staff}
                                                         key={appointmentDatas.id_staff}>
                                                     {appointmentDatas.staffFirstname + ' ' + appointmentDatas.staffLastname}
                                                 </option>
@@ -374,8 +374,9 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
                                                 name="id_appointment_type"
                                                 value={appointmentDatas.appointment_type}
                                                 onChange={handleChange}
+                                                defaultValue={appointmentDatas.apptmt_type_id}
                                                 disabled>
-                                                <option selected value={appointmentDatas.apptmt_type_id}
+                                                <option value={appointmentDatas.apptmt_type_id}
                                                         key={appointmentDatas.apptmt_type_id}>
                                                     {appointmentDatas.appointment_type}
                                                 </option>
@@ -384,7 +385,7 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
                                                             key={item.id}>{item.appointment_type} </option>))
                                                 }
                                             </StyledSelect>
-                                            {/*<div className="error mt-2" style={{color: "#E85A70", fontStyle: 'italic'}}>{errors.id_appointment_type ?? null}</div>*/}
+                                            <div className="error mt-2" style={{color: "#E85A70", fontStyle: 'italic'}}>{errors.id_appointment_type ?? null}</div>
                                         </div>
                                     </div>
                                     <div className="row">

@@ -20,14 +20,13 @@ const NavAccount = styled.div`
       background-color: ${colors.secondaryBtn};
     }
   }
-`;
+`
 const Ul = styled.ul`
   list-style: none;
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
 `
-
 const Container = styled.div`
     margin: -100px 5em 0 5em;
     padding: 20px;
@@ -36,8 +35,6 @@ const Container = styled.div`
     box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
     background-color: ${colors.backgroundPrimary}
 `
-
-
 const TitleH3 = styled.h3`
   color: ${colors.primaryBtn}
 `
@@ -290,8 +287,8 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
         return <Loader />;
     }
     return (
-        <Container className="col-11 ">
-            <div className="card  m-auto col-11">
+        <Container className="col-11">
+            <div className="card m-auto col-11">
                 <ReactDimmer isOpen={isMenuOpen} exitDimmer={setMenuOpen} />
                 <div className="card-body">
                     <TitleH3 className="card-title text-center text-decoration-underline">
@@ -313,7 +310,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                             <b>Date de naissance:</b> {customerData.birthdate}
                         </li>
                         <li className="mt-2">
-                            <b>Télèphone:</b> {customerData.phone}
+                            <b>Téléphone:</b> {customerData.phone}
                         </li>
                         <li className="mt-2">
                             <b>Adresse:</b> {customerData.address}
@@ -351,8 +348,6 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                         columns={columns}
                         data={filteredItems}
                     />
-                  
-
                 </div>
             </div>
         </Container>

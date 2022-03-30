@@ -85,7 +85,7 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
             .finally(() => {
                 setLoading(false);
             });
-    }, ['API_URL', id]);
+    }, [API_URL, id]);
 
     return (
         loading ? <Loader /> :

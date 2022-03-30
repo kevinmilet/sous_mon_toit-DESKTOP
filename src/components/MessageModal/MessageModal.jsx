@@ -7,8 +7,7 @@ const Container = styled.div`
     margin: 1rem;
 `
 
-const MessageModal = ({action, messageContent, setShowMessageModal, showMessageModal}) => {
-
+const MessageModal = ({action, messageContent, showMessageModal}) => {
     return (
         <>
             <Modal show={showMessageModal} onHide={() => action()} backdrop="static" keyboard={false}

@@ -115,7 +115,7 @@ const Account = ({setShowAvatarUpdateModal, setUserData, setShowMessageModal, se
                     setMessageContent('Informations modifiées');
                 } else {
                     setShowMessageModal(true);
-                    setMessageContent('les informations n\'ont pas été modifiées');
+                    setMessageContent('Les informations n\'ont pas été modifiées');
                 }
         }).catch(e => {
             console.log(e.message);

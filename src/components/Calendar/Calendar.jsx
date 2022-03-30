@@ -40,7 +40,10 @@ const Calendar = ({
                       setStaffList,
                       setShowMessageModal,
                       setMessageContent,
-                      setData
+                      setData,
+                      setConfirmContent,
+                      setShowConfirmModal,
+                      setDatasDropped,
 }) => {
     const API_URL = useContext(Context).apiUrl;
     const today = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -88,25 +91,10 @@ const Calendar = ({
         }
     }
 
-    const updateEventOnDrop = (datas) => {
-        // eslint-disable-next-line no-restricted-globals
-        if(confirm('Etes-vous sur de vouloir déplacer l\'évenement?')) {
-            let id = datas.event.id;
-            let values= moment(datas.event.start).format('YYYY-MM-DD HH:mm:ss');
-            if (values < today) {
-                datas.revert();
-                setShowMessageModal(true);
-                setMessageContent('Impossible de déplacer un rendez-vous à une date inférieure!');
-            } else {
-                axios.put(API_URL + apiRoutes.update_event + `/${id}?scheduled_at=${values}`).then(res => {
-                   console.log('Evénement déplacé avec succès')
-                }).catch(error => {
-                    console.log(error.message)
-                })
-            }
-        } else {
-            datas.revert();
-        }
+    const showConfirmUpdate = (datas) => {
+        setDatasDropped(datas);
+        setConfirmContent('Etes-vous sur de vouloir déplacer l\'évenement?');
+        setShowConfirmModal(true);
     }
 
     const events = appointments.map(item => {
@@ -170,7 +158,7 @@ const Calendar = ({
                     editable={true}
                     events={events}
                     eventDrop={(datas) => {
-                        updateEventOnDrop(datas);
+                        showConfirmUpdate(datas);
                     }}
                     eventClick={async (datas) => {
                         await getSelectedAppointment(datas.event.id)
@@ -188,7 +176,8 @@ const Calendar = ({
                     }}
                     dateClick={(infos) => {
                         if (moment(infos.dateStr).format('YYYY-MM-DD HH:mm:ss') < today) {
-                            alert('Impossible d\'ajouter un rendez-vous à une date ultérieure !')
+                            setShowMessageModal(true);
+                            setMessageContent('Impossible d\'ajouter un rendez-vous à une date ultérieure !');
                         } else {
                             setInfos(infos);
                             setShowAddEventModal(true);

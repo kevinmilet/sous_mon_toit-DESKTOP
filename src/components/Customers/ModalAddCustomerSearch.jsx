@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import "../../utils/styles/modal.css";
-
 import {Modal, Stack} from "react-bootstrap";
 import {StyledBtnPrimary, StyledBtnSecondary, StyledInput} from "../../utils/styles/Atoms";
 import styled from "styled-components";
@@ -11,7 +10,6 @@ import {Context} from "../../utils/context/Context";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import {useParams} from 'react-router-dom';
-
 
 const Label = styled.label`
   font-weight: 700;
@@ -57,15 +55,13 @@ const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSea
         const number_rooms = "1";
         const city = values.city;
 
-
         axios.post(API_URL + ApiRoutes.customer_create_search + "/" + id, { city, id_estate_type, surface_min, budget_max, search_longitude, search_latitude, search_radius, id_customer, alert, buy_or_rent, number_rooms, budget_min })
 
             .then(res => {
+                alert("Recherche client ajoutée");
                 setOpenModalAddCustomerSearch(false);
-                alert("vous etes inscrit !");
-
             }).catch(error => {
-
+                console.log(error.message);
             });
     };
 
@@ -98,11 +94,8 @@ const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSea
                     city: ''
                 }}
                     validationSchema={Yup.object({
-                        surface_min: Yup.string()
-                        ,
                         budget_max: Yup.string()
-                            .max(15, "15 caractères maximum").required('Veuillez remplir le champ')
-                        ,
+                            .max(15, "15 caractères maximum").required('Veuillez remplir le champ'),
                         surface_min: Yup.string()
                             .max(10, "10 caractères maximum").required('Veuillez remplir le champ'),
                         number_rooms: Yup.string()
