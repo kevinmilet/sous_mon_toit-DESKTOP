@@ -30,7 +30,7 @@ const AddEstateLabel = styled.label`
     color: ${colors.secondary};
 `;
 
-const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSearch, infos }) => {
+const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSearch, setShowMessageModal, setMessageContent }) => {
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
     const [errorMail, setErrorMail] = useState("");
@@ -58,8 +58,9 @@ const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSea
         axios.post(API_URL + ApiRoutes.customer_create_search + "/" + id, { city, id_estate_type, surface_min, budget_max, search_longitude, search_latitude, search_radius, id_customer, alert, buy_or_rent, number_rooms, budget_min })
 
             .then(res => {
-                alert("Recherche client ajoutée");
                 setOpenModalAddCustomerSearch(false);
+                setShowMessageModal(true);
+                setMessageContent('Recherche client ajoutée');
             }).catch(error => {
                 console.log(error.message);
             });

@@ -65,6 +65,10 @@ const CustomersListView = () => {
             {openModalAddCustomer  ? <ModalCreateCustomer
                 openModalAddCustomer={openModalAddCustomer}
                 setOpenModalAddCustomer={setOpenModalAddCustomer}
+                setShowMessageModal={setShowMessageModal}
+                showMessageModal={showMessageModal}
+                setMessageContent={setMessageContent}
+                setAction={() => goToHome()}
             /> : null}
             {showConfirmModal ?
                 <ConfirmModal

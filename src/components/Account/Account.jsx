@@ -158,7 +158,9 @@ const Account = ({setShowAvatarUpdateModal, setUserData, setShowMessageModal, se
                                 if (values.password === values.pwdConf) {
                                     updateAccount(values);
                                 } else {
-                                    alert('Les mots de passe ne correspondent pas')
+                                    setShowMessageModal(true);
+                                    setMessageContent('Les mots de passe ne correspondent pas');
+                                    // alert('Les mots de passe ne correspondent pas')
                                 }
 
                             })

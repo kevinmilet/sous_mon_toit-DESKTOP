@@ -17,7 +17,7 @@ const Label = styled.label`
   margin-left: 10px;
 `;
 
-const ModalCreateCustomer = ({ openModalAddCustomer, setOpenModalAddCustomer, infos }) => {
+const ModalCreateCustomer = ({ openModalAddCustomer, setOpenModalAddCustomer, setShowMessageModal, setMessageContent }) => {
   const API_URL = useContext(Context).apiUrl;
   const [loading, setLoading] = useState(true);
   const [errorMail, setErrorMail] = useState("");
@@ -41,8 +41,9 @@ const ModalCreateCustomer = ({ openModalAddCustomer, setOpenModalAddCustomer, in
       
       .then(res => {
         setOpenModalAddCustomer(false);
-        alert("vous etes inscrit !");
-        
+        setShowMessageModal(true);
+        setMessageContent('Client ajouté');
+
       }).catch(error => {
         if (error.response.data.mail && error.response.data.mail[0] === "The mail has already been taken.") {
           setErrorMail("Cette adresse mail est déja prise.");

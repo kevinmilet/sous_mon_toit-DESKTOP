@@ -19,7 +19,7 @@ const Label = styled.label`
   margin-left: 10px;
 `;
 
-const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, infos }) => {
+const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, setShowMessageModal,  setMessageContent}) => {
     const [customerData, setCustomerData] = useState({});
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
@@ -54,12 +54,10 @@ const ModalCreateCustomer = ({ openModalEditCustomer, setOpenModalEditCustomer, 
         }
 
         axios.put(API_URL + "customer/s/update/" + id, datas)
-
             .then(res => {
                 setOpenModalEditCustomer(false);
-                alert("Profil modifié!");
-                window.location.reload(false);
-
+                setShowMessageModal(true);
+                setMessageContent('Profil client modifié');
             }).catch(error => {
                 if (error.response.data.mail && error.response.data.mail[0] === "The mail has already been taken.") {
                     setErrorMail("Cette adresse mail est déja prise.");
