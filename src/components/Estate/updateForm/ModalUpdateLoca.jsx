@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../../utils/styles/colors';
 import { StyledBtnPrimary, StyledInput, StyledBtnSecondary } from "../../../utils/styles/Atoms";
+import { useSnackbar } from 'react-simple-snackbar'
 
 const SearchResultDiv = styled.div`
     padding:0.5%;
@@ -27,10 +28,7 @@ const AddEstateH4 = styled.h4`
 const AddEstateLabel = styled.label`
     color: ${colors.secondary};
 `
-const ModifSuccess = styled.p`
-    font-size: 1rem;
-    display: none;
-`
+
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
     // which we can spread on <input> and alse replace ErrorMessage entirely.
@@ -47,7 +45,7 @@ const MyTextInput = ({ label, ...props }) => {
         </>
     );
 };
-const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLocaEstateModal }) => {
+const ModalUpdateLoca = ({ setReload ,estateId, setShowUpdateLocaEstateModal, showUpdateLocaEstateModal }) => {
 
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
@@ -61,6 +59,22 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
     const [zipcode, setZipcode] = useState(null);
     const [estate_longitude, setEstate_longitude] = useState("");
     const [estate_latitude, setEstate_latitude] = useState("");
+    const [openSnackbar] = useSnackbar({
+        position: 'top-center',
+        style: {
+            backgroundColor: colors.backgroundPrimary,
+            border: '2px solid black',
+            borderColor: colors.secondary,
+            borderRadius : "50px",            
+            color: colors.secondaryBtn,
+            fontSize: '20px',
+            textAlign: 'center',
+        },
+        closeStyle: {
+            color: 'lightcoral',
+            fontSize: '16px',
+        },
+    })
 
     useEffect(() => {
         axios.get(API_URL + apiRoutes.estates + '/' + estateId).then(res => {
@@ -107,7 +121,6 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
         setEstate_latitude(e.geometry.coordinates[1])
         setSearchAddressResult(null);
         document.getElementById('div_valid_address').style.border = "2px solid green";
-
     }
 
     // Insertion en bdd
@@ -116,10 +129,8 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
         console.log(values);
 
         if (!address) {
-
             setRequiredAddress('Champs requis')
             return;
-
         } else {
             setRequiredAddress('');
         }
@@ -133,12 +144,9 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
             .then(res => {
                 console.log(res.data)
                 // Message de succès
-                window.scrollTo(0, 0);
-                document.getElementById('modifLocaSuccess').style.cssText = "display: flex;";
-                document.getElementById('modifLocaSuccess').innerHTML = "Localisation modifié avec succès !";
-                setTimeout(() => {
-                    window.location.href = '/detail-biens/' + estateId;
-                }, 2000);
+                openSnackbar('Localisation modifié avec succès !', 3000)
+                handleClose()
+                setReload(true)
             }).catch(error => {
                 console.log(error.response);
             })
@@ -170,7 +178,6 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
                                         </Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
-                                        <ModifSuccess className="text-center p-4 alert-success" id="modifLocaSuccess" />
                                         {/* ADRESSE  */}
                                         <div className="px-3">
                                             <AddEstateH4>Localisation</AddEstateH4>
