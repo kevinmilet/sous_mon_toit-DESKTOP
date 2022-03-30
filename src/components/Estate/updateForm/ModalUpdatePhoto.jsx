@@ -1,4 +1,4 @@
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { Context } from "../../../utils/context/Context";
@@ -8,20 +8,34 @@ import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../../utils/styles/colors';
 import { StyledBtnPrimary, StyledBtnSecondary } from "../../../utils/styles/Atoms";
+import { useSnackbar } from 'react-simple-snackbar'
+
 
 const ScrollDiv = styled.div`
     padding:20px;
     overflow:auto
 `
-const ModifSuccess = styled.p`
-    font-size: 1rem;
-    display: none;
-`
 
-const ModalUpdatePhoto = ({ estateId, setShowUpdatePhotoEstateModal, showUpdatePhotoEstateModal }) => {
+const ModalUpdatePhoto = ({setReload , estateId, setShowUpdatePhotoEstateModal, showUpdatePhotoEstateModal }) => {
 
     const API_URL = useContext(Context).apiUrl;
     const handleClose = () => setShowUpdatePhotoEstateModal(false);
+    const [openSnackbar] = useSnackbar({
+        position: 'top-center',
+        style: {
+            backgroundColor: colors.backgroundPrimary,
+            border: '2px solid black',
+            borderColor: colors.secondary,
+            borderRadius : "50px",            
+            color: colors.secondaryBtn,
+            fontSize: '20px',
+            textAlign: 'center',
+        },
+        closeStyle: {
+            color: 'lightcoral',
+            fontSize: '16px',
+        },
+    })
 
     // Insertion en bdd
     const InsertImg = (values) => {
@@ -34,12 +48,9 @@ const ModalUpdatePhoto = ({ estateId, setShowUpdatePhotoEstateModal, showUpdateP
             .then(res => {
                 console.log(res);
                 // Message de succès
-                window.scrollTo(0, 0);
-                document.getElementById('addPhotoSuccess').style.cssText = "display: flex;";
-                document.getElementById('addPhotoSuccess').innerHTML = "Photo ajouté avec succès !";
-                setTimeout(() => {
-                    window.location.href = '/detail-biens/' + estateId;
-                }, 2000);
+                openSnackbar('Photo ajouté avec succès !', 3000)
+                setReload(true)
+                handleClose()
             }).catch(error => {
                 console.log(error.response);
             })
@@ -79,7 +90,6 @@ const ModalUpdatePhoto = ({ estateId, setShowUpdatePhotoEstateModal, showUpdateP
                                     </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <ModifSuccess className="text-center p-4 alert-success" id="addPhotoSuccess" />
                                     <ScrollDiv>
                                         <div className="row d-flex flex-column">
                                             <div className="d-flex justify-content-center align-items-center">
