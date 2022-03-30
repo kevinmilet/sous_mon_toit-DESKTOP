@@ -1,16 +1,16 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import Loader from "../Tools/Loader/Loader";
-import {useParams} from 'react-router-dom';
-import {ReactDimmer} from 'react-dimmer';
+import { useParams } from "react-router-dom";
+import { ReactDimmer } from "react-dimmer";
 import DataTable from "react-data-table-component";
-import {FiEdit} from 'react-icons/fi';
-import {IoIosAdd} from 'react-icons/io';
-import moment from 'moment';
-import 'moment/locale/fr';
-import {Context} from "../../utils/context/Context";
+import { FiEdit } from "react-icons/fi";
+import { IoIosAdd } from "react-icons/io";
+import moment from "moment";
+import "moment/locale/fr";
+import { Context } from "../../utils/context/Context";
 
 const NavAccount = styled.div`
   .navbar {
@@ -26,15 +26,17 @@ const Ul = styled.ul`
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
-`
+`;
+
 const Container = styled.div`
-    margin: -100px 5em 0 5em;
-    padding: 20px;
-    border-radius: 20px;
-    -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16); 
-    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
-    background-color: ${colors.backgroundPrimary}
-`
+  margin: -100px 5em 0 5em;
+  padding: 20px;
+  border-radius: 20px;
+  -webkit-box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
+  background-color: ${colors.backgroundPrimary};
+`;
+
 const TitleH3 = styled.h3`
   color: ${colors.primaryBtn}
 `
@@ -101,19 +103,25 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
     const API_URL = useContext(Context).apiUrl;
     const [customerData, setCustomerData] = useState({});
     const [customerScheduleData, setCustomerScheduleData] = useState({});
-
+    const [customerTypeData, setCustomerTypeData] = useState({});
     const [customerSearchData, setCustomerSearchData] = useState({});
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
-
+    const [city, setCity] = useState("");
     const [filterText, setFilterText] = React.useState("");
-
-    const handleClick = value => {
-        window.location.href = "/customer_detail/" + value;
-    };
-    const filteredItems = Object.values(customerSearchData).filter(item => JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !== -1);
-
-    // const schedule = [customerScheduleData];
+    const [pending, setPending] = React.useState(true);
+    const [rows, setRows] = React.useState([]);
+    const [isMenuOpen, setMenuOpen] = useState(false);
+    const [searchAddressResult, setSearchAddressResult] = useState(null);
+    const handleClick = (value) => { window.location.href = '/customer_detail/' + value };
+    const filteredItems = Object.values(customerSearchData).filter(
+        item =>
+            JSON.stringify(item)
+                .toLowerCase()
+                .indexOf(filterText.toLowerCase()) !== -1
+    );
+    // [customerSearchData];
+    const schedule = [customerScheduleData]
 
     const customStyles = {
         rows: {
@@ -154,36 +162,128 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                 // setResetPaginationToggle(!resetPaginationToggle);
                 // setFilterText('');
             }
-        }
-    };
+        };
+    });
+
+
+    // Recherche de l'addresse
+    // const searchAddressGouv = (latitude, longitude) => {
+    //     // On remplace les espaces par des + pour notre requete
+    //     // var conformeValue = value.replace(/ /g, "+");
+    //     //On enleve les header axios pour envoyer la requete a l'API du gouv ( sinon ça passse pas )
+    //     axios.defaults.headers.common = {};
+    //     axios.get(`https://api-adresse.data.gouv.fr/reverse/?lon=${longitude}&lat=${latitude}"`, {})
+    //         .then(res => {
+    //             if (isEmptyArray(res.data.features)) {
+    //                 setSearchAddressResult([{ properties: { label: "Aucun résultats" } }])
+    //             } else {
+    //                 setSearchAddressResult(res.data.features);
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.log(error)
+    //         })
+    // }
+    // Selection de l'adresse
+    // const selectAddressResult = (e) => {
+    //     // setAddress(e.properties.name);
+    //     setCity(e.properties.city);
+    //     // setZipcode(e.properties.postcode);
+    //     // setEstate_longitude(e.geometry.coordinates[0])
+    //     // setEstate_latitude(e.geometry.coordinates[1])
+    //     setSearchAddressResult(null);
+    //     // document.getElementById('div_valid_address').style.border="2px solid green";
+
+    // }
 
     useEffect(() => {
-        axios.get(API_URL + "customer/s/" + id).then(res => {
-            setCustomerData(res.data);
 
-            console.log(res.data);
-        }).catch(error => {
-            console.log(error.message);
-        }).finally(() => {
-            setLoading(false);
-        });
 
-        axios.get(API_URL + "customer_search/s/customer/" + id).then(res => {
-            setCustomerSearchData(res.data);
 
-            console.log(res.data, "search");
-        }).catch(error => {
-            console.log(error.message);
-        }).finally(() => {
-            axios.get(API_URL + "schedule/customer/" + id).then(res => {
-                console.log(res, "res");
+        axios.get(
+           API_URL + "customer/s/" + id
+        )
+            .then((res) => {
+                setCustomerData(res.data);
 
-                setCustomerScheduleData(res.data);
-            }).catch(error => {
-                // console.log(error.message , "rdv err");
-            }).finally(() => { });
-        });
-    }, [API_URL, id]);
+                console.log(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+
+        axios
+            .get(
+                API_URL + "customer_search/s/customer/" + id
+            )
+            .then((res) => {
+                setCustomerSearchData(res.data);
+                // const
+                // console.log(customerSearchData.search_latitude , "lat");
+                // const sLatitude = res.data.search_latitude;
+                // const sLongitude = res.data.search_longitude
+                //  searchAddressGouv(sLatitude , sLongitude);
+                console.log(res.data, "search");
+            })
+            .catch((error) => {
+                console.log(error.message);
+            })
+            .finally(() => {
+                axios
+                    .get(
+                         API_URL + "schedule/customer/" + id
+                    )
+                    .then((res) => {
+                        setCustomerScheduleData(res.data);
+                    })
+                    .catch((error) => {
+                        console.log(error.message);
+                    })
+                    .finally(() => {
+                        axios
+                            .get(
+                                API_URL + "schedule/" + id
+                            )
+                            .then((res) => {
+                                setCustomerScheduleData(res.data);
+                                console.log(res.data);
+                            })
+                            .catch((error) => {
+                                console.log(error.message);
+                            })
+                            .finally(() => {
+                                setLoading(false);
+                            });
+                    });
+
+            });
+        console.log(customerSearchData, "lat2");
+
+        // axios
+        //     .get(
+        //         "http://api-sousmontoit.am.manusien-ecolelamanu.fr/public/describe_customer_type/joinCustomer/" + localStorage["userId"]
+        //     )
+        //     .then((res) => {
+        //         setCustomerTypeData(res.data);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error.message);
+        //     })
+        //     .finally(() => {
+        //         setLoading(false);
+        //     });
+        // const timeout = setTimeout(() => {
+        //     setRows(customerSearchData);
+        //     setPending(false);
+        // }, 2000);
+        // return () => clearTimeout(timeout);
+
+
+    }, []);
 
     if (loading) {
         return <Loader />;
@@ -250,7 +350,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                         columns={columns}
                         data={filteredItems}
                     />
-                  
+
 
                 </div>
             </div>
