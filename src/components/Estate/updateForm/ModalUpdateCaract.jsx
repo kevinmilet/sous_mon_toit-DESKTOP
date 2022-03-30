@@ -4,31 +4,17 @@ import Loader from "../../Tools/Loader/Loader";
 import axios from "axios";
 import { Context } from "../../../utils/context/Context";
 import apiRoutes from "../../../utils/const/ApiRoutes";
-import { Field, Form, Formik, useField } from "formik";
+import { Form, Formik, useField } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../../utils/styles/colors';
 import { StyledBtnPrimary, StyledInput, StyledBtnSecondary } from "../../../utils/styles/Atoms";
+import { useSnackbar } from 'react-simple-snackbar'
 
-const ScrollDiv = styled.div`
-    height:70vh;
-    padding:20px;
-    overflow:auto
-`
-
-const H2 = styled.h2`
-    color: ${colors.secondary};
-    font-weight: bold;
-`
-const AddEstateH1 = styled.h1`
-    color: ${colors.secondary};
-`
-const AddEstateH4 = styled.h4`
-    color: ${colors.secondaryBtn};
-`
 const AddEstateLabel = styled.label`
     color: ${colors.secondary};
 `
+
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
     // which we can spread on <input> and alse replace ErrorMessage entirely.
@@ -45,12 +31,28 @@ const MyTextInput = ({ label, ...props }) => {
         </>
     );
 };
-const ModalUpdateCaract = ({ estateId, setShowUpdateCaractEstateModal, showUpdateCaractEstateModal }) => {
+const ModalUpdateCaract = ({ setReload ,estateId, setShowUpdateCaractEstateModal, showUpdateCaractEstateModal }) => {
 
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState({})
     const handleClose = () => setShowUpdateCaractEstateModal(false);
+    const [openSnackbar] = useSnackbar({
+        position: 'top-center',
+        style: {
+            backgroundColor: colors.backgroundPrimary,
+            border: '2px solid black',
+            borderColor: colors.secondary,
+            borderRadius : "50px",            
+            color: colors.secondaryBtn,
+            fontSize: '20px',
+            textAlign: 'center',
+        },
+        closeStyle: {
+            color: 'lightcoral',
+            fontSize: '16px',
+        },
+    })
 
     useEffect(() => {
         axios.get(API_URL + apiRoutes.estates + '/' + estateId).then(res => {
@@ -71,7 +73,10 @@ const ModalUpdateCaract = ({ estateId, setShowUpdateCaractEstateModal, showUpdat
             // axios.put("http://localhost:8000/estates/update/" + id ,values)
             .then(res => {
                 console.log(res.data)
-                window.location.href = '/detail-biens/' + estateId;
+                // Message de succès
+                openSnackbar('Caractéristique modifié avec succès !', 3000)
+                setReload(true)
+                handleClose()
             }).catch(error => {
                 console.log(error.response);
             })
@@ -83,7 +88,6 @@ const ModalUpdateCaract = ({ estateId, setShowUpdateCaractEstateModal, showUpdat
                 {(loading) ?
                     <Loader /> : (
                         <>
-
                             <Formik
                                 initialValues={{
                                     nb_rooms: data.nb_rooms,

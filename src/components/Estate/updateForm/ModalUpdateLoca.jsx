@@ -4,17 +4,13 @@ import Loader from "../../Tools/Loader/Loader";
 import axios from "axios";
 import { Context } from "../../../utils/context/Context";
 import apiRoutes from "../../../utils/const/ApiRoutes";
-import { Field, Form, Formik, useField, isEmptyArray } from "formik";
+import { Form, Formik, useField, isEmptyArray } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import colors from '../../../utils/styles/colors';
 import { StyledBtnPrimary, StyledInput, StyledBtnSecondary } from "../../../utils/styles/Atoms";
+import { useSnackbar } from 'react-simple-snackbar'
 
-const ScrollDiv = styled.div`
-    height:70vh;
-    padding:20px;
-    overflow:auto
-`
 const SearchResultDiv = styled.div`
     padding:0.5%;
     border: 0px solid black;
@@ -26,19 +22,13 @@ const SearchResultDiv = styled.div`
         cursor: pointer;
     }
 `
-const H2 = styled.h2`
-    color: ${colors.secondary};
-    font-weight: bold;
-`
-const AddEstateH1 = styled.h1`
-    color: ${colors.secondary};
-`
 const AddEstateH4 = styled.h4`
     color: ${colors.secondaryBtn};
 `
 const AddEstateLabel = styled.label`
     color: ${colors.secondary};
 `
+
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
     // which we can spread on <input> and alse replace ErrorMessage entirely.
@@ -55,11 +45,10 @@ const MyTextInput = ({ label, ...props }) => {
         </>
     );
 };
-const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLocaEstateModal }) => {
+const ModalUpdateLoca = ({ setReload ,estateId, setShowUpdateLocaEstateModal, showUpdateLocaEstateModal }) => {
 
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState({})
     const handleClose = () => setShowUpdateLocaEstateModal(false);
 
     const [searchAddressResult, setSearchAddressResult] = useState(null);
@@ -70,10 +59,25 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
     const [zipcode, setZipcode] = useState(null);
     const [estate_longitude, setEstate_longitude] = useState("");
     const [estate_latitude, setEstate_latitude] = useState("");
+    const [openSnackbar] = useSnackbar({
+        position: 'top-center',
+        style: {
+            backgroundColor: colors.backgroundPrimary,
+            border: '2px solid black',
+            borderColor: colors.secondary,
+            borderRadius : "50px",            
+            color: colors.secondaryBtn,
+            fontSize: '20px',
+            textAlign: 'center',
+        },
+        closeStyle: {
+            color: 'lightcoral',
+            fontSize: '16px',
+        },
+    })
 
     useEffect(() => {
         axios.get(API_URL + apiRoutes.estates + '/' + estateId).then(res => {
-            setData(res.data)
             console.log(res.data)
             setAddress(res.data.estateAddress);
             setCity(res.data.city);
@@ -117,7 +121,6 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
         setEstate_latitude(e.geometry.coordinates[1])
         setSearchAddressResult(null);
         document.getElementById('div_valid_address').style.border = "2px solid green";
-
     }
 
     // Insertion en bdd
@@ -126,10 +129,8 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
         console.log(values);
 
         if (!address) {
-
             setRequiredAddress('Champs requis')
             return;
-
         } else {
             setRequiredAddress('');
         }
@@ -142,7 +143,10 @@ const ModalUpdateLoca = ({ estateId, setShowUpdateLocaEstateModal, showUpdateLoc
             // axios.put("http://localhost:8000/estates/update/" + id ,values)
             .then(res => {
                 console.log(res.data)
-                window.location.href = '/detail-biens/' + estateId;
+                // Message de succès
+                openSnackbar('Localisation modifié avec succès !', 3000)
+                handleClose()
+                setReload(true)
             }).catch(error => {
                 console.log(error.response);
             })

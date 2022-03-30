@@ -54,7 +54,7 @@ const Button = styled.button`
     background-color: ${colors.backgroundPrimary}
 `
 
-const StaffDetails = ({setShowMessageModal, setMessageContent, setAction}) => {
+const StaffDetails = ({setShowMessageModal, setMessageContent, setAction, setStaffId, setConfirmContent, setShowConfirmModal}) => {
     const {id} = useParams();
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true);
@@ -122,18 +122,9 @@ const StaffDetails = ({setShowMessageModal, setMessageContent, setAction}) => {
     }
 
     const deleteStaff = (id) => {
-        // eslint-disable-next-line no-restricted-globals
-        if (confirm('Voulez-vous vraiment supprimer ce membre du personel?')) {
-            axios.delete(API_URL + ApiRoutes.staff_delete + '/' + id).then(res => {
-                setShowMessageModal(true);
-                setMessageContent('Membre du personel supprimé');
-                setAction();
-            }).catch(e => {
-                console.error(e.message)
-                setShowMessageModal(true);
-                setMessageContent('Le membre du personel n\'a pas pu être supprimé');
-            })
-        }
+        setStaffId(id);
+        setConfirmContent('Voulez-vous vraiment supprimer ce membre du personel?');
+        setShowConfirmModal(true);
     }
 
     return (

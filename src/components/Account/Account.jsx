@@ -115,7 +115,7 @@ const Account = ({setShowAvatarUpdateModal, setUserData, setShowMessageModal, se
                     setMessageContent('Informations modifiées');
                 } else {
                     setShowMessageModal(true);
-                    setMessageContent('les informations n\'ont pas été modifiées');
+                    setMessageContent('Les informations n\'ont pas été modifiées');
                 }
         }).catch(e => {
             console.log(e.message);
@@ -158,7 +158,8 @@ const Account = ({setShowAvatarUpdateModal, setUserData, setShowMessageModal, se
                                 if (values.password === values.pwdConf) {
                                     updateAccount(values);
                                 } else {
-                                    alert('Les mots de passe ne correspondent pas')
+                                    setShowMessageModal(true);
+                                    setMessageContent('Les mots de passe ne correspondent pas');
                                 }
 
                             })
