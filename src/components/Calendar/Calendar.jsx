@@ -40,7 +40,6 @@ const Calendar = ({
                       setStaffList,
                       setShowMessageModal,
                       setMessageContent,
-                      setData,
                       setConfirmContent,
                       setShowConfirmModal,
                       setDatasDropped,

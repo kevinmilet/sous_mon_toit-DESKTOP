@@ -8,7 +8,6 @@ import {StyledBtnSecondary, StyledInput, StyledSelect, StyledTextarea} from "../
 import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import axios from "axios";
-import apiRoutes from "../../utils/const/ApiRoutes";
 import ApiRoutes from "../../utils/const/ApiRoutes";
 import {Context} from "../../utils/context/Context";
 import * as PropTypes from "prop-types";

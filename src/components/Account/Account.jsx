@@ -160,7 +160,6 @@ const Account = ({setShowAvatarUpdateModal, setUserData, setShowMessageModal, se
                                 } else {
                                     setShowMessageModal(true);
                                     setMessageContent('Les mots de passe ne correspondent pas');
-                                    // alert('Les mots de passe ne correspondent pas')
                                 }
 
                             })

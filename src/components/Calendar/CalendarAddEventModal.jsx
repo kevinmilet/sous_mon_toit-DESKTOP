@@ -61,7 +61,7 @@ const Button = styled.button`
     background-color: ${colors.backgroundPrimary}
 `
 
-const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffList, infos, setShowMessageModal, setMessageContent, setAction}) => {
+const CalendarAddEventModal = ({showAddEventModal, setShowAddEventModal, staffList, infos, setShowMessageModal, setMessageContent}) => {
     const API_URL = useContext(Context).apiUrl;
     const [loading, setLoading] = useState(true);
     const [apptmtTypes, setApptmtTypes] = useState();
