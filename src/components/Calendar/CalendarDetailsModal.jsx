@@ -74,10 +74,15 @@ const CalendarDetailsModal = ({showDetailledEventModal, setShowDetailledEventMod
     const [textEstate, setTextEstate] = useState('');
     const [customerSearchResult, setCustomerSearchResult] = useState();
     const [estateSearchResult, setEstateSearchResult] = useState();
+    const [toggle, setToggle] = useState(false);
 
     let dateMin = moment().format('YYYY-MM-DD');
     let dateValue = moment(appointmentDatas.scheduled_at).format('YYYY-MM-DD');
     let timeValue = moment(appointmentDatas.scheduled_at).format('HH:mm:ss');
+
+    const changeToggle = () => {
+        setToggle(!toggle);
+    }
 
     const getApptmtType = () => {
         axios.get(API_URL + ApiRoutes.apptmtType).then(res => {
