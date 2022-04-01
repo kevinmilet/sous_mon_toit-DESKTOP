@@ -5,6 +5,7 @@ import colors from "../../utils/styles/colors";
 import {Context} from "../../utils/context/Context";
 import Loader from "../Tools/Loader/Loader";
 import DataTable from "react-data-table-component";
+import {StyledBtnPrimary} from "../../utils/styles/Atoms";
 
 const TextField = styled.input`
 	height: 32px;
@@ -208,10 +209,18 @@ const CustomersList = ({ setOpenModalAddCustomer, setCustomerId, setConfirmConte
     return <Loader />;
   }
 
+  //Personalisation du menu de pagination
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Resultat par page',
+    rangeSeparatorText: 'sur',
+    selectAllRowsItem: true,
+    selectAllRowsItemText: 'Tous',
+  };
+
   return (
     <ListContainer className="col-md-9">
       <div className="my-2 fixed">
-        <button className="btn btn-primary" onClick={() => { setOpenModalAddCustomer(true) }}>+ Ajouter un client </button>
+        <StyledBtnPrimary onClick={() => { setOpenModalAddCustomer(true) }}>Ajouter un client </StyledBtnPrimary>
       </div>
       <DataTable
         fixedHeader
@@ -222,6 +231,11 @@ const CustomersList = ({ setOpenModalAddCustomer, setCustomerId, setConfirmConte
         persistTableHead
         subHeader
         subHeaderComponent={subHeaderComponentMemo}
+        pagination
+        paginationPerPage={5}
+        paginationRowsPerPageOptions={[5, 10, 15, 50]}
+        paginationComponentOptions={paginationComponentOptions}
+        paginationResetDefaultPage={resetPaginationToggle}
         progressComponent={<Loader />}
         columns={columns}
         data={filteredItems}

@@ -162,7 +162,7 @@ const EstateTable = () => {
         rows: {
             style: {
                 '&:hover': {
-                    backgroundColor: colors.secondary,
+                    backgroundColor: colors.backgroundSecondary,
                     cursor: 'pointer'
                 },
             },
