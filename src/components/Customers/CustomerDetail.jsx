@@ -4,7 +4,6 @@ import styled from "styled-components";
 import colors from "../../utils/styles/colors";
 import Loader from "../Tools/Loader/Loader";
 import { useParams } from "react-router-dom";
-import { ReactDimmer } from "react-dimmer";
 import DataTable from "react-data-table-component";
 import { FiEdit } from "react-icons/fi";
 import { IoIosAdd } from "react-icons/io";
@@ -12,14 +11,11 @@ import moment from "moment";
 import "moment/locale/fr";
 import { Context } from "../../utils/context/Context";
 
-const NavAccount = styled.div`
-  .navbar {
-    margin: auto;
-    .tab {
-      background-color: ${colors.secondaryBtn};
-    }
-  }
-`;
+
+const Icon = styled.i`
+    color: ${colors.primaryBtn};
+    font-size: 22px
+`
 const Ul = styled.ul`
   list-style: none;
   columns: 2;
@@ -39,68 +35,86 @@ const Container = styled.div`
 const TitleH3 = styled.h3`
   color: ${colors.primaryBtn};
 `;
-const columns = [
-    {
-        name: "Type",
-        width: "20%",
-        selector: row => row.buy_or_rent + "/" + row.estate_type_name
-    }, {
-        name: "Surface (m²)",
-        width: "15%",
-        selector: row => row.surface_min
-    }, {
-        name: "Budget",
-        width: "20%",
-        selector: row => row.budget_max + " EUR"
-    }, {
-        name: "Pièce",
-        width: "10%",
-        selector: row => row.number_rooms
-    }, {
-        name: "Localité",
-        width: "15%",
-        selector: row => row.city
-    }, {
-        name: "Rayon (Km²)",
-        width: "15%",
-        selector: row => row.search_radius
-    }
-];
 
-const columnsSchedule = [
-    {
-        name: "Date",
-        width: "25%",
-        selector: row => moment(row.scheduled_at).format("DD-MM-YYYY")
-    }, {
-        name: "Heure",
-        width: "25%",
-        selector: row => row.scheduled_at
-    }, {
-        name: "Lieu",
-        width: "25%",
-        selector: row => row.appointment_type
-    }, {
-        name: "Agent",
-        width: "25%",
-        selector: row => row.staffFirstname + " " + row.staffLastname
-    }
-];
+
 // const [openModalEditCustomer, setOpenModalEditCustomer] = useState(false);
-const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearch }) => {
+const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearch, setConfirmContent, setShowConfirmModal , setSearchID }) => {
     const API_URL = useContext(Context).apiUrl;
     const [customerData, setCustomerData] = useState({});
     const [customerScheduleData, setCustomerScheduleData] = useState({});
-
     const [customerSearchData, setCustomerSearchData] = useState({});
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
+    // const [searchID, setSearchID] = useState();
+    const [filterText] = React.useState("");
 
-    const [filterText, setFilterText] = React.useState("");
+  
+    const deleteSearchCustomer = (searchID) => {
+        setSearchID(searchID);
+        setConfirmContent('Voulez-vous vraiment supprimer la recherche de ce client?');
+        setShowConfirmModal(true).then(window.location.reload(false));
+        ;
+      }
+    const columns = [
+        {
+            name: "Type",
+            width: "20%",
+            selector: row => row.buy_or_rent + "/" + row.estate_type_name
+        }, {
+            name: "Surface (m²)",
+            width: "15%",
+            selector: row => row.surface_min
+        }, {
+            name: "Budget",
+            width: "20%",
+            selector: row => row.budget_max + " EUR"
+        }, {
+            name: "Pièce",
+            width: "10%",
+            selector: row => row.number_rooms
+        }, {
+            name: "Localité",
+            width: "15%",
+            selector: row => row.city
+        }, {
+            name: "Rayon (Km²)",
+            width: "15%",
+            selector: row => row.search_radius
+        } ,
+        {
+          name: "",
+          width: "5%",
+          cell: (row) => (
+            <Icon className="far fa-trash-alt m-2 cursor-pointer" 
+            onClick={() => { deleteSearchCustomer(row.id) }} 
+            />
+    
+          ),
+        },
+    ];
+    
+    const columnsSchedule = [
+        {
+            name: "Date",
+            width: "25%",
+            selector: row => moment(row.scheduled_at).format("DD-MM-YYYY")
+        }, {
+            name: "Heure",
+            width: "25%",
+            selector: row => moment(row.scheduled_at).format("hh:mm")
+        }, {
+            name: "Lieu",
+            width: "25%",
+            selector: row => row.appointment_type
+        }, {
+            name: "Agent",
+            width: "25%",
+            selector: row => row.staffFirstname + " " + row.staffLastname
+        }
+    ];
 
-    const handleClick = value => {
-        window.location.href = "/customer_detail/" + value;
-    };
+    
+
     const filteredItems = Object.values(customerSearchData).filter(item => JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !== -1);
 
     // const schedule = [customerScheduleData];
@@ -109,7 +123,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
         rows: {
             style: {
                 "&:hover": {
-                    backgroundColor: colors.secondary,
+                    backgroundColor: colors.backgroundSecondary,
                     cursor: "pointer"
                 }
             }
@@ -180,6 +194,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                 </TitleH3>
                 <FiEdit size={40} style={{
                     position: "absolute",
+                    cursor: "pointer",
                     right: 0,
                     marginTop: "-50px"
                 }} onClick={() => {
@@ -235,6 +250,7 @@ const CustomerDetail = ({ setOpenModalEditCustomer, setOpenModalAddCustomerSearc
                     </TitleH3>
                     <IoIosAdd size={40} style={{
                         position: "absolute",
+                        cursor: "pointer",
                         right: 0,
                         marginTop: "-50px"
                     }} onClick={() => {

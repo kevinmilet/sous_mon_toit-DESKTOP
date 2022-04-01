@@ -20,23 +20,11 @@ const Label = styled.label`
 const Option = styled.option`
     color: ${colors.secondaryBtn};
 `;
-const AddEstateH1 = styled.h1`
-    color: ${colors.secondary};
-`;
-const AddEstateH4 = styled.h4`
-    color: ${colors.secondaryBtn};
-`;
-const AddEstateLabel = styled.label`
-    color: ${colors.secondary};
-`;
+
 
 const ModalAddSearch = ({ openModalAddCustomerSearch, setOpenModalAddCustomerSearch, setShowMessageModal, setMessageContent }) => {
     const API_URL = useContext(Context).apiUrl;
-    const [loading, setLoading] = useState(true);
-    const [errorMail, setErrorMail] = useState("");
-    const [errorPassword, setErrorPassword] = useState("");
-    const [text, setText] = useState("");
-    const [searchResult, setSearchResult] = useState();
+    const [loading, setLoading] = useState(true);  
     const [estatesTypes, setEstatesTypes] = useState({});
     const { id } = useParams();
 
