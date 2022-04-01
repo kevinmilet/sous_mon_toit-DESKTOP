@@ -42,6 +42,7 @@ const API_URL = {
     customer_update_search: 'customer_search/s/update',
     customer_delete_search: 'customer_search/s/delete',
     customers_types: 'customer_type',
+    delete_customer_search: "customer_search/s/delete/",
     //Appointment
     calendar: 'schedule/calendar',
     staff_schedule: 'schedule/staff',
