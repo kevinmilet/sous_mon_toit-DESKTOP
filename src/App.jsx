@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
-import { Context } from "./utils/context/Context";
-import CustomersListView from "./screens/Customers/CustomersListView";
-import CustomersDetailView from "./screens/Customers/CustomerDetailView";
 import axios from "axios";
-import ApiRoutes from "./utils/const/ApiRoutes";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import SnackbarProvider from "react-simple-snackbar";
-import SignInView from "./screens/SignIn/SignInView";
-import EstatesListView from "./screens/Estates/EstatesListView";
-import DetailEstateView from "./screens/Estates/DetailEstateView";
+import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Topbar from "./components/Topbar/Topbar";
-import HomeView from "./screens/Home/HomeView";
-import AddEstateView from "./screens/Estates/AddEstateView";
-import StaffListView from "./screens/Staff/StaffListView";
+import AccountView from "./screens/AccountView/AccountView";
+import CustomersDetailView from "./screens/Customers/CustomerDetailView";
+import CustomersListView from "./screens/Customers/CustomersListView";
 import AddEstateStep2View from "./screens/Estates/AddEstateStep2View";
 import AddEstateStep3View from "./screens/Estates/AddEstateStep3View";
+import AddEstateView from "./screens/Estates/AddEstateView";
+import DetailEstateView from "./screens/Estates/DetailEstateView";
+import EstatesListView from "./screens/Estates/EstatesListView";
+import HomeView from "./screens/Home/HomeView";
+import SignInView from "./screens/SignIn/SignInView";
 import StaffDetailsView from "./screens/Staff/StaffDetailsView";
-import AccountView from "./screens/AccountView/AccountView";
-import "react-toastify/dist/ReactToastify.css";
+import StaffListView from "./screens/Staff/StaffListView";
+import ApiRoutes from "./utils/const/ApiRoutes";
+import { Context } from "./utils/context/Context";
 
 const App = () => {
   const [apiUrl, setApiUrl] = useState(ApiRoutes.API_URL);
@@ -72,20 +72,20 @@ const App = () => {
   return (
     <Context.Provider value={{ apiUrl, setApiUrl, showToast, setShowToast }}>
       <SnackbarProvider>
-        <div className="App">
-          {/*<ToastContainer />*/}
-          <div className="container-fluid m-0">
-            <div className="row gx-0">
-              <div className="col-md-2 m-0">
-                <Sidebar />
-              </div>
-              <div className="col-md-10 m-0 d-flex flex-column">
-                <div className="row-fluid">
-                  <Topbar />
+        <HashRouter basename={"/"}>
+          <div className="App">
+            {/*<ToastContainer />*/}
+            <div className="container-fluid m-0">
+              <div className="row gx-0">
+                <div className="col-md-2 m-0">
+                  <Sidebar />
                 </div>
-                <div className="row-fluid">
-                  {/*Content here.....*/}
-                  <HashRouter basename={"/"}>
+                <div className="col-md-10 m-0 d-flex flex-column">
+                  <div className="row-fluid">
+                    <Topbar />
+                  </div>
+                  <div className="row-fluid">
+                    {/*Content here.....*/}
                     <Routes>
                       {token === null ? (
                         <React.Fragment>
@@ -103,7 +103,7 @@ const App = () => {
                       />
                       <Route
                         exact
-                        path="/detail-biens/:id"
+                        path="/detail-biens"
                         element={<DetailEstateView />}
                       />
                       <Route
@@ -143,12 +143,12 @@ const App = () => {
                         element={<AccountView />}
                       />
                     </Routes>
-                  </HashRouter>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </HashRouter>
       </SnackbarProvider>
     </Context.Provider>
   );

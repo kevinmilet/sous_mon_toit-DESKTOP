@@ -7,6 +7,7 @@ import estateIcon from "../../assets/icons/home_pink.png";
 import customerIcon from "../../assets/icons/value.png";
 import staffIcon from "../../assets/icons/seller.png";
 import rightArrow from "../../assets/icons/right-arrow.png";
+import { Link } from "react-router-dom";
 
 const MainContainer = styled.div`
   width: 250px;
@@ -52,37 +53,34 @@ const Sidebar = () => {
       <MainContainer>
         <Logo src={logo} className="logo" alt="Logo Sous mon toit" />
         <ButtonsContainer>
-          <a href="/">
+          <Link to="/">
             <Button className="btn btn-secondary">
               <img src={agendaIcon} width="35" height="35" alt="" />
               &nbsp;Agenda&nbsp;
               <img src={rightArrow} width="18" height="18" alt="" />
             </Button>
-          </a>
-          <a href="/liste-des-biens">
+          </Link>
+          <Link to="/liste-des-biens">
             <Button className="btn btn-secondary">
               <img src={estateIcon} width="35" height="35" alt="" />
               &nbsp;Biens&nbsp;
               <img src={rightArrow} width="18" height="18" alt="" />
             </Button>
-          </a>
-          <a href="/customers_list">
+          </Link>
+          <Link to="/customers_list">
             <Button className="btn btn-secondary">
               <img src={customerIcon} width="35" height="35" alt="" />
               &nbsp;Client&nbsp;
               <img src={rightArrow} width="18" height="18" alt="" />
             </Button>
-          </a>
-          <a href="/staff">
+          </Link>
+          <Link to="/staff">
             <Button className="btn btn-secondary">
               <img src={staffIcon} width="35" height="35" alt="" />
               &nbsp;Agents&nbsp;
               <img src={rightArrow} width="18" height="18" alt="" />
             </Button>
-          </a>
-          {/*<a href="#">*/}
-          {/*    <Button className="btn btn-secondary"><img src={contractIcon} width="35" height="35" alt=""/>&nbsp;Contrat&nbsp;<img src={rightArrow} width="18" height="18" alt=""/></Button>*/}
-          {/*</a>*/}
+          </Link>
         </ButtonsContainer>
       </MainContainer>
     </div>
